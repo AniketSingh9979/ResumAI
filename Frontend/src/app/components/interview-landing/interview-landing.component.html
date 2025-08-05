@@ -1,0 +1,208 @@
+<div class="landing-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>
+      <i class="fas fa-laptop-code"></i>
+      Technical Interview Platform
+    </h1>
+    <p>Comprehensive assessment for technical positions</p>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Candidate Information Form -->
+    <div class="form-section">
+      <h2>
+        <i class="fas fa-user-circle"></i>
+        Candidate Information
+      </h2>
+      
+      <form [formGroup]="candidateForm" class="candidate-form">
+        <div class="form-group">
+          <label for="name">Full Name *</label>
+          <input 
+            type="text" 
+            id="name"
+            formControlName="name"
+            class="form-control"
+            placeholder="Enter your full name">
+          <div class="error-message" *ngIf="candidateForm.get('name')?.invalid && candidateForm.get('name')?.touched">
+            Please enter a valid name (at least 2 characters)
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input 
+            type="email" 
+            id="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Enter your email address">
+          <div class="error-message" *ngIf="candidateForm.get('email')?.invalid && candidateForm.get('email')?.touched">
+            Please enter a valid email address
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="domain">Technology Domain *</label>
+            <select 
+              id="domain"
+              formControlName="domain"
+              class="form-control"
+              (change)="onDomainChange()">
+              <option value="">Select your domain</option>
+              <option *ngFor="let domain of availableDomains" [value]="domain">
+                {{ domain }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="experience">Years of Experience *</label>
+            <input 
+              type="number" 
+              id="experience"
+              formControlName="experience"
+              class="form-control"
+              min="0"
+              max="20"
+              placeholder="0">
+            <small class="experience-level" *ngIf="candidateForm.get('experience')?.value >= 0">
+              {{ getExperienceLevel(candidateForm.get('experience')?.value) }}
+            </small>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Interview Structure Information -->
+    <div class="info-section">
+      <h2>
+        <i class="fas fa-info-circle"></i>
+        Interview Structure
+      </h2>
+      
+      <div class="interview-overview">
+        <div class="section-card">
+          <div class="section-icon coding">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="section-content">
+            <h3>Coding Section</h3>
+            <p>Solve programming challenges with a built-in code editor</p>
+            <div class="section-details" *ngIf="interviewConfig">
+              <span class="detail-item">
+                <i class="fas fa-tasks"></i>
+                {{ interviewConfig.codingQuestions }} Questions
+              </span>
+              <span class="detail-item">
+                <i class="fas fa-signal"></i>
+                {{ interviewConfig.difficultyFocus }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-icon mcq">
+            <i class="fas fa-list-check"></i>
+          </div>
+          <div class="section-content">
+            <h3>Multiple Choice Questions</h3>
+            <p>Technical knowledge assessment with single and multiple choice questions</p>
+            <div class="section-details" *ngIf="interviewConfig">
+              <span class="detail-item">
+                <i class="fas fa-tasks"></i>
+                {{ interviewConfig.mcqQuestions }} Questions
+              </span>
+              <span class="detail-item">
+                <i class="fas fa-check-double"></i>
+                Mixed Types
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-icon qa">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="section-content">
+            <h3>Subjective Q&A</h3>
+            <p>Answer open-ended technical questions with detailed explanations</p>
+            <div class="section-details" *ngIf="interviewConfig">
+              <span class="detail-item">
+                <i class="fas fa-tasks"></i>
+                {{ interviewConfig.subjectiveQuestions }} Questions
+              </span>
+              <span class="detail-item">
+                <i class="fas fa-brain"></i>
+                AI Evaluated
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Time and Instructions -->
+      <div class="instructions">
+        <div class="time-info">
+          <h3>
+            <i class="fas fa-clock"></i>
+            Time Limit: {{ interviewConfig?.timeLimit || 45 }} Minutes
+          </h3>
+          <p>The timer will start automatically when you begin the interview</p>
+        </div>
+
+        <div class="guidelines">
+          <h3>
+            <i class="fas fa-lightbulb"></i>
+            Important Guidelines
+          </h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Ensure stable internet connection</li>
+            <li><i class="fas fa-check"></i> Use a desktop or laptop for better experience</li>
+            <li><i class="fas fa-check"></i> Your answers are auto-saved as you progress</li>
+            <li><i class="fas fa-check"></i> You can navigate between sections freely</li>
+            <li><i class="fas fa-check"></i> Submit before time expires to avoid data loss</li>
+            <li><i class="fas fa-check"></i> Do not refresh or close the browser tab</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Agreement and Start -->
+      <div class="agreement-section">
+        <div class="agreement-checkbox">
+          <input 
+            type="checkbox" 
+            id="agreement"
+            [checked]="agreed"
+            (change)="toggleAgreement()">
+          <label for="agreement">
+            I understand the interview structure and guidelines. I am ready to begin the technical assessment.
+          </label>
+        </div>
+
+        <button 
+          type="button"
+          class="btn btn-primary start-btn"
+          [disabled]="!candidateForm.valid || !agreed || isLoading"
+          (click)="startInterview()">
+          <i class="fas fa-play-circle" *ngIf="!isLoading"></i>
+          <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+          {{ isLoading ? 'Preparing Interview...' : 'Start Interview' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      <i class="fas fa-shield-alt"></i>
+      Your responses are securely stored and will be used only for assessment purposes
+    </p>
+  </div>
+</div> 

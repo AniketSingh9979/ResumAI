@@ -1,0 +1,148 @@
+/* Subjective QA Container */
+.subjective-qa-container {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Question Display */
+.question-display {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.question-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+}
+
+/* Answer Section */
+.answer-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.answer-section label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.answer-textarea {
+  flex: 1;
+  min-height: 200px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  resize: vertical;
+  background: #fafafa;
+}
+
+.answer-textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  background: white;
+}
+
+.answer-textarea::placeholder {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Answer Actions */
+.answer-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.clear-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: white;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.clear-btn:active {
+  transform: scale(0.98);
+}
+
+/* No Questions State */
+.no-questions {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-questions-content {
+  text-align: center;
+  color: #6c757d;
+}
+
+.no-questions-content i {
+  font-size: 48px;
+  margin-bottom: 15px;
+  color: #dee2e6;
+}
+
+.no-questions-content h3 {
+  margin: 0 0 10px 0;
+  color: #495057;
+}
+
+.no-questions-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .subjective-qa-container {
+    padding: 15px;
+  }
+  
+  .question-text {
+    padding: 15px;
+    font-size: 15px;
+  }
+  
+  .answer-textarea {
+    min-height: 150px;
+    padding: 12px;
+  }
+  
+  .answer-actions {
+    justify-content: center;
+  }
+} 

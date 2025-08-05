@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="card text-center">
+    <!-- Success Message -->
+    <div class="mb-3">
+      <i class="fas fa-check-circle" style="font-size: 48px; color: #28a745; margin-bottom: 15px;"></i>
+      <h1>Thank You!</h1>
+      <p>Your interview has been successfully submitted.</p>
+    </div>
+
+    <!-- Interview Summary -->
+    <div *ngIf="interviewSummary" class="mb-3">
+      <h3>Questions Attempted</h3>
+      <div style="display: flex; justify-content: center; gap: 40px; margin: 20px 0;">
+        <div>
+          <div style="font-size: 24px; font-weight: bold; color: #007bff;">{{ interviewSummary.codingQuestions }}</div>
+          <div>Coding</div>
+        </div>
+        <div>
+          <div style="font-size: 24px; font-weight: bold; color: #6f42c1;">{{ interviewSummary.mcqQuestions }}</div>
+          <div>MCQ</div>
+        </div>
+        <div>
+          <div style="font-size: 24px; font-weight: bold; color: #fd7e14;">{{ interviewSummary.subjectiveQuestions }}</div>
+          <div>Q&A</div>
+        </div>
+      </div>
+      <p><strong>Total Questions: {{ interviewSummary.totalQuestions }}</strong></p>
+    </div>
+
+    <!-- Status Message -->
+    <div class="mb-3" style="background-color: #e7f3ff; padding: 15px; border-radius: 5px; border-left: 4px solid #007bff;">
+      <p>Your responses have been securely stored and will be reviewed by our team. Results will be communicated to you via email within 2-3 business days.</p>
+    </div>
+
+    <!-- Action Button -->
+    <div class="action-buttons">
+      <button 
+        (click)="goToHomePage()"
+        class="button-small primary"
+        title="Return to home page">
+        <i class="fas fa-home"></i>
+        Back to Home
+      </button>
+    </div>
+    
+    <!-- Instructions -->
+    <div class="close-instructions">
+      <i class="fas fa-info-circle"></i>
+      Interview completed successfully! You can now close this tab manually (Ctrl+W) or click "Back to Home" to continue.
+    </div>
+  </div>
+</div> 

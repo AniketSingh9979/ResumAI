@@ -1,0 +1,194 @@
+<div class="mettl-assessment" *ngIf="!isLoading">
+  <!-- Top Header -->
+  <div class="mettl-header">
+    <div class="header-left">
+      <div class="logo-section">
+        <span class="assessment-title">Technical Interview Assessment</span>
+      </div>
+      <div class="candidate-info" *ngIf="candidateInfo">
+        {{ candidateInfo.name }} | {{ candidateInfo.domain }}
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="timer-section">
+        <i class="fas fa-clock"></i>
+        <span>Test Time: {{ formatTime(timeRemaining) }}</span>
+      </div>
+      
+      <!-- Question Navigation -->
+      <div class="question-navigation">
+        <button 
+          class="nav-btn prev-btn"
+          [disabled]="!canNavigatePrevious()"
+          (click)="navigatePreviousQuestion()">
+          <i class="fas fa-chevron-left"></i>
+          Previous
+        </button>
+        
+        <span class="question-counter">
+          {{ getCurrentQuestionIndex() + 1 }} of {{ getTotalQuestionsForSection() }}
+        </span>
+        
+        <button 
+          class="nav-btn next-btn"
+          [disabled]="!canNavigateNext()"
+          (click)="navigateNextQuestion()">
+          Next
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Navigation -->
+  <div class="section-navigation">
+    <div class="section-selector">
+      <button 
+        class="section-btn" 
+        [class.active]="activeSection === 'coding'"
+        (click)="selectSection('coding')">
+        Section #1 (Coding)
+      </button>
+      <button 
+        class="section-btn" 
+        [class.active]="activeSection === 'mcq'"
+        (click)="selectSection('mcq')">
+        Section #2 (MCQ)
+      </button>
+      <button 
+        class="section-btn" 
+        [class.active]="activeSection === 'qa'"
+        (click)="selectSection('qa')">
+        Section #3 (Q&A)
+      </button>
+    </div>
+    <div class="attempted-info">
+      Attempted: {{ getAttemptedCount() }}/{{ getTotalQuestionsForSection() }}
+    </div>
+  </div>
+
+  <!-- Main Question Area -->
+  <div class="question-container">
+    
+    <!-- Question Left Panel -->
+    <div class="question-left">
+      <!-- Coding Section -->
+      <div *ngIf="activeSection === 'coding'" class="question-content">
+        <div class="question-header">
+          <h3>Question {{ currentCodingIndex + 1 }}</h3>
+        </div>
+        
+        <div *ngIf="currentCodingQuestion" class="question-body">
+          <h4>{{ currentCodingQuestion.title }}</h4>
+          <div class="question-text">
+            {{ currentCodingQuestion.description }}
+          </div>
+          
+          <form [formGroup]="codingForm" class="coding-input">
+            <label>Your Solution:</label>
+            <textarea 
+              formControlName="code"
+              class="code-textarea"
+              placeholder="Write your code here..."
+              rows="12">
+            </textarea>
+          </form>
+        </div>
+      </div>
+
+      <!-- MCQ Section -->
+      <div *ngIf="activeSection === 'mcq'" class="question-content">
+        <div class="question-header">
+          <h3>Question {{ currentMCQIndex + 1 }}</h3>
+        </div>
+        
+        <div *ngIf="getCurrentMCQQuestion()" class="question-body">
+          <div class="question-text">
+            {{ getCurrentMCQQuestion()?.description }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Q&A Section -->
+      <div *ngIf="activeSection === 'qa'" class="question-content">
+        <div class="question-header">
+          <h3>Question {{ currentSubjectiveIndex + 1 }}</h3>
+        </div>
+        
+        <div class="question-body">
+          <app-subjective-qa 
+            [domain]="candidateInfo?.domain || ''"
+            [resumeId]="resumeId"
+            [currentQuestionIndex]="currentSubjectiveIndex"
+            (answersUpdate)="onSubjectiveAnswersUpdate($event)">
+          </app-subjective-qa>
+        </div>
+      </div>
+    </div>
+
+    <!-- Answer Right Panel -->
+    <div class="answer-right">
+      <!-- MCQ Options -->
+      <div *ngIf="activeSection === 'mcq' && getCurrentMCQQuestion()" class="answer-section">
+        <h4>Select an option</h4>
+        
+        <div class="mcq-options">
+          <div class="options-list">
+            <!-- Single Choice Questions -->
+            <ng-container *ngIf="!getCurrentMCQQuestion()?.multipleSelection">
+              <div class="option-item" *ngFor="let option of getCurrentMCQOptions(); let i = index">
+                <input 
+                  type="radio" 
+                  [id]="'option_' + i"
+                  [name]="'mcq_' + getCurrentMCQQuestion()?.id"
+                  [value]="option"
+                  (change)="selectSingleOption(option)">
+                <label [for]="'option_' + i">{{ option }}</label>
+              </div>
+            </ng-container>
+            
+            <!-- Multiple Choice Questions -->
+            <ng-container *ngIf="getCurrentMCQQuestion()?.multipleSelection">
+              <div class="option-item" *ngFor="let option of getCurrentMCQOptions(); let i = index">
+                <input 
+                  type="checkbox" 
+                  [id]="'option_' + i"
+                  [value]="option"
+                  (change)="toggleMultipleOption(option, $event)">
+                <label [for]="'option_' + i">{{ option }}</label>
+              </div>
+              <small class="multiple-hint">Select all that apply</small>
+            </ng-container>
+          </div>
+        </div>
+        
+        <div class="clear-response">
+          <button class="clear-btn" (click)="clearCurrentMCQResponse()">
+            <i class="fas fa-times"></i>
+            Clear Response
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-navigation">
+    <div class="nav-right">
+      <button class="submit-btn" (click)="submitInterview()" [disabled]="isSubmitting">
+        <i class="fas fa-paper-plane" *ngIf="!isSubmitting"></i>
+        <i class="fas fa-spinner fa-spin" *ngIf="isSubmitting"></i>
+        {{ isSubmitting ? 'Submitting...' : 'Submit Interview' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="isLoading">
+  <div class="loading-content">
+    <i class="fas fa-spinner fa-spin"></i>
+    <h2>Preparing Your Interview</h2>
+    <p>Loading questions based on your profile...</p>
+  </div>
+</div> 

@@ -1,0 +1,42 @@
+<div class="subjective-qa-container">
+  <!-- Current Question Display -->
+  <div *ngIf="getCurrentQuestion()" class="question-display">
+    <div class="question-text">
+      {{ getCurrentQuestion()?.question }}
+    </div>
+    
+    <!-- Answer Input -->
+    <div class="answer-section">
+      <label for="answer-textarea">Your Answer:</label>
+      <textarea 
+        id="answer-textarea"
+        [formControl]="answerControl"
+        class="answer-textarea"
+        placeholder="Type your detailed answer here..."
+        rows="8">
+      </textarea>
+      
+      <!-- Action Button -->
+      <div class="answer-actions">
+        <button 
+          class="clear-btn"
+          (click)="clearAnswer()"
+          type="button">
+          <i class="fas fa-times"></i>
+          Clear Answer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Questions State -->
+  <div *ngIf="!getCurrentQuestion()" class="no-questions">
+    <div class="no-questions-content">
+      <i class="fas fa-question-circle"></i>
+      <h3>No Questions Available</h3>
+      <p>Please check back later or contact support.</p>
+    </div>
+  </div>
+
+
+</div> 
