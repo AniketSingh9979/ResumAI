@@ -41,15 +41,89 @@
     </mat-card>
   </div>
 
-  <div class="recent-activities">
-    <mat-card role="region" aria-label="Recent Activities">
+  <div class="dashboard-cards">
+    <mat-card class="upcoming-interviews-card" role="region" aria-label="Upcoming Interviews">
       <mat-card-header>
-        <mat-card-title>Recent Activities</mat-card-title>
+        <div class="card-header-content">
+          <mat-card-title>Upcoming Interviews</mat-card-title>
+          <button mat-button color="primary" routerLink="/interviews">
+            View All
+            <mat-icon>arrow_forward</mat-icon>
+          </button>
+        </div>
       </mat-card-header>
       <mat-card-content>
-        <p>No recent activities to display. Start by scheduling interviews or adding candidates.</p>
+        <div class="interview-list">
+          <div class="interview-item">
+            <div class="time-slot">
+              <div class="date">Aug 6</div>
+              <div class="time">10:00 AM</div>
+            </div>
+            <div class="interview-details">
+              <div class="candidate-name">John Smith</div>
+              <div class="position">Senior Developer</div>
+              <div class="panel-info">
+                <mat-icon>group</mat-icon>
+                <span>Technical Panel</span>
+              </div>
+            </div>
+            <div class="status">Scheduled</div>
+          </div>
+
+          <div class="interview-item">
+            <div class="time-slot">
+              <div class="date">Aug 6</div>
+              <div class="time">2:30 PM</div>
+            </div>
+            <div class="interview-details">
+              <div class="candidate-name">Sarah Johnson</div>
+              <div class="position">UI/UX Designer</div>
+              <div class="panel-info">
+                <mat-icon>group</mat-icon>
+                <span>Design Panel</span>
+              </div>
+            </div>
+            <div class="status">Confirmed</div>
+          </div>
+
+          <div class="interview-item">
+            <div class="time-slot">
+              <div class="date">Aug 7</div>
+              <div class="time">11:00 AM</div>
+            </div>
+            <div class="interview-details">
+              <div class="candidate-name">Michael Chen</div>
+              <div class="position">Full Stack Developer</div>
+              <div class="panel-info">
+                <mat-icon>group</mat-icon>
+                <span>Technical Panel</span>
+              </div>
+            </div>
+            <div class="status">Pending</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="recent-activities-card" role="region" aria-label="Recent Activities">
+      <mat-card-header>
+        <div class="card-header-content">
+          <mat-card-title>Recent Activities</mat-card-title>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="activities-list">
+          <div class="activity-item" *ngFor="let activity of recentActivities">
+            <div class="activity-icon" [style.background-color]="activity.color + '20'">
+              <mat-icon [style.color]="activity.color">{{activity.icon}}</mat-icon>
+            </div>
+            <div class="activity-details">
+              <div class="activity-description">{{activity.description}}</div>
+              <div class="activity-timestamp">{{activity.timestamp}}</div>
+            </div>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
-
 </div>
