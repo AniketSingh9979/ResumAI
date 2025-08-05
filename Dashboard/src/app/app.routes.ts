@@ -4,7 +4,15 @@ export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { 
     path: 'dashboard', 
-    loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+    loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
+  {
+    path: 'panels',
+    loadChildren: () => import('./features/panels/panels.module').then(m => m.PanelsModule)
+  },
+  {
+    path: 'candidates',
+    loadComponent: () => import('./features/candidates/candidates.component').then(m => m.CandidatesComponent)
   },
   { path: '**', redirectTo: '/dashboard' }
 ];

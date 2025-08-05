@@ -1,5 +1,7 @@
 <div class="dashboard-container">
-  <h1>Technical Interview Dashboard</h1>
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+  </div>
   
   <div class="stats-cards">
     <mat-card class="stat-card" role="region" aria-label="Total Candidates Statistics">
@@ -20,12 +22,12 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card" role="region" aria-label="Panel Members Statistics">
+    <mat-card class="stat-card" role="region" aria-label="Panel Members Statistics" routerLink="/panels" style="cursor: pointer;">
       <mat-card-header>
         <mat-card-title>Panel Members</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <div class="stat-number" aria-label="12 panel members">12</div>
+        <div class="stat-number" aria-label="panel members">{{panelCount}}</div>
       </mat-card-content>
     </mat-card>
 
@@ -49,4 +51,5 @@
       </mat-card-content>
     </mat-card>
   </div>
+
 </div>
