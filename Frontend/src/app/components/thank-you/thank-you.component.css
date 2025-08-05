@@ -1,0 +1,66 @@
+/* Thank you page specific styles */
+.fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Action button container */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.action-buttons .button-small {
+  min-width: 140px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.action-buttons .button-small:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.action-buttons .button-small.success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.action-buttons .button-small.success:hover {
+  background: linear-gradient(135deg, #218838, #1dc0a7);
+}
+
+.action-buttons .button-small.primary {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.action-buttons .button-small.primary:hover {
+  background: linear-gradient(135deg, #0056b3, #004085);
+}
+
+/* Instructions styling */
+.close-instructions {
+  margin-top: 15px;
+  padding: 12px 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #007bff;
+  font-size: 13px;
+  color: #6c757d;
+  text-align: center;
+}
+
+.close-instructions i {
+  color: #007bff;
+  margin-right: 6px;
+} 
