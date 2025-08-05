@@ -1,0 +1,68 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h3>
+      <i class="fas fa-robot"></i>
+      AI Assistant
+    </h3>
+    <span class="status online">
+      <i class="fas fa-circle"></i>
+      Online
+    </span>
+  </div>
+
+  <div class="chat-messages">
+    <div *ngFor="let message of messages" 
+         class="message" 
+         [class.user-message]="message.sender === 'user'"
+         [class.ai-message]="message.sender === 'ai'">
+      
+      <div class="message-avatar">
+        <i *ngIf="message.sender === 'user'" class="fas fa-user"></i>
+        <i *ngIf="message.sender === 'ai'" class="fas fa-robot"></i>
+      </div>
+      
+      <div class="message-content">
+        <div class="message-bubble">
+          <p>{{ message.message }}</p>
+        </div>
+        <div class="message-time">
+          {{ formatTime(message.timestamp) }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Typing indicator -->
+    <div *ngIf="isTyping" class="message ai-message typing-message">
+      <div class="message-avatar">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div class="message-content">
+        <div class="message-bubble typing-bubble">
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="chat-input">
+    <div class="input-group">
+      <textarea
+        formControlName="message"
+        placeholder="Ask me anything about the interview..."
+        class="message-input"
+        rows="1"
+        (keypress)="onKeyPress($event)">
+      </textarea>
+      <button 
+        type="submit" 
+        class="send-button"
+        [disabled]="!chatForm.value.message?.trim()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </form>
+</div> 
