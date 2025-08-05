@@ -1,0 +1,52 @@
+.dashboard-container {
+  padding: 20px;
+  height: 100%;
+  
+  .filters {
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+
+    .dashboard-card {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+      h3 {
+        margin: 0 0 16px;
+        color: #333;
+        font-size: 18px;
+      }
+
+      .card-content {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+.status-chip {
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.new { background: #E3F2FD; color: #1565C0; }
+  &.in-progress { background: #FFF3E0; color: #E65100; }
+  &.completed { background: #E8F5E9; color: #2E7D32; }
+  &.cancelled { background: #FFEBEE; color: #C62828; }
+}
