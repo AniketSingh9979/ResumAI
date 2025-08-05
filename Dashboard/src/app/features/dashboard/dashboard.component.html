@@ -1,85 +1,51 @@
 <div class="dashboard-container">
-  <!-- Filters Section -->
-  <div class="filters">
-    <mat-form-field>
-      <mat-label>Filter by Date</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="dateFilter" (dateChange)="applyFilters()">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+  <h1>Technical Interview Dashboard</h1>
+  
+  <div class="stats-cards">
+    <mat-card class="stat-card" role="region" aria-label="Total Candidates Statistics">
+      <mat-card-header>
+        <mat-card-title>Total Candidates</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-number" aria-label="25 total candidates">25</div>
+      </mat-card-content>
+    </mat-card>
 
-    <mat-form-field>
-      <mat-label>Filter by Skill</mat-label>
-      <input matInput [(ngModel)]="skillFilter" (input)="applyFilters()" placeholder="Enter skill...">
-    </mat-form-field>
+    <mat-card class="stat-card" role="region" aria-label="Active Interviews Statistics">
+      <mat-card-header>
+        <mat-card-title>Active Interviews</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-number" aria-label="8 active interviews">8</div>
+      </mat-card-content>
+    </mat-card>
 
-    <mat-form-field>
-      <mat-label>Filter by Status</mat-label>
-      <mat-select [(ngModel)]="statusFilter" (selectionChange)="applyFilters()">
-        <mat-option value="">All</mat-option>
-        <mat-option value="new">New</mat-option>
-        <mat-option value="in-progress">In Progress</mat-option>
-        <mat-option value="completed">Completed</mat-option>
-        <mat-option value="cancelled">Cancelled</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-card class="stat-card" role="region" aria-label="Panel Members Statistics">
+      <mat-card-header>
+        <mat-card-title>Panel Members</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-number" aria-label="12 panel members">12</div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card" role="region" aria-label="Completed Today Statistics">
+      <mat-card-header>
+        <mat-card-title>Completed Today</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="stat-number" aria-label="3 interviews completed today">3</div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <!-- Dashboard Grid -->
-  <div class="dashboard-grid">
-    <!-- Candidates Card -->
-    <mat-card class="dashboard-card">
+  <div class="recent-activities">
+    <mat-card role="region" aria-label="Recent Activities">
       <mat-card-header>
-        <mat-card-title>Candidates</mat-card-title>
+        <mat-card-title>Recent Activities</mat-card-title>
       </mat-card-header>
-      <mat-card-content class="card-content">
-        <mat-list>
-          <mat-list-item *ngFor="let candidate of candidates">
-            <div mat-line>{{candidate.name}}</div>
-            <div mat-line>{{candidate.email}}</div>
-            <div mat-line>
-              <span class="status-chip" [ngClass]="candidate.status">{{candidate.status}}</span>
-            </div>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Interviews Card -->
-    <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>Upcoming Interviews</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="card-content">
-        <mat-list>
-          <mat-list-item *ngFor="let interview of interviews">
-            <div mat-line>{{interview.candidate.name}}</div>
-            <div mat-line>
-              {{interview.scheduledDate | date}} {{interview.startTime}} - {{interview.endTime}}
-            </div>
-            <div mat-line>
-              <span class="status-chip" [ngClass]="interview.status">{{interview.status}}</span>
-            </div>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Panel Availability Card -->
-    <mat-card class="dashboard-card">
-      <mat-card-header>
-        <mat-card-title>Panel Availability</mat-card-title>
-      </mat-card-header>
-      <mat-card-content class="card-content">
-        <mat-list>
-          <mat-list-item *ngFor="let panel of panels">
-            <div mat-line>{{panel.name}}</div>
-            <div mat-line>{{panel.designation}}</div>
-            <div mat-line>
-              Expertise: {{panel.expertise.join(', ')}}
-            </div>
-          </mat-list-item>
-        </mat-list>
+      <mat-card-content>
+        <p>No recent activities to display. Start by scheduling interviews or adding candidates.</p>
       </mat-card-content>
     </mat-card>
   </div>

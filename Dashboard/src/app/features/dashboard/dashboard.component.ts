@@ -1,33 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { Candidate } from '../../core/models/candidate.interface';
-import { Interview } from '../../core/models/interview.interface';
-import { Panel } from '../../core/models/panel.interface';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
-  candidates: Candidate[] = [];
-  interviews: Interview[] = [];
-  panels: Panel[] = [];
-  dateFilter: Date | null = null;
-  skillFilter: string = '';
-  statusFilter: string = '';
-
-  constructor() {}
-
-  ngOnInit(): void {
-    this.loadDashboardData();
-  }
-
-  private loadDashboardData(): void {
-    // TODO: Implement API calls to fetch data
-  }
-
-  applyFilters(): void {
-    // TODO: Implement filtering logic
-  }
+export class DashboardComponent {
+  constructor() { }
 }
 
