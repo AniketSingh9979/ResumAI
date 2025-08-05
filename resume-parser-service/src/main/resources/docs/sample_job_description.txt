@@ -1,0 +1,37 @@
+Data Scientist - Machine Learning Engineer
+Company: AI Innovations Corp
+
+We are seeking a highly skilled Data Scientist to join our AI research and development team. The ideal candidate will have strong expertise in machine learning, statistical analysis, and data visualization.
+
+Requirements:
+- Master's or PhD in Computer Science, Statistics, Mathematics, or related field
+- 4+ years of experience in data science and machine learning
+- Proficiency in Python, Java, SQL, and Jupyter notebooks
+- Experience with TensorFlow, PyTorch, scikit-learn, pandas, numpy
+- Strong knowledge of statistical methods and hypothesis testing
+- Experience with cloud platforms (AWS, GCP, or Azure)
+- Excellent communication and presentation skills
+
+Responsibilities:
+- Develop and implement machine learning models for business applications
+- Analyze large datasets to identify patterns and insights
+- Collaborate with engineering teams to deploy ML models to production
+- Create data visualizations and reports for stakeholders
+- Conduct A/B testing and statistical analysis
+- Research and evaluate new ML techniques and technologies
+- Mentor junior data scientists and analysts
+
+Location: San Francisco, CA (Hybrid - 3 days in office)
+Experience Level: Senior
+Salary Range: $140,000 - $180,000
+
+Benefits:
+- Comprehensive health insurance
+- 401(k) with company matching
+- Flexible working hours
+- Professional development budget
+- Stock options
+- Unlimited PTO
+
+About AI Innovations Corp:
+We are a leading technology company focused on developing cutting-edge AI solutions for enterprise clients. Our mission is to democratize artificial intelligence and make it accessible to businesses of all sizes. 

@@ -1,0 +1,57 @@
+Senior Java Software Engineer
+
+Company: TechInnovate Solutions
+Location: San Francisco, CA (Remote Available)
+Experience Level: Senior (5-8 years)
+
+Job Description:
+We are seeking a highly skilled Senior Java Software Engineer to join our dynamic development team. You will be responsible for designing, developing, and maintaining enterprise-level applications using modern Java technologies and frameworks.
+
+Key Responsibilities:
+• Design and develop scalable microservices using Java 11+ and Spring Boot
+• Build RESTful APIs and integrate with third-party services
+• Implement automated testing strategies including unit tests, integration tests, and end-to-end testing
+• Work with cloud platforms, particularly AWS (EC2, S3, Lambda, RDS)
+• Collaborate with cross-functional teams in an Agile development environment
+• Perform code reviews and mentor junior developers
+• Optimize application performance and troubleshoot production issues
+• Participate in system architecture decisions and technical design discussions
+• Implement CI/CD pipelines using Jenkins and Docker
+• Work with database technologies including MySQL, PostgreSQL, and MongoDB
+
+Required Skills and Qualifications:
+• Bachelor's degree in Computer Science, Software Engineering, or related field
+• 5+ years of professional Java development experience
+• Strong expertise in Spring Framework (Spring Boot, Spring MVC, Spring Security)
+• Proficient in RESTful web services development and API design
+• Experience with microservices architecture and distributed systems
+• Solid understanding of object-oriented programming and design patterns
+• Experience with relational databases (MySQL, PostgreSQL) and SQL optimization
+• Knowledge of NoSQL databases (MongoDB, Redis)
+• Familiarity with cloud platforms, preferably AWS
+• Experience with containerization (Docker) and orchestration (Kubernetes)
+• Proficient in version control systems (Git) and collaborative development
+• Experience with testing frameworks (JUnit, Mockito, TestNG)
+• Knowledge of build tools (Maven, Gradle)
+• Understanding of CI/CD principles and tools (Jenkins, GitLab CI)
+• Strong problem-solving skills and attention to detail
+• Excellent communication and teamwork abilities
+
+Preferred Qualifications:
+• Experience with Apache Kafka for message streaming
+• Knowledge of Elasticsearch for search and analytics
+• Familiarity with frontend technologies (React, Angular, or Vue.js)
+• Experience with performance monitoring tools (New Relic, AppDynamics)
+• AWS certifications (Developer Associate or Solutions Architect)
+• Experience with DevOps practices and infrastructure as code (Terraform, CloudFormation)
+• Knowledge of machine learning concepts and frameworks
+
+What We Offer:
+• Competitive salary ranging from $120,000 - $160,000
+• Comprehensive health, dental, and vision insurance
+• 401(k) with company matching
+• Flexible work arrangements and remote work options
+• Professional development opportunities and conference attendance
+• Stock options and performance bonuses
+• Collaborative and innovative work environment
+• Latest technology and development tools 

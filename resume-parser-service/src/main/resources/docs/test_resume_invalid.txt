@@ -1,0 +1,11 @@
+John Doe
+Software Engineer
+Email: john.doe@email.com
+
+This TXT file should be REJECTED for resume uploads
+since the application only accepts PDF and DOC files for resumes.
+
+SKILLS:
+Java, Python, SQL
+
+This is a test file to validate file type restrictions. 

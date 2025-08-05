@@ -1,0 +1,41 @@
+Senior Data Scientist - AI/ML Engineer
+TechCorp Solutions
+
+Job Description:
+We are seeking a Senior Data Scientist with expertise in machine learning and artificial intelligence to join our growing team. The ideal candidate will have strong experience in developing and deploying machine learning models in production environments.
+
+Key Requirements:
+- 5+ years of experience in machine learning and data science
+- Proficiency in Python programming language
+- Experience with machine learning frameworks: TensorFlow, PyTorch
+- Strong background in SQL and database management
+- Experience with cloud platforms, particularly AWS
+- Knowledge of Docker containerization
+- Familiarity with Git version control
+- Experience with API development and microservices
+- Understanding of agile development methodologies
+
+Responsibilities:
+- Design and implement machine learning algorithms and models
+- Develop data science solutions using Python and TensorFlow
+- Work with large datasets using SQL and NoSQL databases
+- Deploy models to AWS cloud infrastructure
+- Collaborate with engineering teams using Git and agile practices
+- Build RESTful APIs for model serving
+- Create automated testing pipelines using Docker
+
+Required Skills:
+- Python
+- Machine Learning
+- TensorFlow
+- SQL
+- AWS
+- Docker
+- Git
+- API development
+- Data Science
+- Agile
+
+Company: TechCorp Solutions
+Location: San Francisco, CA
+Experience Level: Senior (5+ years)
