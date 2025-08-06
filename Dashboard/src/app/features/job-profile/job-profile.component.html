@@ -1,9 +1,15 @@
 <div class="job-profile-container">
   <!-- Header Section -->
   <div class="header-section">
-    <div class="header-content">
-      <h1 class="page-title">Job Profile Management</h1>
-      <p class="page-subtitle">Manage job descriptions and panel assignments</p>
+    <div class="job-profile-header">
+      <div class="header-content">
+        <h1 class="page-title">Job Profile Management</h1>
+        <p class="page-subtitle">Upload and manage job descriptions with panel member assignments</p>
+      </div>
+      <button mat-raised-button color="primary" (click)="toggleUploadSection()">
+        <mat-icon>{{ showUploadSection ? 'visibility_off' : 'add' }}</mat-icon>
+        {{ showUploadSection ? 'Hide Upload Form' : 'Add Job Profile' }}
+      </button>
     </div>
     <div class="quick-actions">
       <button mat-stroked-button color="primary">
@@ -43,7 +49,7 @@
   </div>
 
   <!-- Upload Section -->
-  <div class="upload-section">
+  <div class="upload-section" *ngIf="showUploadSection">
     <mat-card class="upload-card">
       <mat-card-header>
         <div class="upload-header">
@@ -52,6 +58,9 @@
             <mat-card-title>Upload Job Description</mat-card-title>
             <mat-card-subtitle>Add a new job profile with panel assignment</mat-card-subtitle>
           </div>
+          <button mat-icon-button (click)="toggleUploadSection()" class="close-upload-btn">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
       </mat-card-header>
       
@@ -59,32 +68,42 @@
         <div class="upload-form">
           <!-- Panel Member Selection -->
           <div class="form-row">
-            <mat-form-field appearance="outline" class="panel-member-field">
-              <mat-label>Panel Member</mat-label>
-              <mat-select [(ngModel)]="selectedPanelMember" (selectionChange)="onPanelMemberChange($event)">
-                <mat-option *ngFor="let member of panelMembers" [value]="member">
-                  <div class="member-option">
-                    <img [src]="member.avatar || 'assets/images/default-avatar.png'" 
-                         [alt]="member.name" 
-                         class="member-avatar"
-                         onerror="this.src='assets/images/default-avatar.png'">
-                    <div class="member-info">
-                      <span class="member-name">{{member.name}}</span>
-                      <span class="member-email">{{member.email}}</span>
-                    </div>
+            <mat-form-field appearance="outline" class="panel-member-field custom-dropdown panel-select-field">
+              <mat-label>Select Panel Member</mat-label>
+              <mat-select [(ngModel)]="selectedPanelMember" 
+                         (selectionChange)="onPanelMemberChange($event)"
+                         placeholder="Select Panel Member"
+                         [disabled]="loading"
+                         class="panel-member-select">
+                <mat-option value="" disabled *ngIf="loading">
+                  <div class="loading-option">
+                    <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+                    <span>Loading panel members...</span>
+                  </div>
+                </mat-option>
+                <ng-container *ngFor="let member of panelMembers; trackBy: trackByMemberId">
+                  <mat-option [value]="member" *ngIf="!loading && member && member.name">
+                    <span class="member-name-only">{{member?.name || 'Unknown'}}</span>
+                  </mat-option>
+                </ng-container>
+                <mat-option value="" disabled *ngIf="!loading && (!panelMembers || panelMembers.length === 0)">
+                  <div class="empty-option">
+                    <mat-icon>info</mat-icon>
+                    <span>No panel members available</span>
                   </div>
                 </mat-option>
               </mat-select>
               <mat-error *ngIf="!selectedPanelMember">Please select a panel member</mat-error>
             </mat-form-field>
 
-            <!-- Email Field -->
-            <mat-form-field appearance="outline" class="email-field">
-              <mat-label>Email</mat-label>
+            <!-- Auto-filled Email Field -->
+            <mat-form-field appearance="outline" class="email-field custom-dropdown">
+              <mat-label>Panel Member Email</mat-label>
               <input matInput 
                      [value]="selectedPanelMember?.email || ''" 
                      readonly 
-                     disabled>
+                     disabled
+                     [placeholder]="selectedPanelMember ? '' : ''">
               <mat-icon matSuffix>email</mat-icon>
             </mat-form-field>
           </div>
@@ -134,33 +153,103 @@
     </mat-card>
   </div>
 
-  <!-- Jobs Grid -->
-  <div class="jobs-grid">
-    <mat-card class="job-card" *ngFor="let job of jobs">
-      <mat-card-header>
-        <mat-card-title>{{job.title}}</mat-card-title>
-        <mat-card-subtitle>{{job.department}}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{job.description}}</p>
-        <div class="assigned-panel">
-          <small>Assigned to:</small>
-          <div class="panel-member">
-            <img [src]="job.panelMember.avatar" [alt]="job.panelMember.name">
-            <span>{{job.panelMember.name}}</span>
+  <!-- Job Descriptions Grid Section -->
+  <div class="jobs-section">
+    <div class="section-header">
+      <h2>Uploaded Job Descriptions</h2>
+      <div class="section-actions">
+        <mat-form-field appearance="outline" class="search-field">
+          <input matInput [(ngModel)]="searchTerm" (input)="onSearch($event.target.value)" placeholder="Search by post or panel member">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button mat-icon-button (click)="refreshJobs()" class="refresh-btn">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-container" *ngIf="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+      <p>Loading job descriptions...</p>
+    </div>
+
+    <!-- Jobs Grid -->
+    <div class="jobs-grid" *ngIf="!loading && filteredJobs.length > 0">
+      <mat-card *ngFor="let job of filteredJobs; let i = index" class="job-card">
+        <mat-card-header>
+          <img mat-card-avatar [src]="job.panelMember?.avatar || 'https://ui-avatars.com/api/?name=Unknown&background=7367f0&color=fff'" 
+               [alt]="job.panelMember?.name || 'Panel Member'"
+               (error)="onAvatarError($event, job.panelMember?.name || 'User')">
+          <mat-card-title>{{job.title || job.fileName}}</mat-card-title>
+          <mat-card-subtitle>{{job.company || 'No Company'}}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="info-grid">
+            <div class="info-item">
+              <mat-icon>location_on</mat-icon>
+              <span>{{job.location || 'Not specified'}}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>work</mat-icon>
+              <span>{{job.experienceLevel || 'Any level'}}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>person</mat-icon>
+              <span class="uploaded-by">
+                <span class="uploaded-label">Uploaded by</span>
+                <span class="member-name">{{job.panelMember?.name || 'Unknown'}}</span>
+              </span>
+            </div>
+            <div class="info-item">
+              <mat-icon>schedule</mat-icon>
+              <span>{{getTimeAgo(job.uploadDate)}}</span>
+            </div>
           </div>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-stroked-button color="primary">
-          <mat-icon>edit</mat-icon>
-          Edit
-        </button>
-        <button mat-stroked-button color="warn">
-          <mat-icon>delete</mat-icon>
-          Delete
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+          
+          <div class="job-description" *ngIf="job.requirements">
+            <p class="requirements-preview">{{(job.requirements | slice:0:100) + (job.requirements.length > 100 ? '...' : '')}}</p>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="viewJobDetails(job)">
+            <mat-icon>visibility</mat-icon>
+            View Details
+          </button>
+          <button mat-button color="accent" (click)="downloadFile(job)">
+            <mat-icon>download</mat-icon>
+            Download
+          </button>
+          <button mat-icon-button (click)="deleteJob(job)" class="delete-action">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="!loading && filteredJobs.length === 0">
+      <mat-icon class="empty-icon">work_off</mat-icon>
+      <h3>No Job Descriptions Found</h3>
+      <p *ngIf="searchTerm">No results match your search criteria.</p>
+      <p *ngIf="!searchTerm && !showUploadSection">Click the button above to start uploading job descriptions.</p>
+      <p *ngIf="!searchTerm && showUploadSection">Start by uploading your first job description above.</p>
+      <button mat-raised-button color="primary" (click)="toggleUploadSection()" *ngIf="!searchTerm && !showUploadSection">
+        <mat-icon>add</mat-icon>
+        Add Job Profile
+      </button>
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator 
+      *ngIf="filteredJobs.length > 0"
+      [length]="totalJobs" 
+      [pageSize]="pageSize" 
+      [pageIndex]="currentPage"
+      [pageSizeOptions]="[6, 12, 24, 48]" 
+      (page)="onPageChange($event)"
+      showFirstLastButtons>
+    </mat-paginator>
 </div>

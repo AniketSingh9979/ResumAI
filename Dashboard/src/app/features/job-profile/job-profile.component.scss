@@ -1,15 +1,15 @@
 // Job Profile Container
 .job-profile-container {
-  padding: 12px;
+  padding: 16px;
   max-width: 1200px;
   margin: 0 auto;
   background: rgba(15, 164, 175, 0.05);
-  min-height: calc(100vh - 24px);
+  min-height: 100vh;
 }
 
 // Header Section
 .header-section {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,63 +19,27 @@
   }
   
   .page-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 600;
     color: #024950;
-    margin: 0 0 2px 0;
+    margin: 0 0 4px 0;
   }
   
   .page-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #0FA4AF;
     margin: 0;
-  }
-
-  .quick-actions {
-    display: flex;
-    gap: 8px;
-
-    button {
-      font-size: 0.9rem;
-      line-height: 32px;
-      padding: 0 12px;
-
-      mat-icon {
-        font-size: 18px;
-        margin-right: 4px;
-      }
-    }
-  }
-}
-
-// Filters Section
-.filters-section {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-
-  .mat-form-field {
-    font-size: 0.9rem;
-  }
-
-  .search-field {
-    flex: 2;
-  }
-
-  .filter-field {
-    flex: 1;
-    max-width: 180px;
   }
 }
 
 // Upload Section
 .upload-section {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   
   .upload-card {
     background: white;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(2, 73, 80, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(2, 73, 80, 0.1);
     border: 1px solid rgba(15, 164, 175, 0.1);
     
     mat-card-header {
@@ -83,43 +47,28 @@
       color: white;
       padding: 8px 12px;
       margin: 0;
-      border-radius: 6px 6px 0 0;
       
       .upload-header {
         display: flex;
         align-items: center;
-        gap: 12px;
-
-        .upload-icon {
-          font-size: 20px;
-        }
-
-        .header-text {
-          mat-card-title {
-            font-size: 1.1rem;
-            margin: 0;
-          }
-          mat-card-subtitle {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin: 2px 0 0 0;
-          }
-        }
+        gap: 16px;
       }
     }
     
     mat-card-content {
-      padding: 16px;
+      padding: 32px;
     }
   }
 }
 
 // Upload Form
 .upload-form {
+  padding: 16px;
+
   .form-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 16px;
+    margin-bottom: 12px;
 
     .panel-member-field {
       flex: 2;
@@ -128,21 +77,17 @@
     .email-field {
       flex: 1;
     }
-
-    .mat-form-field {
-      font-size: 0.9rem;
-    }
   }
 
   .member-option {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     padding: 4px 0;
 
     .member-avatar {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -152,13 +97,13 @@
       flex-direction: column;
 
       .member-name {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         font-weight: 500;
         color: #024950;
       }
 
       .member-email {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: rgba(2, 73, 80, 0.6);
       }
     }
@@ -167,69 +112,61 @@
 
 // File Upload
 .file-upload-section {
-  margin: 16px 0;
+  margin: 32px 0;
   
   .upload-area {
-    border: 2px dashed rgba(15, 164, 175, 0.3);
-    border-radius: 8px;
-    padding: 24px 16px;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 48px 24px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     
     &:hover, &.drag-over {
-      border-color: #0FA4AF;
-      background: rgba(15, 164, 175, 0.05);
+      border-color: #7367f0;
+      background: rgba(115, 103, 240, 0.05);
     }
     
     &.has-file {
-      background: rgba(2, 73, 80, 0.05);
-      border-color: #024950;
+      background: #f0fdf4;
+      border-color: #10b981;
     }
-
-    .upload-content {
-      h3 {
-        margin: 8px 0 4px;
-        color: #024950;
-        font-size: 1rem;
-      }
-
-      p {
-        color: #0FA4AF;
-        margin: 0 0 12px;
-        font-size: 0.85rem;
-      }
-    }
+  }
+  
+  .upload-content h3 {
+    margin: 16px 0 8px;
+    color: #374151;
+  }
+  
+  .upload-content p {
+    color: #6b7280;
+    margin: 0 0 24px;
   }
   
   .file-preview {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     background: white;
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid rgba(15, 164, 175, 0.1);
-    font-size: 0.9rem;
+    padding: 16px;
+    border-radius: 8px;
   }
 }
 
 // Action Buttons
 .action-buttons {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   justify-content: flex-end;
-  margin-top: 12px;
   
   button {
-    min-width: 100px;
-    height: 36px;
-    border-radius: 6px;
-    font-size: 0.9rem;
+    min-width: 120px;
+    height: 44px;
+    border-radius: 12px;
   }
   
   .upload-btn {
-    background: linear-gradient(135deg, #0FA4AF, #024950);
+    background: linear-gradient(135deg, #7367f0, #8e7cf3);
     color: white;
   }
   
@@ -238,59 +175,53 @@
   }
 }
 
+// Jobs Section
+.jobs-section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0;
+    }
+    
+    .section-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    
+    .search-field {
+      min-width: 300px;
+    }
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+      
+      .search-field {
+        min-width: auto;
+      }
+    }
+  }
+}
+
 // Jobs Grid
 .jobs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-  margin-top: 16px;
-
-  .job-card {
-    background: white;
-    border-radius: 6px;
-    border: 1px solid rgba(15, 164, 175, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(2, 73, 80, 0.1);
-    }
-
-    mat-card-header {
-      padding: 12px;
-      border-bottom: 1px solid rgba(15, 164, 175, 0.1);
-
-      mat-card-title {
-        font-size: 1rem;
-        color: #024950;
-        margin: 0;
-      }
-
-      mat-card-subtitle {
-        font-size: 0.8rem;
-        color: #0FA4AF;
-        margin: 4px 0 0 0;
-      }
-    }
-
-    mat-card-content {
-      padding: 12px;
-      font-size: 0.9rem;
-    }
-
-    mat-card_actions {
-      padding: 8px;
-      border-top: 1px solid rgba(15, 164, 175, 0.1);
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-
-      button {
-        font-size: 0.85rem;
-        line-height: 28px;
-        padding: 0 8px;
-      }
-    }
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
@@ -581,124 +512,6 @@
     color: #6b7280;
     margin: 0 0 32px;
   }
-}
-
-// Panel Member Dropdown Styling
-::ng-deep .panel-member-field {
-  .mat-mdc-select-panel {
-    background: linear-gradient(to right, rgba(15, 164, 175, 0.05), rgba(2, 73, 80, 0.05)) !important;
-    border: 1px solid rgba(15, 164, 175, 0.15);
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(2, 73, 80, 0.1) !important;
-    padding: 8px 0;
-    
-    .mat-mdc-option {
-      min-height: 48px;
-      padding: 8px 16px;
-      
-      &:hover:not(.mat-mdc-option-disabled) {
-        background: rgba(15, 164, 175, 0.15) !important;
-      }
-      
-      &.mat-mdc-option-active,
-      &.mat-selected:not(.mat-mdc-option-disabled) {
-        background: rgba(2, 73, 80, 0.15) !important;
-      }
-
-      .mdc-list-item__primary-text {
-        width: 100%;
-      }
-    }
-
-    // Add a subtle teal border at the top and bottom of the panel
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(to right, #0FA4AF, #024950);
-      opacity: 0.2;
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(to right, #0FA4AF, #024950);
-      opacity: 0.2;
-    }
-  }
-
-  .member-option {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    width: 100% !important;
-    
-    .member-avatar {
-      width: 32px !important;
-      height: 32px !important;
-      border-radius: 50% !important;
-      object-fit: cover !important;
-      border: 2px solid rgba(15, 164, 175, 0.3) !important;
-      flex-shrink: 0 !important;
-      background: white !important;
-    }
-    
-    .member-info {
-      display: flex !important;
-      flex-direction: column !important;
-      flex-grow: 1 !important;
-      min-width: 0 !important;
-      
-      .member-name {
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        color: #024950 !important;
-        margin: 0 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) !important;
-      }
-      
-      .member-email {
-        font-size: 12px !important;
-        color: rgba(2, 73, 80, 0.7) !important;
-        margin: 0 !important;
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) !important;
-      }
-    }
-
-    &:hover {
-      .member-avatar {
-        border-color: rgba(15, 164, 175, 0.5) !important;
-        box-shadow: 0 0 0 2px rgba(15, 164, 175, 0.1) !important;
-      }
-    }
-  }
-
-  // Style for the selected option when dropdown is closed
-  .mat-mdc-select-value {
-    .member-option {
-      .member-avatar {
-        border-color: rgba(15, 164, 175, 0.4) !important;
-      }
-    }
-  }
-}
-
-// Style for the dropdown arrow
-::ng-deep .panel-member-field .mat-mdc-select-arrow {
-  color: rgba(2, 73, 80, 0.6) !important;
 }
 
 // Responsive Design
