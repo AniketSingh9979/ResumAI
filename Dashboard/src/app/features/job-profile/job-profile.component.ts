@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +24,39 @@ export interface PanelMember {
   availability?: string;
   rating?: number;
   interviewsDone?: number;
+  designation?: string;
+  department?: string;
+  location?: string;
+  mobileNumber?: string;
+  employeeId?: string;
+  availabilityStatus?: string;
+}
+
+// Interface for API response from backend
+interface PanelMemberApiResponse {
+  id: number;
+  name: string;
+  email: string;
+  employeeId: string;
+  designation: string;
+  department: string;
+  location: string;
+  expertise: string;
+  mobileNumber: string;
+  availabilityStatus: string;
+  availabilityStatusDisplay: string;
+  createdDate: string;
+  updatedDate: string;
+  isActive: boolean;
+}
+
+// Interface for API response wrapper
+interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data?: T;
+  errors?: string[];
+  timestamp: string;
 }
 
 export interface JobDescription {
@@ -30,7 +64,14 @@ export interface JobDescription {
   fileName: string;
   fileSize: number;
   uploadDate: string;
-  panelMember: PanelMember;
+  title?: string;
+  company?: string;
+  location?: string;
+  experienceLevel?: string;
+  requirements?: string;
+  responsibilities?: string;
+  description?: string;
+  panelMember?: PanelMember; // Make optional to handle cases where it might not be set
 }
 
 export interface UploadResponse {
@@ -64,7 +105,7 @@ export class JobProfileComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   
   // Panel members data
-  panelMembers: PanelMember[] = [];
+  panelMembers: PanelMember[] = []; // Initialize as empty array
   selectedPanelMember: PanelMember | null = null;
   
   // File upload data
@@ -81,11 +122,15 @@ export class JobProfileComponent implements OnInit {
   pageSize = 12;
   currentPage = 0;
   totalJobs = 0;
+  
+  // Upload section visibility
+  showUploadSection = false;
 
   constructor(
     private jobProfileService: JobProfileService,
     private panelService: PanelService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -93,8 +138,108 @@ export class JobProfileComponent implements OnInit {
     this.loadJobs();
   }
 
+  /**
+   * TrackBy function for panel members to improve performance
+   */
+  trackByMemberId(index: number, member: PanelMember): number {
+    return member?.id || index;
+  }
+
+  /**
+   * Handle avatar loading errors by setting a fallback avatar
+   */
+  onAvatarError(event: any, name: string): void {
+    const target = event.target as HTMLImageElement;
+    const encodedName = encodeURIComponent(name || 'User');
+    target.src = `https://ui-avatars.com/api/?name=${encodedName}&background=7367f0&color=fff&size=150&bold=true`;
+  }
+
   loadPanelMembers() {
-    // Convert panel service data to our interface
+    this.loading = true;
+    
+    // API endpoint for panel members
+    const apiUrl = 'http://localhost:8081/api/panel-members';
+    
+    this.http.get<ApiResponse<PanelMemberApiResponse[]>>(apiUrl).subscribe({
+      next: (response: ApiResponse<PanelMemberApiResponse[]>) => {
+        if (response.success && response.data && Array.isArray(response.data)) {
+          this.panelMembers = response.data
+            .filter(panel => panel && panel.name && panel.email) // Filter out invalid entries
+            .map(panel => ({
+              id: panel.id,
+              name: panel.name,
+              email: panel.email,
+              expertise: panel.expertise || 'No expertise specified',
+              avatar: this.generateAvatarUrl(panel.name),
+              experience: this.calculateExperience(panel.createdDate),
+              availability: panel.availabilityStatusDisplay || 'Unknown',
+              rating: this.generateRandomRating(),
+              interviewsDone: this.generateRandomInterviews(),
+              designation: panel.designation || 'No designation',
+              department: panel.department || 'No department',
+              location: panel.location || 'No location',
+              mobileNumber: panel.mobileNumber || 'No phone',
+              employeeId: panel.employeeId || 'No ID',
+              availabilityStatus: panel.availabilityStatus || 'UNKNOWN',
+            }));
+        } else {
+          console.warn('Invalid API response or no data:', response);
+          this.snackBar.open('Failed to load panel members.', 'Close', { duration: 3000 });
+          this.loadFallbackPanelMembers();
+        }
+        this.loading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error loading panel members:', error);
+        this.snackBar.open('Unable to connect to server. Loading sample data.', 'Close', { duration: 3000 });
+        this.loadFallbackPanelMembers();
+        this.loading = false;
+      }
+    });
+  }
+
+  /**
+   * Generate avatar URL using UI Avatars service
+   */
+  private generateAvatarUrl(name: string): string {
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=150&bold=true`;
+  }
+
+  /**
+   * Calculate experience based on created date
+   */
+  private calculateExperience(createdDate: string): string {
+    const created = new Date(createdDate);
+    const now = new Date();
+    const diffYears = now.getFullYear() - created.getFullYear();
+    
+    if (diffYears < 1) {
+      return '< 1 year';
+    } else if (diffYears === 1) {
+      return '1 year';
+    } else {
+      return `${diffYears} years`;
+    }
+  }
+
+  /**
+   * Generate random rating for display
+   */
+  private generateRandomRating(): number {
+    return Math.floor(Math.random() * 2) + 4; // Random between 4.0 and 5.0
+  }
+
+  /**
+   * Generate random interview count
+   */
+  private generateRandomInterviews(): number {
+    return Math.floor(Math.random() * 50) + 5; // Random between 5 and 55
+  }
+
+  /**
+   * Fallback to panel service data if API fails
+   */
+  private loadFallbackPanelMembers() {
     const panels = this.panelService.getPanels();
     this.panelMembers = panels.map(panel => ({
       id: panel.id,
@@ -111,35 +256,82 @@ export class JobProfileComponent implements OnInit {
 
   loadJobs() {
     this.loading = true;
-    // Mock data for demonstration
-    setTimeout(() => {
-      this.jobs = [
-        {
-          id: 1,
-          fileName: 'Senior_Developer_JD.pdf',
-          fileSize: 245760,
-          uploadDate: '2024-01-15T10:30:00Z',
-          panelMember: this.panelMembers[0]
-        },
-        {
-          id: 2,
-          fileName: 'UI_UX_Designer_Requirements.docx',
-          fileSize: 189440,
-          uploadDate: '2024-01-14T14:20:00Z',
-          panelMember: this.panelMembers[1]
-        },
-        {
-          id: 3,
-          fileName: 'Backend_Engineer_Specifications.pdf',
-          fileSize: 312320,
-          uploadDate: '2024-01-13T09:15:00Z',
-          panelMember: this.panelMembers[2]
+    
+    // API endpoint for job descriptions from resume-parser-service
+    const apiUrl = 'http://localhost:8081/api/matching/jobs';
+    
+    console.log('🔍 Loading jobs from API:', apiUrl);
+    
+    this.http.get<any>(apiUrl).subscribe({
+      next: (response: any) => {
+        console.log('📥 Raw API Response:', response);
+        
+        if (response.success && response.jobs && Array.isArray(response.jobs)) {
+          console.log('✅ API Success - Jobs array length:', response.jobs.length);
+          
+          this.jobs = response.jobs.map((job: any) => ({
+            id: job.id,
+            fileName: job.originalFileName || job.fileName || 'Unknown File',
+            fileSize: job.fileSize || 0,
+            uploadDate: job.createdDate || new Date().toISOString(),
+            title: job.title || 'No Title',
+            company: job.company || 'No Company',
+            location: job.location || 'No Location',
+            experienceLevel: job.experienceLevel || 'Not Specified',
+            requirements: job.requirements || 'No Requirements',
+            responsibilities: job.responsibilities || 'No Responsibilities',
+            description: job.description || 'No Description',
+            panelMember: job.panelMember ? {
+              id: job.panelMember.id,
+              name: job.panelMember.name,
+              email: job.panelMember.email,
+              expertise: job.panelMember.expertise || 'No expertise',
+              avatar: this.generateAvatarUrl(job.panelMember.name),
+              designation: job.panelMember.designation || 'No designation',
+              department: job.panelMember.department || 'No department'
+            } : {
+              id: 0,
+              name: job.panelMemberName || 'Unknown Panel Member',
+              email: job.panelMemberEmail || 'No email',
+              expertise: 'No expertise specified',
+              avatar: this.generateAvatarUrl(job.panelMemberName || 'Unknown'),
+              designation: 'No designation',
+              department: 'No department'
+            }
+          }));
+          
+          console.log('🎯 Mapped jobs:', this.jobs);
+          
+          this.filteredJobs = [...this.jobs];
+          this.totalJobs = this.jobs.length;
+          
+          console.log('📊 Final state - filteredJobs:', this.filteredJobs.length, 'totalJobs:', this.totalJobs);
+        } else {
+          console.warn('⚠️ Invalid API response or no jobs found:', response);
+          this.jobs = [];
+          this.filteredJobs = [];
+          this.totalJobs = 0;
         }
-      ];
-      this.filteredJobs = [...this.jobs];
-      this.totalJobs = this.jobs.length;
-      this.loading = false;
-    }, 1000);
+        this.loading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('❌ Error loading jobs from API:', error);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message,
+          url: error.url
+        });
+        
+        this.snackBar.open('Unable to load job descriptions from server.', 'Close', { duration: 3000 });
+        
+        // Fallback to empty array instead of mock data
+        this.jobs = [];
+        this.filteredJobs = [];
+        this.totalJobs = 0;
+        this.loading = false;
+      }
+    });
   }
 
   onPanelMemberChange(event: any) {
@@ -211,24 +403,47 @@ export class JobProfileComponent implements OnInit {
 
     this.loading = true;
     
-    // Simulate upload
-    setTimeout(() => {
-      const newJob: JobDescription = {
-        id: this.jobs.length + 1,
-        fileName: this.selectedFile!.name,
-        fileSize: this.selectedFile!.size,
-        uploadDate: new Date().toISOString(),
-        panelMember: this.selectedPanelMember!
-      };
-      
-      this.jobs.unshift(newJob);
-      this.applySearch();
-      this.totalJobs = this.jobs.length;
-      
-      this.snackBar.open('Job description uploaded successfully!', 'Close', { duration: 3000 });
-      this.resetForm();
-      this.loading = false;
-    }, 2000);
+    // Create FormData for file upload
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    formData.append('panelMemberId', this.selectedPanelMember.id.toString());
+    formData.append('panelMemberName', this.selectedPanelMember.name);
+    formData.append('panelMemberEmail', this.selectedPanelMember.email);
+    
+    // API endpoint for job description upload
+    const uploadUrl = 'http://localhost:8081/api/matching/uploadJD';
+    
+    this.http.post<UploadResponse>(uploadUrl, formData).subscribe({
+      next: (response: UploadResponse) => {
+        if (response.success) {
+          this.snackBar.open(response.message || 'Job description uploaded successfully!', 'Close', { duration: 3000 });
+          this.resetForm();
+          
+          // Refresh jobs from API to get the latest data
+          this.loadJobs();
+        } else {
+          this.snackBar.open(response.message || 'Upload failed. Please try again.', 'Close', { duration: 5000 });
+        }
+        this.loading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Upload error:', error);
+        let errorMessage = 'Upload failed. Please try again.';
+        
+        if (error.status === 0) {
+          errorMessage = 'Unable to connect to server. Please check your connection.';
+        } else if (error.status === 413) {
+          errorMessage = 'File is too large. Please select a smaller file.';
+        } else if (error.status === 415) {
+          errorMessage = 'File type not supported. Please upload PDF, DOC, DOCX, TXT, or RTF files.';
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
+        
+        this.snackBar.open(errorMessage, 'Close', { duration: 5000 });
+        this.loading = false;
+      }
+    });
   }
 
   resetForm() {
@@ -247,8 +462,8 @@ export class JobProfileComponent implements OnInit {
       const term = this.searchTerm.toLowerCase();
       this.filteredJobs = this.jobs.filter(job => 
         job.fileName.toLowerCase().includes(term) ||
-        job.panelMember.name.toLowerCase().includes(term) ||
-        job.panelMember.email.toLowerCase().includes(term)
+        (job.panelMember?.name && job.panelMember.name.toLowerCase().includes(term)) ||
+        (job.panelMember?.email && job.panelMember.email.toLowerCase().includes(term))
       );
     }
     this.currentPage = 0;
@@ -257,9 +472,17 @@ export class JobProfileComponent implements OnInit {
   refreshJobs() {
     this.loadJobs();
   }
-
-  scrollToUpload() {
-    document.querySelector('.upload-section')?.scrollIntoView({ behavior: 'smooth' });
+  
+  /**
+   * Toggle upload section visibility
+   */
+  toggleUploadSection() {
+    this.showUploadSection = !this.showUploadSection;
+    
+    // Reset form when hiding the section
+    if (!this.showUploadSection) {
+      this.resetForm();
+    }
   }
 
   onPageChange(event: PageEvent) {
