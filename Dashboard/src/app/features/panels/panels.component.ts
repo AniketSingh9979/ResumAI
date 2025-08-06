@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
 import { PanelService } from '../../shared/services/panel.service';
+import { AddPanelDialogComponent } from './add-panel-dialog/add-panel-dialog.component';
 
 // Interface for API request
 interface PanelMemberRequest {
@@ -67,6 +69,7 @@ export class PanelsComponent implements OnInit {
   private readonly API_BASE_URL = 'http://localhost:8081/api/panel-members';
 
   constructor(
+    private dialog: MatDialog,
     private panelService: PanelService,
     private formBuilder: FormBuilder,
     private http: HttpClient
@@ -451,5 +454,27 @@ export class PanelsComponent implements OnInit {
       availabilityStatus: 'Availability Status'
     };
     return displayNames[fieldName] || fieldName;
+  }
+
+  /**
+   * Open add panel dialog
+   */
+  openAddPanelDialog(): void {
+    const dialogRef = this.dialog.open(AddPanelDialogComponent, {
+      width: '520px',
+      disableClose: true,
+      panelClass: ['custom-dialog-container', 'compact-dialog'],
+      autoFocus: false,
+      maxHeight: '90vh',
+      position: { top: '50px' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Handle the new panel member data
+        console.log('New panel member:', result);
+        // Add logic to save the panel member using your service
+      }
+    });
   }
 }

@@ -1,28 +1,71 @@
 <div class="candidates-container">
+  <!-- Header Section -->
   <div class="candidates-header">
-    <h1>Candidates</h1>
-    <button mat-raised-button color="primary" (click)="openUploadDialog()">
+    <h1>Candidate Management</h1>
+    <button mat-flat-button (click)="openUploadDialog()">
       <mat-icon>upload_file</mat-icon>
       Upload Resume
     </button>
   </div>
 
+  <!-- Upload Section -->
   <div class="upload-section">
     <mat-card class="upload-card">
       <mat-card-content>
         <div class="upload-placeholder" (click)="openUploadDialog()">
           <mat-icon>cloud_upload</mat-icon>
-          <h2>Upload Resume</h2>
-          <p>Click here to upload candidate resumes</p>
+          <h2>Upload Candidate Resume</h2>
+          <p>Click here to upload new candidate resumes</p>
           <p class="supported-formats">Supported formats: PDF, DOC, DOCX</p>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 
+  <!-- Resume Scores List -->
+  <div class="resume-scores-section">
+    <h2>Resume Scores</h2>
+    <mat-card class="scores-card">
+      <mat-card-content>
+        <table class="scores-table">
+          <thead>
+            <tr>
+              <th>Candidate Name</th>
+              <th>Resume Score</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let candidate of candidates">
+              <td>{{candidate.name}}</td>
+              <td>
+                <div class="score-container">
+                  <div class="score-bar" [style.width.%]="candidate.resumeScore || 0"
+                       [class.high-score]="(candidate.resumeScore || 0) >= 80"
+                       [class.medium-score]="(candidate.resumeScore || 0) >= 60 && (candidate.resumeScore || 0) < 80"
+                       [class.low-score]="(candidate.resumeScore || 0) < 60">
+                    <span class="score-text">{{candidate.resumeScore || 'N/A'}}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge" [class]="candidate.status">
+                  {{candidate.status | titlecase}}
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="candidates.length === 0">
+              <td colspan="3" class="no-data">No candidates available</td>
+            </tr>
+          </tbody>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
   <!-- Candidates Grid -->
   <div class="candidates-grid">
-    <!-- Placeholder for when no resumes are uploaded -->
+    <!-- Empty State -->
     <div class="no-candidates" *ngIf="candidates.length === 0">
       <mat-icon>person_search</mat-icon>
       <p>No candidates found. Upload resumes to get started.</p>
@@ -31,35 +74,61 @@
     <!-- Candidate Cards -->
     <mat-card class="candidate-card" *ngFor="let candidate of candidates" (click)="openCandidateDetails(candidate)">
       <mat-card-header>
-        <mat-icon mat-card-avatar>description</mat-icon>
+        <mat-icon mat-card-avatar>person_outline</mat-icon>
         <mat-card-title>{{candidate.name}}</mat-card-title>
         <mat-card-subtitle>
-          Uploaded: {{candidate.uploadDate | date:'short'}}
+          Uploaded {{candidate.uploadDate | date:'MMM d, y, h:mm a'}}
         </mat-card-subtitle>
       </mat-card-header>
       
       <mat-card-content>
+        <!-- Status Badge -->
         <div class="status-badge" [class]="candidate.status">
           {{candidate.status | titlecase}}
         </div>
+
+        <!-- File Information -->
         <div class="file-info">
           <mat-icon>attach_file</mat-icon>
           <span>{{candidate.resumeFile.name}}</span>
         </div>
-        <!-- Show extracted info preview if available -->
+
+        <!-- Extracted Information Preview -->
         <div class="extracted-preview" *ngIf="candidate.extractedInfo">
-          <div class="preview-item" *ngIf="candidate.extractedInfo.skills">
-            <strong>Skills:</strong> {{candidate.extractedInfo.skills.slice(0, 3).join(', ')}}
-          </div>
+          <!-- Skills -->
+          <ng-container *ngIf="candidate.extractedInfo.skills as skills">
+            <div class="preview-item" *ngIf="skills.length">
+              <strong>Skills:</strong> 
+              {{skills.slice(0, 3).join(', ')}}
+              <span *ngIf="skills.length > 3">...</span>
+            </div>
+          </ng-container>
+          
+          <!-- Experience -->
+          <ng-container *ngIf="candidate.extractedInfo.experience as experience">
+            <div class="preview-item" *ngIf="experience.length">
+              <strong>Experience:</strong> 
+              {{experience[0]}}
+              <span *ngIf="experience.length > 1">...</span>
+            </div>
+          </ng-container>
+
+          <!-- Contact Info -->
+          <ng-container *ngIf="candidate.extractedInfo.contact as contact">
+            <div class="preview-item" *ngIf="contact.email">
+              <strong>Email:</strong> 
+              {{contact.email}}
+            </div>
+          </ng-container>
         </div>
       </mat-card-content>
       
       <mat-card-actions align="end">
-        <button mat-button color="primary">
+        <button mat-button color="primary" (click)="openCandidateDetails(candidate); $event.stopPropagation()">
           <mat-icon>visibility</mat-icon>
-          View
+          View Details
         </button>
-        <button mat-button color="accent">
+        <button mat-button color="accent" (click)="editCandidate(candidate); $event.stopPropagation()">
           <mat-icon>edit</mat-icon>
           Edit
         </button>

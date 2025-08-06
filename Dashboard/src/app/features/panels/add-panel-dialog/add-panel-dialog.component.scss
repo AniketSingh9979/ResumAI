@@ -1,0 +1,236 @@
+.add-panel-dialog {
+  width: 520px;
+  padding: 16px;
+  overflow: hidden;
+  
+  .dialog-header {
+    background: linear-gradient(135deg, #0FA4AF, #024950);
+    margin: -16px -16px 16px -16px;
+    padding: 16px;
+    color: white;
+
+    h2 {
+      color: white;
+      border-bottom: none;
+      margin: 0;
+      padding: 0;
+      font-size: 1.3rem;
+    }
+  }
+
+  .dialog-content-wrapper {
+    margin: 0;
+    padding: 0 8px;
+  }
+
+  h2 {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    letter-spacing: 0.2px;
+  }
+
+  .panel-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+  .form-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 0;
+
+    mat-form-field {
+      flex: 1;
+      margin: 0;
+      width: 0; // This helps prevent horizontal overflow
+    }
+
+    &.availability-row {
+      max-width: 220px;
+      margin-top: 4px;
+    }
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+
+    &.mat-form-field-appearance-outline {
+      .mat-form-field-outline {
+        color: rgba(2, 73, 80, 0.2);
+      }
+
+      &.mat-focused {
+        .mat-form-field-outline {
+          color: #0FA4AF;
+        }
+
+        .mat-form-field-label {
+          color: #0FA4AF;
+        }
+      }
+    }
+  }
+
+  // Form fields styling
+  ::ng-deep {
+    .mat-mdc-form-field {
+      .mat-mdc-form-field-wrapper {
+        padding-bottom: 8px;
+      }
+      
+      .mat-mdc-form-field-infix {
+        padding-top: 8px;
+        padding-bottom: 6px;
+        min-height: 36px;
+      }
+
+      .mdc-text-field--outlined {
+        --mdc-outlined-text-field-container-height: 36px;
+      }
+
+      .mdc-text-field {
+        background-color: #fff;
+      }
+
+      .mat-mdc-form-field-subscript-wrapper {
+        height: 18px;
+      }
+
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: #e0e0e0 !important;
+      }
+
+      &:hover {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: var(--primary-color) !important;
+          border-width: 1px !important;
+        }
+      }
+    }
+
+    // Custom styling for select dropdowns
+    .mat-select-panel {
+      border-radius: 8px;
+      
+      .mat-option {
+        padding: 12px 16px;
+        
+        &:hover {
+          background-color: rgba(var(--primary-color-rgb), 0.04);
+        }
+        
+        &.mat-selected {
+          background-color: rgba(var(--primary-color-rgb), 0.12);
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    // Select field styling
+    .mat-mdc-select-panel {
+      border-radius: 8px !important;
+      margin-top: 4px !important;
+      
+      .mat-mdc-option {
+        min-height: 40px !important;
+        
+        &.mdc-list-item--selected {
+          background-color: rgba(var(--primary-color-rgb), 0.08) !important;
+        }
+      }
+    }
+
+    // Make form fields more compact
+    .mat-mdc-form-field {
+      .mat-mdc-form-field-wrapper {
+        padding-bottom: 8px;
+      }
+      
+      .mat-mdc-form-field-infix {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        min-height: 40px;
+      }
+
+      .mdc-text-field--outlined {
+        --mdc-outlined-text-field-container-height: 40px;
+      }
+
+      .mat-mdc-form-field-subscript-wrapper {
+        height: 16px;
+      }
+    }
+  }
+
+  // Dialog actions styling
+  mat-dialog-actions {
+    margin: 24px -16px -16px -16px;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-top: 1px solid rgba(2, 73, 80, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+
+    .cancel-button {
+      color: #666;
+    }
+
+    .submit-button {
+      min-width: 130px;
+      height: 36px;
+      border-radius: 6px;
+    }
+  }
+
+  // Override Material styles for more compact look
+  ::ng-deep {
+    .mat-mdc-dialog-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-height: none !important;
+      overflow: hidden !important;
+    }
+
+    .mdc-dialog__content {
+      padding: 0 !important;
+    }
+
+    .mat-mdc-dialog-container {
+      --mdc-dialog-container-elevation: 0;
+      overflow: hidden;
+    }
+
+    .mat-mdc-dialog-surface {
+      overflow: hidden !important;
+    }
+  }
+
+  // Field validation colors
+  .mat-error {
+    color: #dc2626;
+  }
+
+  // Dropdown styling
+  .mat-select-panel {
+    .mat-option {
+      &.mat-selected:not(.mat-option-disabled) {
+        color: #0FA4AF;
+      }
+
+      &:hover:not(.mat-option-disabled) {
+        background: rgba(15, 164, 175, 0.1);
+      }
+    }
+  }
+}

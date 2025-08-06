@@ -13,8 +13,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { PanelsComponent } from './panels.component';
+import { AddPanelDialogComponent } from './add-panel-dialog/add-panel-dialog.component';
 
 const routes: Routes = [
   { path: '', component: PanelsComponent }
@@ -36,7 +38,9 @@ const routes: Routes = [
     MatSelectModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    RouterModule.forChild(routes)
+    MatDialogModule,
+    RouterModule.forChild(routes),
+    AddPanelDialogComponent // Add the standalone component here
   ],
   exports: [
     PanelsComponent

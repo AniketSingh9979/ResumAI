@@ -1,0 +1,95 @@
+<div class="add-panel-dialog">
+  <div class="dialog-header">
+    <h2 mat-dialog-title>Add New Panel Member</h2>
+  </div>
+  
+  <mat-dialog-content>
+    <div class="dialog-content-wrapper">
+      <form [formGroup]="panelForm" class="panel-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="name" placeholder="Enter full name">
+          <mat-error *ngIf="panelForm.get('name')?.invalid">{{getErrorMessage('name')}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" placeholder="Enter email address" type="email">
+          <mat-error *ngIf="panelForm.get('email')?.invalid">{{getErrorMessage('email')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Employee ID</mat-label>
+          <input matInput formControlName="employeeId" placeholder="Enter employee ID">
+          <mat-error *ngIf="panelForm.get('employeeId')?.invalid">{{getErrorMessage('employeeId')}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile Number</mat-label>
+          <input matInput formControlName="mobileNumber" placeholder="Enter 10-digit mobile number">
+          <mat-error *ngIf="panelForm.get('mobileNumber')?.invalid">{{getErrorMessage('mobileNumber')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Designation</mat-label>
+          <input matInput formControlName="designation" placeholder="Enter designation">
+          <mat-error *ngIf="panelForm.get('designation')?.invalid">{{getErrorMessage('designation')}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Department</mat-label>
+          <mat-select formControlName="department">
+            <mat-option *ngFor="let dept of departments" [value]="dept">
+              {{dept}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="panelForm.get('department')?.invalid">{{getErrorMessage('department')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Location</mat-label>
+          <input matInput formControlName="location" placeholder="Enter location">
+          <mat-error *ngIf="panelForm.get('location')?.invalid">{{getErrorMessage('location')}}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Area of Expertise</mat-label>
+          <mat-select formControlName="expertise">
+            <mat-option *ngFor="let area of expertiseAreas" [value]="area">
+              {{area}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="panelForm.get('expertise')?.invalid">{{getErrorMessage('expertise')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row availability-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Availability Status</mat-label>
+          <mat-select formControlName="availabilityStatus">
+            <mat-option value="Available">Available</mat-option>
+            <mat-option value="Busy">Busy</mat-option>
+            <mat-option value="On Leave">On Leave</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </form>
+    </div>
+  </mat-dialog-content>
+
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="onCancel()" class="cancel-button">
+      Cancel
+    </button>
+    <button mat-raised-button (click)="onSubmit()" [disabled]="!panelForm.valid" class="submit-button">
+      Add Panel Member
+    </button>
+  </div>
+</div>

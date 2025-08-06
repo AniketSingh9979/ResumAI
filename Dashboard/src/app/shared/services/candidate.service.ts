@@ -8,6 +8,7 @@ export interface Candidate {
   resumeFile: File;
   uploadDate: Date;
   status: 'pending' | 'processing' | 'reviewed';
+  resumeScore?: number;
   extractedInfo?: {
     skills?: string[];
     experience?: string[];
@@ -77,6 +78,8 @@ export class CandidateService {
             location: 'San Francisco, CA'
           }
         };
+        // Add a mock resume score between 60 and 98
+        candidate.resumeScore = Math.floor(Math.random() * (98 - 60 + 1)) + 60;
         candidate.status = 'reviewed';
         if (!candidate.email && candidate.extractedInfo?.contact?.email) {
           candidate.email = candidate.extractedInfo.contact.email;
@@ -91,6 +94,14 @@ export class CandidateService {
     if (index !== -1) {
       this.candidates[index] = { ...updatedCandidate };
       this.candidatesSubject.next([...this.candidates]);
+      return this.candidatesSubject.asObservable();
     }
+    return this.candidatesSubject.asObservable();
+  }
+
+  addCandidate(candidate: Candidate) {
+    this.candidates.push(candidate);
+    this.candidatesSubject.next([...this.candidates]);
+    return this.candidatesSubject.asObservable();
   }
 }

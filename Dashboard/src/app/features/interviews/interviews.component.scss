@@ -1,0 +1,210 @@
+.interviews-container {
+  padding: 16px;
+  max-width: 700px; // Made more compact
+  margin: 0 auto;
+  min-height: calc(100vh - 32px);
+
+  .header-section {
+    margin-bottom: 16px;
+    
+    .header-content {
+      text-align: left;
+      
+      .page-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #024950;
+        margin: 0 0 2px 0;
+      }
+      
+      .page-subtitle {
+        font-size: 0.85rem;
+        color: #0FA4AF;
+        margin: 0;
+      }
+    }
+  }
+
+  .schedule-card {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid rgba(15, 164, 175, 0.1);
+    box-shadow: 0 2px 4px rgba(2, 73, 80, 0.05);
+    overflow: hidden;
+    
+    mat-card-header {
+      background: linear-gradient(135deg, #0FA4AF, #024950);
+      color: white;
+      padding: 12px 16px;
+      margin: 0;
+      
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        
+        .header-icon {
+          font-size: 20px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .header-text {
+          mat-card-title {
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 500;
+          }
+          
+          mat-card-subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            margin: 2px 0 0 0;
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+    
+    mat-card-content {
+      padding: 16px;
+    }
+  }
+
+  .interview-form {
+    .form-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .form-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    
+    .compact-field {
+      width: 100%;
+      
+      ::ng-deep {
+        .mat-mdc-text-field-wrapper {
+          padding-top: 0;
+          padding-bottom: 0;
+        }
+
+        .mat-mdc-form-field-infix {
+          padding: 8px 0;
+          min-height: unset;
+        }
+        
+        .mat-mdc-form-field-flex {
+          min-height: unset;
+        }
+
+        .mat-mdc-form-field-subscript-wrapper {
+          margin-top: -0.5em;
+        }
+      }
+    }
+    
+    .select-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 0;
+      
+      .option-icon {
+        color: #0FA4AF;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+      
+      .option-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        
+        .option-name {
+          font-weight: 500;
+          color: rgba(0, 0, 0, 0.87);
+          font-size: 0.9rem;
+        }
+        
+        .option-detail {
+          font-size: 0.75rem;
+          color: rgba(0, 0, 0, 0.6);
+        }
+      }
+    }
+    
+    .duration-buttons {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      
+      button {
+        flex: 1;
+        color: #024950;
+        border-color: rgba(15, 164, 175, 0.3);
+        padding: 4px 8px;
+        line-height: 24px;
+        font-size: 0.9rem;
+        
+        &.selected {
+          background: rgba(15, 164, 175, 0.1);
+          border-color: #0FA4AF;
+          color: #0FA4AF;
+        }
+        
+        &:hover:not(.selected) {
+          background: rgba(15, 164, 175, 0.05);
+        }
+      }
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(15, 164, 175, 0.1);
+      
+      button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        
+        &[color="basic"] {
+          color: #024950;
+        }
+        
+        &[color="primary"] {
+          background: linear-gradient(135deg, #0FA4AF, #024950);
+        }
+        
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+        
+        &:disabled {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+}

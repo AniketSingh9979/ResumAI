@@ -17,7 +17,7 @@
   }
   
   button {
-    background: linear-gradient(135deg, #7367f0, #8e7cf3);
+    background: linear-gradient(135deg, #0FA4AF, #024950);
     color: white;
     padding: 0 24px;
     height: 44px;
@@ -39,22 +39,22 @@
   background: white;
   
   &:nth-child(4n+1) {
-    background: linear-gradient(135deg, #7367f0 0%, #8e7cf3 100%);
+    background: linear-gradient(135deg, #0FA4AF 0%, #024950 100%);
     color: white;
   }
   
   &:nth-child(4n+2) {
-    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    background: linear-gradient(135deg, #15B8C4 0%, #0FA4AF 100%);
     color: white;
   }
   
   &:nth-child(4n+3) {
-    background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%);
+    background: linear-gradient(135deg, #024950 0%, #013940 100%);
     color: white;
   }
   
   &:nth-child(4n+4) {
-    background: linear-gradient(135deg, #26C6DA 0%, #00838F 100%);
+    background: linear-gradient(135deg, #068591 0%, #024950 100%);
     color: white;
   }
 

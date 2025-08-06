@@ -1,4 +1,3 @@
-
 // Global styles - no imports to avoid build issues
 * {
   box-sizing: border-box;
@@ -19,30 +18,66 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-// Material Design color scheme
+// Material Design color scheme - Green Theme
 :root {
-  --primary-color: #3f51b5;
-  --accent-color: #e91e63;
-  --warn-color: #f44336;
-  --background-color: #fafafa;
+  // Main theme colors
+  --primary-color: #22c55e;        // Green-500
+  --primary-light: #4ade80;        // Green-400
+  --primary-dark: #16a34a;         // Green-600
+  --accent-color: #15803d;         // Green-700
+  --accent-light: #22c55e;         // Green-500
+  --accent-dark: #166534;          // Green-800
+  --warn-color: #dc2626;           // Red-600
+  
+  // Background and surface colors
+  --background-color: #f0fdf4;     // Green-50
   --surface-color: #ffffff;
-  --text-primary: #212121;
-  --text-secondary: #757575;
+  --hover-color: #dcfce7;          // Green-100
+  --active-color: #bbf7d0;         // Green-200
+  
+  // Text colors
+  --text-primary: #111827;         // Gray-900
+  --text-secondary: #374151;       // Gray-700
+  --text-on-primary: #ffffff;
+  
+  // Additional green shades for various uses
+  --success-light: #86efac;        // Green-300
+  --success-dark: #15803d;         // Green-700
+  --border-color: #d1fae5;         // Green-100
+  
+  // Shadows with green tint
+  --shadow-color: rgba(34, 197, 94, 0.2);
+  --shadow-sm: 0 2px 4px var(--shadow-color);
+  --shadow-md: 0 4px 6px var(--shadow-color);
+  --shadow-lg: 0 10px 15px var(--shadow-color);
 }
 
 // Material Design improvements
 .mat-mdc-card {
   border-radius: 12px !important;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+  box-shadow: var(--shadow-sm) !important;
+  background-color: var(--surface-color) !important;
 }
 
 .mat-mdc-button {
   text-transform: none !important;
 }
 
+// Material button styles
+.mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary-color) !important;
+  color: var(--text-on-primary) !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background-color: var(--accent-color) !important;
+  color: var(--text-on-primary) !important;
+}
+
+// Toolbar styles
 .mat-toolbar {
   background-color: var(--primary-color) !important;
-  color: white !important;
+  color: var(--text-on-primary) !important;
 }
 
 .mat-toolbar .mat-icon-button {
@@ -111,4 +146,34 @@ body {
 
 .mat-sidenav::-webkit-scrollbar {
   display: none !important; // WebKit
+}
+
+/* Compact dialog styles */
+.compact-dialog {
+  .mat-mdc-dialog-container {
+    padding: 16px !important;
+  }
+
+  .mat-mdc-dialog-surface {
+    border-radius: 8px !important;
+  }
+}
+
+/* Improve scrollbar appearance */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(15, 164, 175, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 164, 175, 0.7);
 }

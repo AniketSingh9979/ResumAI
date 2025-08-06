@@ -1,0 +1,131 @@
+.upload-dialog {
+  max-width: 400px;
+  
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 0 8px;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+  }
+
+  .upload-area {
+    border: 2px dashed #0FA4AF;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background: rgba(15, 164, 175, 0.05);
+    transition: all 0.2s ease;
+    margin-bottom: 16px;
+    
+    &.dragging {
+      border-color: #024950;
+      background: rgba(15, 164, 175, 0.1);
+      transform: scale(0.99);
+    }
+
+    .upload-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .upload-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: #0FA4AF;
+      margin-bottom: 8px;
+    }
+
+    .upload-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+
+      .primary-text {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+      }
+
+      .secondary-text {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      button {
+        margin: 8px 0;
+        background: linear-gradient(135deg, #0FA4AF, #024950);
+        color: white;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .supported-formats {
+      margin: 8px 0 0;
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+    }
+  }
+
+  .selected-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba(15, 164, 175, 0.05);
+    border-radius: 4px;
+    margin-top: 12px;
+
+    mat-icon {
+      color: #0FA4AF;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    span {
+      flex: 1;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  mat-dialog-actions {
+    padding: 16px 0 0;
+    margin-bottom: 0;
+    gap: 8px;
+
+    button {
+      min-width: 80px;
+
+      &[color="primary"] {
+        background: linear-gradient(135deg, #0FA4AF, #024950);
+        color: white;
+      }
+    }
+  }
+}
+
+:host ::ng-deep .mat-mdc-dialog-container {
+  padding: 16px !important;
+}

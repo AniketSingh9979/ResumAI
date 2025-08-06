@@ -18,5 +18,9 @@ export const routes: Routes = [
     path: 'job-profile', 
     loadComponent: () => import('./features/job-profile/job-profile.component').then(m => m.JobProfileComponent)
   },
+  {
+    path: 'interviews',
+    loadComponent: () => import('./features/interviews/interviews.component').then(m => m.InterviewsComponent)
+  },
   { path: '**', redirectTo: '/dashboard' }
 ];

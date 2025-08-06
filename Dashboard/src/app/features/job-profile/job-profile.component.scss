@@ -1,56 +1,115 @@
 // Job Profile Container
 .job-profile-container {
-  padding: 24px;
-  max-width: 1400px;
+  padding: 12px;
+  max-width: 1200px;
   margin: 0 auto;
-  background: #f8fafc;
-  min-height: 100vh;
+  background: rgba(15, 164, 175, 0.05);
+  min-height: calc(100vh - 24px);
 }
 
 // Header Section
 .header-section {
-  margin-bottom: 32px;
-  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .header-content {
+    text-align: left;
+  }
   
   .page-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin: 0 0 12px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #024950;
+    margin: 0 0 2px 0;
   }
   
   .page-subtitle {
-    font-size: 1.1rem;
-    color: #64748b;
+    font-size: 0.85rem;
+    color: #0FA4AF;
     margin: 0;
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 8px;
+
+    button {
+      font-size: 0.9rem;
+      line-height: 32px;
+      padding: 0 12px;
+
+      mat-icon {
+        font-size: 18px;
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+// Filters Section
+.filters-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  .mat-form-field {
+    font-size: 0.9rem;
+  }
+
+  .search-field {
+    flex: 2;
+  }
+
+  .filter-field {
+    flex: 1;
+    max-width: 180px;
   }
 }
 
 // Upload Section
 .upload-section {
-  margin-bottom: 48px;
+  margin-bottom: 12px;
   
   .upload-card {
     background: white;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(2, 73, 80, 0.1);
+    border: 1px solid rgba(15, 164, 175, 0.1);
     
     mat-card-header {
-      background: linear-gradient(135deg, #7367f0, #8e7cf3);
+      background: linear-gradient(135deg, #0FA4AF, #024950);
       color: white;
-      padding: 24px;
+      padding: 8px 12px;
       margin: 0;
+      border-radius: 6px 6px 0 0;
       
       .upload-header {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 12px;
+
+        .upload-icon {
+          font-size: 20px;
+        }
+
+        .header-text {
+          mat-card-title {
+            font-size: 1.1rem;
+            margin: 0;
+          }
+          mat-card-subtitle {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 2px 0 0 0;
+          }
+        }
       }
     }
     
     mat-card-content {
-      padding: 32px;
+      padding: 16px;
     }
   }
 }
@@ -59,77 +118,118 @@
 .upload-form {
   .form-row {
     display: flex;
-    gap: 24px;
-    margin-bottom: 24px;
-    
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 16px;
+    gap: 12px;
+    margin-bottom: 8px;
+
+    .panel-member-field {
+      flex: 2;
+    }
+
+    .email-field {
+      flex: 1;
+    }
+
+    .mat-form-field {
+      font-size: 0.9rem;
     }
   }
-  
-  .panel-member-field, .email-field {
-    flex: 1;
+
+  .member-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+
+    .member-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .member-info {
+      display: flex;
+      flex-direction: column;
+
+      .member-name {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #024950;
+      }
+
+      .member-email {
+        font-size: 0.75rem;
+        color: rgba(2, 73, 80, 0.6);
+      }
+    }
   }
 }
 
 // File Upload
 .file-upload-section {
-  margin: 32px 0;
+  margin: 16px 0;
   
   .upload-area {
-    border: 2px dashed #cbd5e1;
-    border-radius: 12px;
-    padding: 48px 24px;
+    border: 2px dashed rgba(15, 164, 175, 0.3);
+    border-radius: 8px;
+    padding: 24px 16px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     
     &:hover, &.drag-over {
-      border-color: #7367f0;
-      background: rgba(115, 103, 240, 0.05);
+      border-color: #0FA4AF;
+      background: rgba(15, 164, 175, 0.05);
     }
     
     &.has-file {
-      background: #f0fdf4;
-      border-color: #10b981;
+      background: rgba(2, 73, 80, 0.05);
+      border-color: #024950;
     }
-  }
-  
-  .upload-content h3 {
-    margin: 16px 0 8px;
-    color: #374151;
-  }
-  
-  .upload-content p {
-    color: #6b7280;
-    margin: 0 0 24px;
+
+    .upload-content {
+      h3 {
+        margin: 8px 0 4px;
+        color: #024950;
+        font-size: 1rem;
+      }
+
+      p {
+        color: #0FA4AF;
+        margin: 0 0 12px;
+        font-size: 0.85rem;
+      }
+    }
   }
   
   .file-preview {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     background: white;
-    padding: 16px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(15, 164, 175, 0.1);
+    font-size: 0.9rem;
   }
 }
 
 // Action Buttons
 .action-buttons {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   justify-content: flex-end;
+  margin-top: 12px;
   
   button {
-    min-width: 120px;
-    height: 44px;
-    border-radius: 12px;
+    min-width: 100px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 0.9rem;
   }
   
   .upload-btn {
-    background: linear-gradient(135deg, #7367f0, #8e7cf3);
+    background: linear-gradient(135deg, #0FA4AF, #024950);
     color: white;
   }
   
@@ -138,53 +238,59 @@
   }
 }
 
-// Jobs Section
-.jobs-section {
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
-    
-    h2 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      color: #1e293b;
-      margin: 0;
-    }
-    
-    .section-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    
-    .search-field {
-      min-width: 300px;
-    }
-    
-    @media (max-width: 768px) {
-      flex-direction: column;
-      gap: 16px;
-      align-items: stretch;
-      
-      .search-field {
-        min-width: auto;
-      }
-    }
-  }
-}
-
 // Jobs Grid
 .jobs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+
+  .job-card {
+    background: white;
+    border-radius: 6px;
+    border: 1px solid rgba(15, 164, 175, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(2, 73, 80, 0.1);
+    }
+
+    mat-card-header {
+      padding: 12px;
+      border-bottom: 1px solid rgba(15, 164, 175, 0.1);
+
+      mat-card-title {
+        font-size: 1rem;
+        color: #024950;
+        margin: 0;
+      }
+
+      mat-card-subtitle {
+        font-size: 0.8rem;
+        color: #0FA4AF;
+        margin: 4px 0 0 0;
+      }
+    }
+
+    mat-card-content {
+      padding: 12px;
+      font-size: 0.9rem;
+    }
+
+    mat-card_actions {
+      padding: 8px;
+      border-top: 1px solid rgba(15, 164, 175, 0.1);
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+
+      button {
+        font-size: 0.85rem;
+        line-height: 28px;
+        padding: 0 8px;
+      }
+    }
   }
 }
 
@@ -284,6 +390,163 @@
   }
 }
 
+// Job Profile Grid
+.job-profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+
+  .job-profile-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(2, 73, 80, 0.08);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+    .mat-mdc-card-header {
+      padding: 12px;
+      border-radius: 8px 8px 0 0;
+
+      .mat-mdc-card-title {
+        font-size: 1rem;
+        margin: 0;
+      }
+    }
+
+    .mat-mdc-card-content {
+      padding: 12px;
+
+      .profile-details {
+        .detail-item {
+          margin-bottom: 8px;
+          
+          &:last-child {
+            margin-bottom: 0;
+          }
+          
+          .label {
+            font-size: 0.8rem;
+            margin-bottom: 2px;
+          }
+          
+          .value {
+            font-size: 0.9rem;
+          }
+        }
+      }
+    }
+
+    .mat-mdc-card-actions {
+      padding: 8px 12px;
+      border-top: 1px solid rgba(2, 73, 80, 0.1);
+
+      button {
+        min-width: unset;
+        padding: 0 12px;
+        font-size: 0.9rem;
+        line-height: 32px;
+      }
+    }
+  }
+}
+
+// Quick Action Buttons
+.quick-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+
+  button {
+    padding: 0 16px;
+    height: 36px;
+    font-size: 0.9rem;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-right: 4px;
+    }
+  }
+}
+
+// Action Buttons
+.action-buttons {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+
+  button {
+    &.mat-raised-button {
+      background: linear-gradient(135deg, #0FA4AF, #024950);
+      color: white;
+      padding: 0 24px;
+      height: 44px;
+      
+      &:hover {
+        background: linear-gradient(135deg, #15B8C4, #0FA4AF);
+      }
+    }
+
+    &.mat-stroked-button {
+      border-color: #0FA4AF;
+      color: #0FA4AF;
+      padding: 0 24px;
+      height: 44px;
+      
+      &:hover {
+        background: rgba(15, 164, 175, 0.05);
+      }
+    }
+  }
+}
+
+// Form Controls
+.mat-form-field {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+
+  &.mat-form-field-appearance-outline {
+    .mat-form-field-wrapper {
+      margin: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+// Status Badges
+.status-badge {
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+}
+
+// Upload Zone
+.upload-zone {
+  padding: 20px;
+  margin: 12px;
+  border-width: 1px;
+
+  .upload-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .upload-text {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .upload-subtext {
+    font-size: 0.8rem;
+  }
+}
+
 // Loading and Empty States
 .loading-container {
   text-align: center;
@@ -320,6 +583,124 @@
   }
 }
 
+// Panel Member Dropdown Styling
+::ng-deep .panel-member-field {
+  .mat-mdc-select-panel {
+    background: linear-gradient(to right, rgba(15, 164, 175, 0.05), rgba(2, 73, 80, 0.05)) !important;
+    border: 1px solid rgba(15, 164, 175, 0.15);
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(2, 73, 80, 0.1) !important;
+    padding: 8px 0;
+    
+    .mat-mdc-option {
+      min-height: 48px;
+      padding: 8px 16px;
+      
+      &:hover:not(.mat-mdc-option-disabled) {
+        background: rgba(15, 164, 175, 0.15) !important;
+      }
+      
+      &.mat-mdc-option-active,
+      &.mat-selected:not(.mat-mdc-option-disabled) {
+        background: rgba(2, 73, 80, 0.15) !important;
+      }
+
+      .mdc-list-item__primary-text {
+        width: 100%;
+      }
+    }
+
+    // Add a subtle teal border at the top and bottom of the panel
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, #0FA4AF, #024950);
+      opacity: 0.2;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, #0FA4AF, #024950);
+      opacity: 0.2;
+    }
+  }
+
+  .member-option {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    
+    .member-avatar {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      border: 2px solid rgba(15, 164, 175, 0.3) !important;
+      flex-shrink: 0 !important;
+      background: white !important;
+    }
+    
+    .member-info {
+      display: flex !important;
+      flex-direction: column !important;
+      flex-grow: 1 !important;
+      min-width: 0 !important;
+      
+      .member-name {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #024950 !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+      }
+      
+      .member-email {
+        font-size: 12px !important;
+        color: rgba(2, 73, 80, 0.7) !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+
+    &:hover {
+      .member-avatar {
+        border-color: rgba(15, 164, 175, 0.5) !important;
+        box-shadow: 0 0 0 2px rgba(15, 164, 175, 0.1) !important;
+      }
+    }
+  }
+
+  // Style for the selected option when dropdown is closed
+  .mat-mdc-select-value {
+    .member-option {
+      .member-avatar {
+        border-color: rgba(15, 164, 175, 0.4) !important;
+      }
+    }
+  }
+}
+
+// Style for the dropdown arrow
+::ng-deep .panel-member-field .mat-mdc-select-arrow {
+  color: rgba(2, 73, 80, 0.6) !important;
+}
+
 // Responsive Design
 @media (max-width: 1024px) {
   .job-profile-container {
@@ -343,4 +724,4 @@
   .job-card {
     padding: 16px;
   }
-} 
+}

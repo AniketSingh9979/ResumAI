@@ -3,8 +3,43 @@
   <div class="header-section">
     <div class="header-content">
       <h1 class="page-title">Job Profile Management</h1>
-      <p class="page-subtitle">Upload and manage job descriptions with panel member assignments</p>
+      <p class="page-subtitle">Manage job descriptions and panel assignments</p>
     </div>
+    <div class="quick-actions">
+      <button mat-stroked-button color="primary">
+        <mat-icon>filter_list</mat-icon>
+        Filter
+      </button>
+      <button mat-flat-button color="primary">
+        <mat-icon>add</mat-icon>
+        New Profile
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search profiles</mat-label>
+      <input matInput placeholder="Enter keywords">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Status</mat-label>
+      <mat-select>
+        <mat-option value="all">All Status</mat-option>
+        <mat-option value="active">Active</mat-option>
+        <mat-option value="draft">Draft</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Sort By</mat-label>
+      <mat-select>
+        <mat-option value="newest">Newest First</mat-option>
+        <mat-option value="oldest">Oldest First</mat-option>
+        <mat-option value="title">Title A-Z</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <!-- Upload Section -->
@@ -15,21 +50,24 @@
           <mat-icon class="upload-icon">cloud_upload</mat-icon>
           <div class="header-text">
             <mat-card-title>Upload Job Description</mat-card-title>
-            <mat-card-subtitle>Select a panel member and upload job description file</mat-card-subtitle>
+            <mat-card-subtitle>Add a new job profile with panel assignment</mat-card-subtitle>
           </div>
         </div>
       </mat-card-header>
       
       <mat-card-content>
         <div class="upload-form">
-          <!-- Panel Member Dropdown -->
+          <!-- Panel Member Selection -->
           <div class="form-row">
             <mat-form-field appearance="outline" class="panel-member-field">
-              <mat-label>Select Panel Member</mat-label>
+              <mat-label>Panel Member</mat-label>
               <mat-select [(ngModel)]="selectedPanelMember" (selectionChange)="onPanelMemberChange($event)">
                 <mat-option *ngFor="let member of panelMembers" [value]="member">
                   <div class="member-option">
-                    <img [src]="member.avatar" [alt]="member.name" class="member-avatar">
+                    <img [src]="member.avatar || 'assets/images/default-avatar.png'" 
+                         [alt]="member.name" 
+                         class="member-avatar"
+                         onerror="this.src='assets/images/default-avatar.png'">
                     <div class="member-info">
                       <span class="member-name">{{member.name}}</span>
                       <span class="member-email">{{member.email}}</span>
@@ -37,27 +75,27 @@
                   </div>
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="!selectedPanelMember">Please select a panel member</mat-error>
             </mat-form-field>
 
-            <!-- Auto-filled Email Field -->
+            <!-- Email Field -->
             <mat-form-field appearance="outline" class="email-field">
-              <mat-label>Panel Member Email</mat-label>
+              <mat-label>Email</mat-label>
               <input matInput 
                      [value]="selectedPanelMember?.email || ''" 
                      readonly 
-                     disabled
-                     placeholder="Email will auto-fill when panel member is selected">
+                     disabled>
               <mat-icon matSuffix>email</mat-icon>
             </mat-form-field>
           </div>
 
-          <!-- File Upload Section -->
+          <!-- File Upload Area -->
           <div class="file-upload-section">
             <input 
               type="file" 
               #fileInput
               (change)="onFileSelected($event)"
-              accept=".pdf,.doc,.docx,.txt,.rtf"
+              accept=".pdf,.doc,.docx"
               hidden>
             
             <div class="upload-area" 
@@ -66,49 +104,29 @@
                  (click)="fileInput.click()"
                  (dragover)="onDragOver($event)"
                  (dragleave)="onDragLeave($event)"
-                 (drop)="onFileDrop($event)">
-              
-              <div class="upload-content" *ngIf="!selectedFile">
-                <mat-icon class="upload-icon-large">description</mat-icon>
-                <h3>Click to upload or drag and drop</h3>
-                <p>Supported formats: PDF, DOC, DOCX, TXT, RTF</p>
-                <button mat-raised-button color="primary" type="button">
-                  <mat-icon>attach_file</mat-icon>
-                  Choose File
-                </button>
-              </div>
-
-              <div class="file-preview" *ngIf="selectedFile">
-                <mat-icon class="file-icon">description</mat-icon>
-                <div class="file-info">
-                  <span class="file-name">{{selectedFile.name}}</span>
-                  <span class="file-size">{{getFileSize(selectedFile.size)}}</span>
-                </div>
-                <button mat-icon-button (click)="removeFile($event)" class="remove-file">
-                  <mat-icon>close</mat-icon>
-                </button>
+                 (drop)="onDrop($event)">
+              <div class="upload-content">
+                <mat-icon>upload_file</mat-icon>
+                <h3>Upload Job Description</h3>
+                <p *ngIf="!selectedFile">Drag & drop your file or click to browse</p>
+                <p *ngIf="selectedFile" class="file-name">
+                  {{selectedFile.name}}
+                  <button mat-icon-button color="warn" (click)="removeFile($event)">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </p>
               </div>
             </div>
           </div>
 
           <!-- Action Buttons -->
           <div class="action-buttons">
-            <button mat-raised-button 
-                    color="primary" 
-                    (click)="uploadJobDescription()"
-                    [disabled]="!selectedFile || !selectedPanelMember || loading"
-                    class="upload-btn">
-              <mat-icon>cloud_upload</mat-icon>
-              <span *ngIf="!loading">Upload Job Description</span>
-              <span *ngIf="loading">Uploading...</span>
-            </button>
-            
-            <button mat-button 
-                    (click)="resetForm()"
-                    [disabled]="loading"
-                    class="reset-btn">
-              <mat-icon>refresh</mat-icon>
-              Reset
+            <button mat-stroked-button (click)="resetForm()">Cancel</button>
+            <button mat-flat-button 
+                    class="upload-btn"
+                    [disabled]="!selectedFile || !selectedPanelMember"
+                    (click)="uploadProfile()">
+              Upload Profile
             </button>
           </div>
         </div>
@@ -116,97 +134,33 @@
     </mat-card>
   </div>
 
-  <!-- Job Descriptions Grid Section -->
-  <div class="jobs-section">
-    <div class="section-header">
-      <h2>Uploaded Job Descriptions</h2>
-      <div class="section-actions">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>Search</mat-label>
-          <input matInput [(ngModel)]="searchTerm" (input)="applySearch()" placeholder="Search by file name or panel member...">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-        <button mat-icon-button (click)="refreshJobs()" class="refresh-btn">
-          <mat-icon>refresh</mat-icon>
+  <!-- Jobs Grid -->
+  <div class="jobs-grid">
+    <mat-card class="job-card" *ngFor="let job of jobs">
+      <mat-card-header>
+        <mat-card-title>{{job.title}}</mat-card-title>
+        <mat-card-subtitle>{{job.department}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{job.description}}</p>
+        <div class="assigned-panel">
+          <small>Assigned to:</small>
+          <div class="panel-member">
+            <img [src]="job.panelMember.avatar" [alt]="job.panelMember.name">
+            <span>{{job.panelMember.name}}</span>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button color="primary">
+          <mat-icon>edit</mat-icon>
+          Edit
         </button>
-      </div>
-    </div>
-
-    <!-- Loading State -->
-    <div class="loading-container" *ngIf="loading">
-      <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
-      <p>Loading job descriptions...</p>
-    </div>
-
-    <!-- Jobs Grid -->
-    <div class="jobs-grid" *ngIf="!loading && filteredJobs.length > 0">
-      <div class="job-card" *ngFor="let job of filteredJobs; let i = index">
-        <div class="job-header">
-          <div class="file-info">
-            <mat-icon class="file-type-icon">description</mat-icon>
-            <div class="file-details">
-              <span class="file-name">{{job.fileName}}</span>
-              <span class="upload-date">{{job.uploadDate | date:'MMM d, y - h:mm a'}}</span>
-            </div>
-          </div>
-          <div class="job-actions">
-            <button mat-icon-button (click)="downloadFile(job)" class="action-btn">
-              <mat-icon>download</mat-icon>
-            </button>
-            <button mat-icon-button (click)="viewJobDetails(job)" class="action-btn">
-              <mat-icon>visibility</mat-icon>
-            </button>
-            <button mat-icon-button (click)="deleteJob(job)" class="action-btn delete-btn">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-        
-        <div class="job-content">
-          <div class="panel-member-section">
-            <img [src]="job.panelMember.avatar" [alt]="job.panelMember.name" class="member-avatar">
-            <div class="member-details">
-              <span class="member-name">{{job.panelMember.name}}</span>
-              <span class="member-email">{{job.panelMember.email}}</span>
-              <span class="member-expertise">{{job.panelMember.expertise}}</span>
-            </div>
-          </div>
-          
-          <div class="job-stats">
-            <div class="stat-item">
-              <mat-icon>folder</mat-icon>
-              <span>{{getFileSize(job.fileSize)}}</span>
-            </div>
-            <div class="stat-item">
-              <mat-icon>schedule</mat-icon>
-              <span>{{getTimeAgo(job.uploadDate)}}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Empty State -->
-    <div class="empty-state" *ngIf="!loading && filteredJobs.length === 0">
-      <mat-icon class="empty-icon">work_off</mat-icon>
-      <h3>No Job Descriptions Found</h3>
-      <p *ngIf="searchTerm">No results match your search criteria.</p>
-      <p *ngIf="!searchTerm">Start by uploading your first job description above.</p>
-      <button mat-raised-button color="primary" (click)="scrollToUpload()" *ngIf="!searchTerm">
-        <mat-icon>cloud_upload</mat-icon>
-        Upload Job Description
-      </button>
-    </div>
-
-    <!-- Pagination -->
-    <mat-paginator 
-      *ngIf="filteredJobs.length > 0"
-      [length]="totalJobs" 
-      [pageSize]="pageSize" 
-      [pageIndex]="currentPage"
-      [pageSizeOptions]="[6, 12, 24, 48]" 
-      (page)="onPageChange($event)"
-      showFirstLastButtons>
-    </mat-paginator>
+        <button mat-stroked-button color="warn">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
-</div> 
+</div>
