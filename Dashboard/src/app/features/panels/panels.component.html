@@ -1,0 +1,51 @@
+<div class="panels-container">
+  <div class="panels-header">
+    <h1>Panel Members</h1>
+    <button mat-raised-button color="primary">
+      <mat-icon>add</mat-icon>
+      Add New Panelist
+    </button>
+  </div>
+
+  <div class="panels-grid">
+    <mat-card *ngFor="let panelist of panelists" class="panelist-card">
+      <mat-card-header>
+        <img mat-card-avatar [src]="panelist.image" [alt]="panelist.name">
+        <mat-card-title>{{panelist.name}}</mat-card-title>
+        <mat-card-subtitle>{{panelist.expertise}}</mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <mat-icon>work</mat-icon>
+            <span>{{panelist.experience}}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>schedule</mat-icon>
+            <span>{{panelist.availability}}</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>star</mat-icon>
+            <span>{{panelist.rating}} / 5.0</span>
+          </div>
+          <div class="info-item">
+            <mat-icon>people</mat-icon>
+            <span>{{panelist.interviewsDone}} interviews</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary">
+          <mat-icon>visibility</mat-icon>
+          View Profile
+        </button>
+        <button mat-button color="accent">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
