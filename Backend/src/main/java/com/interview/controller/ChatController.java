@@ -24,6 +24,7 @@ import com.interview.entity.InterviewResult;
 import com.interview.repository.ChatRepository;
 import com.interview.repository.InterviewResultRepository;
 import com.interview.service.InterviewOpenAiService;
+import com.interview.service.NotificationService;
 
 /**
  * REST Controller for Q&A chat interactions and interview submissions
@@ -39,14 +40,17 @@ public class ChatController {
     private final ChatRepository chatRepository;
     private final InterviewResultRepository interviewResultRepository;
     private final InterviewOpenAiService openAiService;
+    private final NotificationService notificationService;
 
     @Autowired
     public ChatController(ChatRepository chatRepository, 
                          InterviewResultRepository interviewResultRepository,
-                         InterviewOpenAiService openAiService) {
+                         InterviewOpenAiService openAiService,
+                         @Autowired(required = false) NotificationService notificationService) {
         this.chatRepository = chatRepository;
         this.interviewResultRepository = interviewResultRepository;
         this.openAiService = openAiService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -215,6 +219,20 @@ public class ChatController {
             
             // Save result
             InterviewResult savedResult = interviewResultRepository.save(result);
+            
+            // Send email notification asynchronously (non-blocking)
+            if (notificationService != null) {
+                try {
+                    notificationService.sendInterviewResultNotification(savedResult);
+                } catch (Exception e) {
+                    // Log error but don't fail the main flow
+                    logger.warn("Email notification failed for candidate: {} - Error: {}", 
+                               savedResult.getCandidateName(), e.getMessage());
+                }
+            } else {
+                logger.info("Email notification service not available for candidate: {}", 
+                           savedResult.getCandidateName());
+            }
             
             // Prepare response
             Map<String, Object> response = new HashMap<>();

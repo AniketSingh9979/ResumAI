@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * Main Spring Boot Application for Interview Backend
@@ -15,6 +17,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * - Experience-based question filtering
  */
 @SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
 public class InterviewBackendApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(InterviewBackendApplication.class);
