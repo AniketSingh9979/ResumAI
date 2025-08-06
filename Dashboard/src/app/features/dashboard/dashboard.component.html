@@ -46,7 +46,7 @@
       <mat-card-header>
         <div class="card-header-content">
           <mat-card-title>Upcoming Interviews</mat-card-title>
-          <button mat-flat-button class="view-all-button" routerLink="/interviews">
+          <button mat-button class="view-all-button" routerLink="/interviews">
             View All
             <mat-icon>arrow_forward</mat-icon>
           </button>
@@ -108,7 +108,12 @@
     <mat-card class="recent-activities-card" role="region" aria-label="Recent Activities">
       <mat-card-header>
         <div class="card-header-content">
-          <mat-card-title>Recent Activities</mat-card-title>
+          <div class="header-left">
+            <mat-card-title>Recent Activities</mat-card-title>
+          </div>
+          <div class="header-right">
+            <!-- Empty div to maintain symmetry with Upcoming Interviews -->
+          </div>
         </div>
       </mat-card-header>
       <mat-card-content>
