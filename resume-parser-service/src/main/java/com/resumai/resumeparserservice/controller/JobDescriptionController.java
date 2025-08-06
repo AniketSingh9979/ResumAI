@@ -27,7 +27,7 @@ import java.util.Optional;
 @RequestMapping("/api/matching")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 public class JobDescriptionController {
 
     private final TextExtractionService textExtractionService;

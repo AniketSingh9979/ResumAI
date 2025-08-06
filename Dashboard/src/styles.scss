@@ -177,3 +177,22 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(15, 164, 175, 0.7);
 }
+
+// FORCE DIALOG WIDTH - GLOBAL OVERRIDE
+.custom-dialog-container .mat-mdc-dialog-container,
+.compact-dialog .mat-mdc-dialog-container,
+.custom-dialog-container .cdk-dialog-container,
+.compact-dialog .cdk-dialog-container {
+  width: 600px !important;
+  min-width: 600px !important;
+  max-width: 90vw !important;
+  overflow: visible !important;
+}
+
+.custom-dialog-container .mat-mdc-dialog-surface,
+.compact-dialog .mat-mdc-dialog-surface {
+  width: 600px !important;
+  min-width: 600px !important;
+  max-width: 90vw !important;
+  overflow: visible !important;
+}

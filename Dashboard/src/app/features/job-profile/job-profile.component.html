@@ -6,47 +6,14 @@
         <h1 class="page-title">Job Profile Management</h1>
         <p class="page-subtitle">Upload and manage job descriptions with panel member assignments</p>
       </div>
-      <button mat-raised-button color="primary" (click)="toggleUploadSection()">
+      <button mat-raised-button color="primary" (click)="toggleUploadSection()" class="add-job-profile-btn">
         <mat-icon>{{ showUploadSection ? 'visibility_off' : 'add' }}</mat-icon>
-        {{ showUploadSection ? 'Hide Upload Form' : 'Add Job Profile' }}
-      </button>
-    </div>
-    <div class="quick-actions">
-      <button mat-stroked-button color="primary">
-        <mat-icon>filter_list</mat-icon>
-        Filter
-      </button>
-      <button mat-flat-button color="primary">
-        <mat-icon>add</mat-icon>
-        New Profile
+        {{ showUploadSection ? 'Hide Upload Form' : 'Add New Job Profile' }}
       </button>
     </div>
   </div>
 
-  <!-- Filters Section -->
-  <div class="filters-section">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Search profiles</mat-label>
-      <input matInput placeholder="Enter keywords">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="filter-field">
-      <mat-label>Status</mat-label>
-      <mat-select>
-        <mat-option value="all">All Status</mat-option>
-        <mat-option value="active">Active</mat-option>
-        <mat-option value="draft">Draft</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="filter-field">
-      <mat-label>Sort By</mat-label>
-      <mat-select>
-        <mat-option value="newest">Newest First</mat-option>
-        <mat-option value="oldest">Oldest First</mat-option>
-        <mat-option value="title">Title A-Z</mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+
 
   <!-- Upload Section -->
   <div class="upload-section" *ngIf="showUploadSection">
@@ -114,7 +81,7 @@
               type="file" 
               #fileInput
               (change)="onFileSelected($event)"
-              accept=".pdf,.doc,.docx"
+              accept=".pdf,.doc,.docx,.txt"
               hidden>
             
             <div class="upload-area" 
@@ -178,11 +145,7 @@
     <div class="jobs-grid" *ngIf="!loading && filteredJobs.length > 0">
       <mat-card *ngFor="let job of filteredJobs; let i = index" class="job-card">
         <mat-card-header>
-          <img mat-card-avatar [src]="job.panelMember?.avatar || 'https://ui-avatars.com/api/?name=Unknown&background=7367f0&color=fff'" 
-               [alt]="job.panelMember?.name || 'Panel Member'"
-               (error)="onAvatarError($event, job.panelMember?.name || 'User')">
           <mat-card-title>{{job.title || job.fileName}}</mat-card-title>
-          <mat-card-subtitle>{{job.company || 'No Company'}}</mat-card-subtitle>
         </mat-card-header>
         
         <mat-card-content>
@@ -193,14 +156,11 @@
             </div>
             <div class="info-item">
               <mat-icon>work</mat-icon>
-              <span>{{job.experienceLevel || 'Any level'}}</span>
+              <span>{{getExperienceYears(job.experienceLevel)}}</span>
             </div>
             <div class="info-item">
-              <mat-icon>person</mat-icon>
-              <span class="uploaded-by">
-                <span class="uploaded-label">Uploaded by</span>
-                <span class="member-name">{{job.panelMember?.name || 'Unknown'}}</span>
-              </span>
+              <mat-icon>code</mat-icon>
+              <span>{{getMainSkill(job)}}</span>
             </div>
             <div class="info-item">
               <mat-icon>schedule</mat-icon>
@@ -208,23 +168,28 @@
             </div>
           </div>
           
-          <div class="job-description" *ngIf="job.requirements">
-            <p class="requirements-preview">{{(job.requirements | slice:0:100) + (job.requirements.length > 100 ? '...' : '')}}</p>
+          <div class="uploaded-by">
+            <mat-icon>person</mat-icon>
+            <span>Uploaded by {{job.panelMember?.name || 'Unknown'}}</span>
           </div>
         </mat-card-content>
 
         <mat-card-actions>
-          <button mat-button color="primary" (click)="viewJobDetails(job)">
-            <mat-icon>visibility</mat-icon>
-            View Details
-          </button>
-          <button mat-button color="accent" (click)="downloadFile(job)">
-            <mat-icon>download</mat-icon>
-            Download
-          </button>
-          <button mat-icon-button (click)="deleteJob(job)" class="delete-action">
-            <mat-icon>delete</mat-icon>
-          </button>
+          <div class="action-buttons-left">
+            <button mat-button color="primary" (click)="viewJobDetails(job)">
+              <mat-icon>visibility</mat-icon>
+              View Details
+            </button>
+            <button mat-button color="accent" (click)="downloadFile(job)">
+              <mat-icon>download</mat-icon>
+              Download
+            </button>
+          </div>
+          <div class="action-buttons-right">
+            <button mat-icon-button (click)="deleteJob(job)" class="delete-action">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
         </mat-card-actions>
       </mat-card>
     </div>

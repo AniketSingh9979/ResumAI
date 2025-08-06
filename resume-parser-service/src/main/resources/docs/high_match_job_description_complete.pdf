@@ -1,0 +1,227 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Resources <<
+  /Font <<
+    /F1 4 0 R
+    /F2 5 0 R
+    /F3 6 0 R
+  >>
+>>
+/Contents 7 0 R
+>>
+endobj
+
+4 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+>>
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+6 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Oblique
+>>
+endobj
+
+7 0 obj
+<<
+/Length 5500
+>>
+stream
+BT
+/F1 24 Tf
+0.2 0.3 0.4 rg
+72 720 Td
+(Senior Java Software Engineer) Tj
+0 -30 Td
+/F1 16 Tf
+0.1 0.6 0.7 rg
+(TechInnovate Solutions) Tj
+0 -25 Td
+/F2 12 Tf
+0 0 0 rg
+(Location: San Francisco, CA \(Remote Available\)) Tj
+0 -18 Td
+(Experience Level: Senior \(5-8 years\)) Tj
+0 -35 Td
+/F1 14 Tf
+0.2 0.3 0.4 rg
+(Job Description:) Tj
+0 -20 Td
+/F2 11 Tf
+0 0 0 rg
+(We are seeking a highly skilled Senior Java Software Engineer to join our) Tj
+0 -15 Td
+(dynamic development team. You will be responsible for designing, developing,) Tj
+0 -15 Td
+(and maintaining enterprise-level applications using modern Java technologies) Tj
+0 -15 Td
+(and frameworks.) Tj
+0 -30 Td
+/F1 14 Tf
+0.2 0.3 0.4 rg
+(Key Responsibilities:) Tj
+0 -20 Td
+/F2 11 Tf
+0 0 0 rg
+(• Design and develop scalable microservices using Java 11+ and Spring Boot) Tj
+0 -15 Td
+(• Build RESTful APIs and integrate with third-party services) Tj
+0 -15 Td
+(• Implement automated testing strategies including unit tests, integration) Tj
+0 -15 Td
+(  tests, and end-to-end testing) Tj
+0 -15 Td
+(• Work with cloud platforms, particularly AWS \(EC2, S3, Lambda, RDS\)) Tj
+0 -15 Td
+(• Collaborate with cross-functional teams in an Agile development environment) Tj
+0 -15 Td
+(• Perform code reviews and mentor junior developers) Tj
+0 -15 Td
+(• Optimize application performance and troubleshoot production issues) Tj
+0 -15 Td
+(• Participate in system architecture decisions and technical design discussions) Tj
+0 -15 Td
+(• Implement CI/CD pipelines using Jenkins and Docker) Tj
+0 -15 Td
+(• Work with database technologies including MySQL, PostgreSQL, and MongoDB) Tj
+0 -30 Td
+/F1 14 Tf
+0.2 0.3 0.4 rg
+(Required Skills and Qualifications:) Tj
+0 -20 Td
+/F2 11 Tf
+0 0 0 rg
+(• Bachelor's degree in Computer Science, Software Engineering, or related field) Tj
+0 -15 Td
+(• 5+ years of professional Java development experience) Tj
+0 -15 Td
+(• Strong expertise in Spring Framework \(Spring Boot, Spring MVC, Spring Security\)) Tj
+0 -15 Td
+(• Proficient in RESTful web services development and API design) Tj
+0 -15 Td
+(• Experience with microservices architecture and distributed systems) Tj
+0 -15 Td
+(• Solid understanding of object-oriented programming and design patterns) Tj
+0 -15 Td
+(• Experience with relational databases \(MySQL, PostgreSQL\) and SQL optimization) Tj
+0 -15 Td
+(• Knowledge of NoSQL databases \(MongoDB, Redis\)) Tj
+0 -15 Td
+(• Familiarity with cloud platforms, preferably AWS) Tj
+0 -15 Td
+(• Experience with containerization \(Docker\) and orchestration \(Kubernetes\)) Tj
+0 -15 Td
+(• Proficient in version control systems \(Git\) and collaborative development) Tj
+0 -15 Td
+(• Experience with testing frameworks \(JUnit, Mockito, TestNG\)) Tj
+0 -15 Td
+(• Knowledge of build tools \(Maven, Gradle\)) Tj
+0 -15 Td
+(• Understanding of CI/CD principles and tools \(Jenkins, GitLab CI\)) Tj
+0 -15 Td
+(• Strong problem-solving skills and attention to detail) Tj
+0 -15 Td
+(• Excellent communication and teamwork abilities) Tj
+0 -30 Td
+/F1 14 Tf
+0.2 0.3 0.4 rg
+(Preferred Qualifications:) Tj
+0 -20 Td
+/F2 11 Tf
+0 0 0 rg
+(• Experience with Apache Kafka for message streaming) Tj
+0 -15 Td
+(• Knowledge of Elasticsearch for search and analytics) Tj
+0 -15 Td
+(• Familiarity with frontend technologies \(React, Angular, or Vue.js\)) Tj
+0 -15 Td
+(• Experience with performance monitoring tools \(New Relic, AppDynamics\)) Tj
+0 -15 Td
+(• AWS certifications \(Developer Associate or Solutions Architect\)) Tj
+0 -15 Td
+(• Experience with DevOps practices and infrastructure as code) Tj
+0 -15 Td
+(  \(Terraform, CloudFormation\)) Tj
+0 -15 Td
+(• Knowledge of machine learning concepts and frameworks) Tj
+0 -30 Td
+/F1 14 Tf
+0.2 0.3 0.4 rg
+(What We Offer:) Tj
+0 -20 Td
+/F2 11 Tf
+0 0 0 rg
+(• Competitive salary ranging from $120,000 - $160,000) Tj
+0 -15 Td
+(• Comprehensive health, dental, and vision insurance) Tj
+0 -15 Td
+(• 401\(k\) with company matching) Tj
+0 -15 Td
+(• Flexible work arrangements and remote work options) Tj
+0 -15 Td
+(• Professional development opportunities and conference attendance) Tj
+0 -15 Td
+(• Stock options and performance bonuses) Tj
+0 -15 Td
+(• Collaborative and innovative work environment) Tj
+0 -15 Td
+(• Latest technology and development tools) Tj
+0 -40 Td
+/F3 10 Tf
+0.5 0.5 0.5 rg
+306 0 Td
+(Generated from high_match_job_description.txt) Tj
+ET
+endstream
+endobj
+
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000288 00000 n 
+0000000365 00000 n 
+0000000437 00000 n 
+0000000519 00000 n 
+trailer
+<<
+/Size 8
+/Root 1 0 R
+>>
+startxref
+6075
+%%EOF 

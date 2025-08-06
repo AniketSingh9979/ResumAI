@@ -461,12 +461,15 @@ export class PanelsComponent implements OnInit {
    */
   openAddPanelDialog(): void {
     const dialogRef = this.dialog.open(AddPanelDialogComponent, {
-      width: '520px',
+      width: '600px',
+      minWidth: '600px',
+      maxWidth: '90vw',
       disableClose: true,
       panelClass: ['custom-dialog-container', 'compact-dialog'],
       autoFocus: false,
-      maxHeight: '90vh',
-      position: { top: '50px' }
+      hasBackdrop: true,
+      position: { top: '5vh' },
+      restoreFocus: false
     });
 
     dialogRef.afterClosed().subscribe(result => {

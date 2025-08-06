@@ -4,6 +4,8 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-resume-upload-dialog',
@@ -13,7 +15,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './resume-upload-dialog.component.html',
   styleUrls: ['./resume-upload-dialog.component.scss']
@@ -21,10 +24,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class ResumeUploadDialogComponent {
   isDragging = false;
   selectedFile: File | null = null;
+  isUploading = false;
   
   constructor(
     public dialogRef: MatDialogRef<ResumeUploadDialogComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private http: HttpClient
   ) {}
 
   onDragOver(event: DragEvent): void {
@@ -78,17 +83,61 @@ export class ResumeUploadDialogComponent {
   }
 
   uploadFile(): void {
-    if (this.selectedFile) {
-      // Here you would typically upload the file to your backend
-      // For now, we'll just simulate the upload
-      setTimeout(() => {
-        this.snackBar.open('Resume uploaded successfully!', 'Close', {
+    if (!this.selectedFile || this.isUploading) {
+      return;
+    }
+
+    this.isUploading = true;
+    
+    // Create FormData for file upload
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    
+    // API endpoint for resume upload
+    const uploadUrl = 'http://localhost:8081/api/uploadResume';
+    
+    console.log('🚀 Uploading resume to:', uploadUrl);
+    
+    this.http.post<any>(uploadUrl, formData).subscribe({
+      next: (response) => {
+        console.log('✅ Upload successful:', response);
+        
+        this.snackBar.open('Resume uploaded and processed successfully!', 'Close', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom'
         });
-        this.dialogRef.close(this.selectedFile);
-      }, 1000);
-    }
+        
+        this.isUploading = false;
+        this.dialogRef.close({
+          success: true,
+          file: this.selectedFile,
+          response: response
+        });
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('❌ Upload failed:', error);
+        
+        let errorMessage = 'Upload failed. Please try again.';
+        
+        if (error.status === 0) {
+          errorMessage = 'Unable to connect to server. Please check your connection.';
+        } else if (error.status === 413) {
+          errorMessage = 'File is too large. Please select a smaller file.';
+        } else if (error.status === 415) {
+          errorMessage = 'File type not supported. Please upload PDF, DOC, or DOCX files.';
+        } else if (error.error?.message) {
+          errorMessage = error.error.message;
+        }
+        
+        this.snackBar.open(errorMessage, 'Close', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom'
+        });
+        
+        this.isUploading = false;
+      }
+    });
   }
 }

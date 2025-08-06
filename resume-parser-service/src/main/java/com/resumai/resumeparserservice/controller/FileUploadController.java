@@ -25,33 +25,91 @@ import org.springframework.http.MediaType;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(originPatterns = "*")
 @RequiredArgsConstructor
 @Slf4j
 public class FileUploadController {
 
     private final ParsedResumeService parsedResumeService;
 
+    /**
+     * Simple health check endpoint to verify all dependencies are working
+     */
+    @GetMapping("/health")
+    public ResponseEntity<Map<String, Object>> healthCheck() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            log.info("🏥 Health check requested");
+            
+            // Test if service is available
+            if (parsedResumeService != null) {
+                response.put("status", "UP");
+                response.put("service", "resume-parser-service");
+                response.put("timestamp", java.time.LocalDateTime.now());
+                response.put("message", "Service is running properly");
+                
+                log.info("✅ Health check passed");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("status", "DOWN");
+                response.put("message", "ParsedResumeService is not available");
+                return ResponseEntity.internalServerError().body(response);
+            }
+        } catch (Exception e) {
+            log.error("❌ Health check failed: {}", e.getMessage(), e);
+            response.put("status", "ERROR");
+            response.put("message", "Health check failed: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * Simple test endpoint to check if the controller is accessible
+     */
+    @GetMapping("/test")
+    public ResponseEntity<Map<String, String>> test() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "FileUploadController is working!");
+        response.put("timestamp", java.time.LocalDateTime.now().toString());
+        log.info("🧪 Test endpoint accessed successfully");
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/uploadResume")
     public ResponseEntity<Map<String, Object>> uploadResume(@RequestParam("file") MultipartFile file) {
         Map<String, Object> response = new HashMap<>();
         
         try {
+            log.info("📄 Starting resume upload process for file: {} (size: {} bytes)", 
+                    file.getOriginalFilename(), file.getSize());
+            
             // Step 1: Validate file
+            log.debug("Step 1: Validating uploaded file...");
             parsedResumeService.validateUploadedFile(file);
+            log.info("✅ File validation successful");
 
             // Step 2: Save file to disk
+            log.debug("Step 2: Saving file to disk...");
             Path filePath = parsedResumeService.saveFileToDisk(file);
+            log.info("✅ File saved to: {}", filePath);
 
             // Step 3: Extract and parse resume data
+            log.debug("Step 3: Extracting and parsing resume data...");
             ResumeProcessingData resumeData = parsedResumeService.extractAndParseResumeData(file);
+            log.info("✅ Resume data extracted successfully");
 
             // Step 4: Score resume against jobs
+            log.debug("Step 4: Scoring resume against job descriptions...");
             MatchingResults matchingResults = parsedResumeService.scoreResumeAgainstJobs(resumeData.extractedText);
+            log.info("✅ Resume scoring completed");
 
             // Step 5: Save to database
+            log.debug("Step 5: Saving processed resume to database...");
             ParsedResume savedResume = parsedResumeService.saveProcessedResumeToDatabase(file, resumeData, matchingResults, filePath);
+            log.info("✅ Resume saved to database with ID: {}", savedResume.getId());
 
             // Step 6: Prepare response
+            log.debug("Step 6: Building success response...");
             return buildSuccessResponse(response, savedResume, resumeData, matchingResults, filePath);
 
         } catch (IllegalArgumentException e) {
@@ -153,6 +211,8 @@ public class FileUploadController {
                         resumeInfo.put("fileSize", resume.getFileSize());
                         resumeInfo.put("contentType", resume.getContentType());
                         resumeInfo.put("score", resume.getScore());
+                        resumeInfo.put("skills", resume.getSkills());
+                        resumeInfo.put("experience", resume.getExperience());
                         resumeInfo.put("hasFile", resume.getFilePath() != null && !resume.getFilePath().trim().isEmpty());
                         
                         // Add download URL for each resume

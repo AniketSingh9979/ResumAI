@@ -374,11 +374,11 @@ export class JobProfileComponent implements OnInit {
   }
 
   handleFile(file: File): void {
-    const validTypes = ['.pdf', '.doc', '.docx'];
+    const validTypes = ['.pdf', '.doc', '.docx', '.txt'];
     const fileExt = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
     
     if (!validTypes.includes(fileExt)) {
-      this.snackBar.open('Please upload a valid document (PDF, DOC, DOCX)', 'Close', {
+      this.snackBar.open('Please upload a valid document (PDF, DOC, DOCX, TXT)', 'Close', {
         duration: 3000
       });
       return;
@@ -593,5 +593,93 @@ export class JobProfileComponent implements OnInit {
         }
       });
     }
+  }
+
+  /**
+   * Extract years of experience from experience level text
+   */
+  getExperienceYears(experienceLevel: string | undefined): string {
+    if (!experienceLevel) {
+      return 'Any level';
+    }
+    
+    // Look for patterns like "5-8 years", "3+ years", "2 years", etc.
+    const yearPattern = /(\d+[-+]?\d*)\s*years?/i;
+    const match = experienceLevel.match(yearPattern);
+    
+    if (match) {
+      return match[1] + ' years';
+    }
+    
+    // Look for patterns in parentheses like "(5-8 years)"
+    const parenthesesPattern = /\(([^)]*years?[^)]*)\)/i;
+    const parenthesesMatch = experienceLevel.match(parenthesesPattern);
+    
+    if (parenthesesMatch) {
+      return parenthesesMatch[1];
+    }
+    
+    // If no specific years found, return the original or a default
+    return experienceLevel.includes('Senior') ? '5+ years' :
+           experienceLevel.includes('Junior') ? '0-2 years' :
+           experienceLevel.includes('Mid') ? '3-5 years' :
+           'Any level';
+  }
+
+  /**
+   * Extract main skill from job description/requirements
+   */
+  getMainSkill(job: any): string {
+    if (!job) {
+      return 'General';
+    }
+
+    // Check title first for main technology/skill
+    const title = job.title || job.fileName || '';
+    const titleSkills = this.extractSkillsFromText(title);
+    if (titleSkills.length > 0) {
+      return titleSkills[0];
+    }
+
+    // Check requirements/responsibilities
+    const requirements = job.requirements || job.responsibilities || job.description || '';
+    const skillsFromReq = this.extractSkillsFromText(requirements);
+    if (skillsFromReq.length > 0) {
+      return skillsFromReq[0];
+    }
+
+    // Fallback based on department or default
+    return job.department || 'General';
+  }
+
+  /**
+   * Extract skills from text using common technology keywords
+   */
+  private extractSkillsFromText(text: string): string[] {
+    if (!text) return [];
+
+    const commonSkills = [
+      'Java', 'Python', 'JavaScript', 'TypeScript', 'React', 'Angular', 'Vue',
+      'Node.js', 'Spring Boot', 'Django', 'Flask', 'Express',
+      'AWS', 'Azure', 'GCP', 'Docker', 'Kubernetes',
+      'MySQL', 'PostgreSQL', 'MongoDB', 'Redis',
+      'HTML', 'CSS', 'SCSS', 'Bootstrap', 'Tailwind',
+      'Git', 'Jenkins', 'CI/CD', 'DevOps',
+      'REST API', 'GraphQL', 'Microservices',
+      'Machine Learning', 'AI', 'Data Science',
+      'C++', 'C#', '.NET', 'PHP', 'Ruby', 'Go', 'Rust',
+      'Spring', 'Hibernate', 'JPA', 'Maven', 'Gradle'
+    ];
+
+    const foundSkills: string[] = [];
+    const lowerText = text.toLowerCase();
+
+    for (const skill of commonSkills) {
+      if (lowerText.includes(skill.toLowerCase())) {
+        foundSkills.push(skill);
+      }
+    }
+
+    return foundSkills;
   }
 }

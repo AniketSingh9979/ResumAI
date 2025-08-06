@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/panel-members")
-@CrossOrigin(origins = "*")
+@CrossOrigin(originPatterns = "*")
 public class PanelMemberController {
     
     private static final Logger logger = LoggerFactory.getLogger(PanelMemberController.class);

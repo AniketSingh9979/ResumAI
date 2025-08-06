@@ -1,12 +1,16 @@
 .add-panel-dialog {
-  width: 520px;
-  padding: 16px;
-  overflow: hidden;
+  width: 600px !important;
+  min-width: 600px !important;
+  max-width: 90vw !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  max-height: 85vh !important;
+  box-sizing: border-box !important;
   
   .dialog-header {
     background: linear-gradient(135deg, #0FA4AF, #024950);
-    margin: -16px -16px 16px -16px;
-    padding: 16px;
+    margin: 0;
+    padding: 20px 24px;
     color: white;
 
     h2 {
@@ -20,7 +24,7 @@
 
   .dialog-content-wrapper {
     margin: 0;
-    padding: 0 8px;
+    padding: 24px;
   }
 
   h2 {
@@ -40,14 +44,14 @@
 
   .form-row {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     width: 100%;
     margin-bottom: 0;
 
     mat-form-field {
       flex: 1;
       margin: 0;
-      width: 0; // This helps prevent horizontal overflow
+      min-width: 0; // This helps prevent horizontal overflow
     }
 
     &.availability-row {
@@ -230,6 +234,72 @@
 
       &:hover:not(.mat-option-disabled) {
         background: rgba(15, 164, 175, 0.1);
+      }
+    }
+  }
+}
+
+// Global dialog styling - AGGRESSIVE OVERRIDES
+::ng-deep {
+  .custom-dialog-container {
+    overflow: visible !important;
+    width: 600px !important;
+    max-width: 90vw !important;
+    
+    .mat-mdc-dialog-container {
+      overflow: visible !important;
+      max-height: 85vh !important;
+      width: 600px !important;
+      max-width: 90vw !important;
+    }
+    
+    .mat-mdc-dialog-content {
+      overflow: visible !important;
+      max-height: none !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+    
+    .mat-mdc-dialog-surface {
+      overflow: visible !important;
+      width: 600px !important;
+      max-width: 90vw !important;
+      min-width: 600px !important;
+    }
+  }
+  
+  .compact-dialog {
+    width: 600px !important;
+    max-width: 90vw !important;
+    
+    .mat-mdc-dialog-surface {
+      overflow: visible !important;
+      width: 600px !important;
+      max-width: 90vw !important;
+    }
+    
+    .cdk-dialog-container {
+      width: 600px !important;
+      max-width: 90vw !important;
+    }
+  }
+}
+
+// Responsive handling
+@media (max-width: 768px) {
+  .add-panel-dialog {
+    min-width: 95vw;
+    
+    .dialog-content-wrapper {
+      padding: 16px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 12px;
+      
+      mat-form-field {
+        width: 100%;
       }
     }
   }

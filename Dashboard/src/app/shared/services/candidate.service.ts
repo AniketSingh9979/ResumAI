@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface Candidate {
   id: string;
   name: string;
   email?: string;
-  resumeFile: File;
+  resumeFile?: File;
   uploadDate: Date;
   status: 'pending' | 'processing' | 'reviewed';
   resumeScore?: number;
+  skills?: string[];
   extractedInfo?: {
     skills?: string[];
     experience?: string[];
@@ -21,15 +23,111 @@ export interface Candidate {
   };
 }
 
+// Interface for API response from resume-parser-service
+export interface ResumeApiResponse {
+  success: boolean;
+  message: string;
+  totalCount: number;
+  resumes: ResumeItem[];
+}
+
+export interface ResumeItem {
+  resumeId: number;
+  email: string;
+  originalFileName: string;
+  uploadTime: string;
+  fileSize: number;
+  contentType: string;
+  score: number;
+  skills: string;
+  experience: string;
+  hasFile: boolean;
+  downloadUrl: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CandidateService {
   private candidates: Candidate[] = [];
   private candidatesSubject = new BehaviorSubject<Candidate[]>([]);
+  private apiUrl = 'http://localhost:8081/api'; // Resume parser service URL
+
+  constructor(private http: HttpClient) {
+    this.loadCandidatesFromAPI();
+  }
 
   getCandidates() {
     return this.candidatesSubject.asObservable();
+  }
+
+  // Load candidates from the resume parser service API
+  loadCandidatesFromAPI() {
+    this.http.get<ResumeApiResponse>(`${this.apiUrl}/resumesList`)
+      .pipe(
+        catchError(error => {
+          console.error('Error loading candidates from API:', error);
+          return of({ success: false, message: 'Failed to load', totalCount: 0, resumes: [] });
+        })
+      )
+      .subscribe(response => {
+        if (response.success) {
+          const candidates = this.mapApiResponseToCandidates(response.resumes);
+          this.candidates = candidates;
+          this.candidatesSubject.next([...this.candidates]);
+        }
+      });
+  }
+
+  // Map API response to Candidate interface
+  private mapApiResponseToCandidates(resumes: ResumeItem[]): Candidate[] {
+    return resumes.map(resume => ({
+      id: resume.resumeId.toString(),
+      name: this.extractNameFromFileName(resume.originalFileName) || resume.email || 'Unknown',
+      email: resume.email,
+      uploadDate: new Date(resume.uploadTime),
+      status: 'reviewed' as const,
+      resumeScore: resume.score || 0,
+      skills: resume.skills ? resume.skills.split(',').map(skill => skill.trim()).filter(skill => skill) : [],
+      extractedInfo: {
+        experience: resume.experience ? [resume.experience] : [],
+        contact: {
+          email: resume.email
+        }
+      }
+    }));
+  }
+
+  // Extract candidate name from filename
+  private extractNameFromFileName(fileName: string): string {
+    if (!fileName) return '';
+    
+    // Remove file extension
+    const nameWithoutExt = fileName.replace(/\.[^/.]+$/, '');
+    
+    // Replace underscores and hyphens with spaces
+    const cleanName = nameWithoutExt.replace(/[-_]/g, ' ');
+    
+    // Convert to title case
+    return cleanName.replace(/\w\S*/g, (txt) => 
+      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+    );
+  }
+
+  // Get detailed resume information including skills
+  getResumeDetails(resumeId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/resumes/${resumeId}`)
+      .pipe(
+        catchError(error => {
+          console.error('Error loading resume details:', error);
+          return of(null);
+        })
+      );
+  }
+
+  // Refresh candidates data
+  refreshCandidates() {
+    this.loadCandidatesFromAPI();
   }
 
   uploadResume(file: File) {

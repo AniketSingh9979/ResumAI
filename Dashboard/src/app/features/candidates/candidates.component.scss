@@ -61,56 +61,133 @@
 
     .upload-card {
       background: white;
-      border: 2px dashed rgba(15, 164, 175, 0.3);
       border-radius: 8px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-      &:hover {
-        border-color: #0FA4AF;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(2, 73, 80, 0.1);
-        cursor: pointer;
+      .upload-area {
+        border: 2px dashed #0FA4AF;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        background: rgba(15, 164, 175, 0.05);
+        transition: all 0.2s ease;
+        margin-bottom: 16px;
 
-        .upload-placeholder {
-          mat-icon {
-            transform: translateY(-2px);
+        &.dragging {
+          border-color: #024950;
+          background: rgba(15, 164, 175, 0.1);
+          transform: scale(1.02);
+        }
+
+        .upload-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+
+          .upload-icon {
+            font-size: 3rem;
+            width: 3rem;
+            height: 3rem;
             color: #0FA4AF;
+          }
+
+          h2 {
+            color: #024950;
+            margin: 0;
+            font-size: 1.4rem;
+          }
+
+          .browse-btn {
+            background: linear-gradient(135deg, #0FA4AF, #024950);
+            color: white;
+            font-weight: 500;
+
+            mat-icon {
+              margin-right: 8px;
+            }
+          }
+
+          .drag-text {
+            color: #666;
+            margin: 0;
+            font-size: 0.95rem;
+          }
+
+          .supported-formats {
+            color: #999;
+            margin: 0;
+            font-size: 0.85rem;
           }
         }
       }
 
-      .upload-placeholder {
-        padding: 32px 20px;
-        text-align: center;
-        color: #024950;
+      .upload-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(15, 164, 175, 0.2);
 
-        mat-icon {
-          font-size: 48px;
-          width: 48px;
-          height: 48px;
-          color: rgba(15, 164, 175, 0.7);
-          transition: all 0.3s ease;
-          margin-bottom: 16px;
+        button {
+          min-width: 100px;
+          height: 40px;
+
+          &[color="primary"] {
+            background: linear-gradient(135deg, #0FA4AF, #024950);
+            color: white;
+            font-weight: 500;
+          }
+
+          &:disabled {
+            opacity: 0.6;
+          }
+
+          mat-spinner {
+            margin-right: 8px;
+          }
+        }
+      }
+
+      .selected-file-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: rgba(15, 164, 175, 0.05);
+        border-radius: 8px;
+        border: 1px solid rgba(15, 164, 175, 0.2);
+
+        .file-info {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex: 1;
+
+          mat-icon {
+            color: #0FA4AF;
+            font-size: 20px;
+          }
+
+          .filename {
+            font-weight: 500;
+            color: #024950;
+          }
+
+          .filesize {
+            color: #666;
+            font-size: 0.9rem;
+          }
         }
 
-        h2 {
-          margin: 0 0 8px;
-          font-size: 1.25rem;
-          font-weight: 500;
-          color: #024950;
-        }
+        .file-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
 
-        p {
-          margin: 0;
-          color: rgba(2, 73, 80, 0.7);
-          font-size: 0.9rem;
-
-          &.supported-formats {
-            margin-top: 8px;
-            font-size: 0.8rem;
-            color: rgba(2, 73, 80, 0.5);
+          button[color="primary"] {
+            background: linear-gradient(135deg, #0FA4AF, #024950);
+            color: white;
           }
         }
       }
@@ -365,6 +442,91 @@
         text-align: center;
         color: #666;
         font-style: italic;
+        padding: 40px;
+
+        .empty-state {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+
+          mat-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            color: #ccc;
+          }
+
+          p {
+            margin: 0;
+            font-size: 1.1rem;
+          }
+
+          button {
+            margin-top: 8px;
+          }
+        }
+      }
+
+      .candidate-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        strong {
+          font-weight: 500;
+          color: #024950;
+        }
+
+        small {
+          color: #666;
+          font-size: 0.85rem;
+        }
+      }
+
+      .skills-container {
+        max-width: 200px;
+
+        .skills-text {
+          font-size: 0.9rem;
+          color: #024950;
+
+          .more-skills {
+            color: #0FA4AF;
+            font-weight: 500;
+            font-size: 0.8rem;
+            margin-left: 4px;
+          }
+        }
+
+        .load-skills-btn {
+          font-size: 0.8rem;
+          min-width: 100px;
+          height: 32px;
+
+          mat-icon {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+          }
+        }
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 4px;
+
+        button {
+          width: 36px;
+          height: 36px;
+
+          mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+          }
+        }
       }
     }
   }
