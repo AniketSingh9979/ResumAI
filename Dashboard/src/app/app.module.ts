@@ -12,8 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 
-import { AppComponent } from './app';
-import { DashboardModule } from './features/dashboard/dashboard.module';
+import { App } from './app';
 
 @NgModule({
   imports: [
@@ -21,10 +20,9 @@ import { DashboardModule } from './features/dashboard/dashboard.module';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-    DashboardModule,
-    AppComponent // <-- Import here, not in declarations
+    App // <-- Import here, not in declarations
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [App]
 })
 export class AppModule { }

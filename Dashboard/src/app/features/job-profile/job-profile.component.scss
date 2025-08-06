@@ -1,0 +1,202 @@
+.job-profile-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  h1 {
+    color: #3f51b5;
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+}
+
+.upload-card, .grid-card {
+  margin-bottom: 20px;
+  
+  mat-card-header {
+    margin-bottom: 16px;
+    
+    mat-card-title {
+      color: #424242;
+      font-size: 18px;
+    }
+  }
+}
+
+.upload-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.upload-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.filters-section {
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+
+  h3 {
+    margin: 0 0 16px 0;
+    color: #424242;
+    font-weight: 500;
+  }
+}
+
+.filters-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+}
+
+.filter-field {
+  min-width: 150px;
+  
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
+}
+
+.table-container {
+  position: relative;
+  margin-bottom: 20px;
+
+  mat-progress-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+  }
+}
+
+.jobs-table {
+  width: 100%;
+  background: white;
+
+  th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #424242;
+  }
+
+  td, th {
+    padding: 12px 8px;
+    text-align: left;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  // Responsive table
+  @media (max-width: 768px) {
+    font-size: 12px;
+    
+    td, th {
+      padding: 8px 4px;
+    }
+  }
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+    color: #ccc;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+// Material Design overrides
+mat-form-field {
+  margin-bottom: 0;
+}
+
+mat-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+mat-paginator {
+  background-color: #fafafa;
+  border-top: 1px solid #e0e0e0;
+}
+
+// Button styling
+button[mat-raised-button] {
+  background: linear-gradient(45deg, #3f51b5, #5c6bc0);
+  border: none;
+  
+  &:disabled {
+    background: #e0e0e0;
+    color: #9e9e9e;
+  }
+}
+
+button[mat-button] {
+  &[color="accent"] {
+    color: #ff4081;
+  }
+}
+
+// Icon button styling
+button[mat-icon-button] {
+  &[color="primary"] {
+    color: #3f51b5;
+  }
+  
+  &[color="warn"] {
+    color: #f44336;
+  }
+}
+
+// Loading state
+.table-container[loading] .jobs-table {
+  opacity: 0.6;
+  pointer-events: none;
+} 

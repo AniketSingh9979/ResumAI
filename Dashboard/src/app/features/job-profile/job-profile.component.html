@@ -1,0 +1,232 @@
+<div class="job-profile-container">
+  <h1>Job Profile Management</h1>
+
+  <!-- Upload Section -->
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>Upload Job Description</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="uploadJobDescription()" #uploadFormRef="ngForm">
+        <div class="upload-row">
+          <!-- File Upload -->
+          <div class="upload-field">
+            <input 
+              type="file" 
+              #fileInput
+              (change)="onFileSelected($event)"
+              accept=".pdf,.doc,.docx,.txt,.rtf"
+              hidden>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Select Job Description File</mat-label>
+              <input matInput readonly [value]="selectedFile?.name || ''" placeholder="Choose file...">
+              <button mat-icon-button matSuffix type="button" (click)="fileInput.click()">
+                <mat-icon>attach_file</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <!-- Panelist Name (Required) -->
+          <mat-form-field appearance="outline" class="upload-field">
+            <mat-label>Panelist Name *</mat-label>
+            <input matInput [(ngModel)]="uploadForm.panelistName" name="panelistName" required>
+          </mat-form-field>
+        </div>
+
+        <div class="upload-row">
+          <!-- Job Title -->
+          <mat-form-field appearance="outline" class="upload-field">
+            <mat-label>Job Title</mat-label>
+            <input matInput [(ngModel)]="uploadForm.title" name="title">
+          </mat-form-field>
+
+          <!-- Company -->
+          <mat-form-field appearance="outline" class="upload-field">
+            <mat-label>Company</mat-label>
+            <input matInput [(ngModel)]="uploadForm.company" name="company">
+          </mat-form-field>
+        </div>
+
+        <div class="upload-row">
+          <!-- Location -->
+          <mat-form-field appearance="outline" class="upload-field">
+            <mat-label>Location</mat-label>
+            <input matInput [(ngModel)]="uploadForm.location" name="location">
+          </mat-form-field>
+
+          <!-- Experience Level -->
+          <mat-form-field appearance="outline" class="upload-field">
+            <mat-label>Experience Level</mat-label>
+            <mat-select [(ngModel)]="uploadForm.experienceLevel" name="experienceLevel">
+              <mat-option value="Entry Level">Entry Level</mat-option>
+              <mat-option value="Junior">Junior</mat-option>
+              <mat-option value="Mid Level">Mid Level</mat-option>
+              <mat-option value="Senior">Senior</mat-option>
+              <mat-option value="Lead">Lead</mat-option>
+              <mat-option value="Principal">Principal</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Job Description</mat-label>
+          <textarea matInput [(ngModel)]="uploadForm.description" name="description" rows="3"></textarea>
+        </mat-form-field>
+
+        <!-- Requirements -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Requirements</mat-label>
+          <textarea matInput [(ngModel)]="uploadForm.requirements" name="requirements" rows="3"></textarea>
+        </mat-form-field>
+
+        <!-- Responsibilities -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Responsibilities</mat-label>
+          <textarea matInput [(ngModel)]="uploadForm.responsibilities" name="responsibilities" rows="3"></textarea>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="loading || !uploadForm.panelistName">
+            <mat-icon>upload</mat-icon>
+            Upload Job Description
+          </button>
+          <button mat-button type="button" (click)="resetForm()">
+            <mat-icon>clear</mat-icon>
+            Clear Form
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Job Descriptions Grid -->
+  <mat-card class="grid-card">
+    <mat-card-header>
+      <mat-card-title>Job Descriptions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      
+      <!-- Filters -->
+      <div class="filters-section">
+        <h3>Filters</h3>
+        <div class="filters-row">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Title</mat-label>
+            <input matInput [(ngModel)]="filters.title" (input)="applyFilters()">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Company</mat-label>
+            <input matInput [(ngModel)]="filters.company" (input)="applyFilters()">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Location</mat-label>
+            <input matInput [(ngModel)]="filters.location" (input)="applyFilters()">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Experience Level</mat-label>
+            <mat-select [(ngModel)]="filters.experienceLevel" (selectionChange)="applyFilters()">
+              <mat-option value="">All</mat-option>
+              <mat-option value="Entry Level">Entry Level</mat-option>
+              <mat-option value="Junior">Junior</mat-option>
+              <mat-option value="Mid Level">Mid Level</mat-option>
+              <mat-option value="Senior">Senior</mat-option>
+              <mat-option value="Lead">Lead</mat-option>
+              <mat-option value="Principal">Principal</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Panelist</mat-label>
+            <input matInput [(ngModel)]="filters.panelistName" (input)="applyFilters()">
+          </mat-form-field>
+
+          <button mat-button color="accent" (click)="clearFilters()">
+            <mat-icon>clear_all</mat-icon>
+            Clear Filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="table-container">
+        <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="50"></mat-progress-spinner>
+        
+        <table mat-table [dataSource]="jobs" matSort (matSortChange)="onSortChange($event)" class="jobs-table">
+          
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+            <td mat-cell *matCellDef="let job">{{ job.title }}</td>
+          </ng-container>
+
+          <!-- Company Column -->
+          <ng-container matColumnDef="company">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Company</th>
+            <td mat-cell *matCellDef="let job">{{ job.company }}</td>
+          </ng-container>
+
+          <!-- Location Column -->
+          <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+            <td mat-cell *matCellDef="let job">{{ job.location || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Experience Level Column -->
+          <ng-container matColumnDef="experienceLevel">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Experience</th>
+            <td mat-cell *matCellDef="let job">{{ job.experienceLevel || 'N/A' }}</td>
+          </ng-container>
+
+          <!-- Panelist Column -->
+          <ng-container matColumnDef="panelistName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Panelist</th>
+            <td mat-cell *matCellDef="let job">{{ job.panelistName }}</td>
+          </ng-container>
+
+          <!-- Created Date Column -->
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Created</th>
+            <td mat-cell *matCellDef="let job">{{ job.createdAt | date:'short' }}</td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let job">
+              <button mat-icon-button color="primary" (click)="viewJobDetails(job)" title="View Details">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteJob(job)" title="Delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- No Data Message -->
+        <div *ngIf="!loading && jobs.length === 0" class="no-data">
+          <mat-icon>work_off</mat-icon>
+          <p>No job descriptions found</p>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <mat-paginator 
+        [length]="totalElements" 
+        [pageSize]="pageSize" 
+        [pageIndex]="currentPage"
+        [pageSizeOptions]="[5, 10, 25, 50]" 
+        (page)="onPageChange($event)"
+        showFirstLastButtons>
+      </mat-paginator>
+
+    </mat-card-content>
+  </mat-card>
+</div> 
