@@ -85,20 +85,30 @@ body {
 .p-3 { padding: 1.5rem; }
 .p-4 { padding: 2rem; }
 
-// Scrollbar styling
-::-webkit-scrollbar {
+// Scrollbar styling for main content areas
+.content-wrapper::-webkit-scrollbar {
   width: 8px;
 }
 
-::-webkit-scrollbar-track {
+.content-wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-::-webkit-scrollbar-thumb {
+.content-wrapper::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.content-wrapper::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
+}
+
+// Hide scrollbar for sidenav completely
+.mat-sidenav {
+  scrollbar-width: none !important; // Firefox
+  -ms-overflow-style: none !important; // Internet Explorer 10+
+}
+
+.mat-sidenav::-webkit-scrollbar {
+  display: none !important; // WebKit
 }

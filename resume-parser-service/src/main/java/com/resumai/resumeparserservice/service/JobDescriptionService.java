@@ -5,6 +5,9 @@ import com.resumai.resumeparserservice.repository.JobDescriptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -24,10 +27,10 @@ public class JobDescriptionService {
      */
     public JobDescription processAndSaveJobDescription(String extractedText, String title, String company,
                                                       String description, String requirements, String responsibilities,
-                                                      String location, String experienceLevel) {
+                                                      String location, String experienceLevel, String panelistName) {
         // Parse job description
         JobDescription jobDescription = parseJobDescription(extractedText, title, company, 
-                description, requirements, responsibilities, location, experienceLevel);
+                description, requirements, responsibilities, location, experienceLevel, panelistName);
         
         // Validate required fields
         if (jobDescription.getTitle() == null || jobDescription.getTitle().trim().isEmpty() ||
@@ -76,7 +79,7 @@ public class JobDescriptionService {
      */
     private JobDescription parseJobDescription(String extractedText, String title, String company,
                                              String description, String requirements, String responsibilities,
-                                             String location, String experienceLevel) {
+                                             String location, String experienceLevel, String panelistName) {
         JobDescription jobDescription = new JobDescription();
         
         // Use provided parameters first, fall back to parsing from text
@@ -87,6 +90,7 @@ public class JobDescriptionService {
         jobDescription.setResponsibilities(responsibilities != null ? responsibilities : extractResponsibilitiesFromText(extractedText));
         jobDescription.setLocation(location != null ? location : extractLocationFromText(extractedText));
         jobDescription.setExperienceLevel(experienceLevel != null ? experienceLevel : extractExperienceLevel(extractedText));
+        jobDescription.setPanelistName(panelistName);
         
         // Set timestamp
         jobDescription.setCreatedAt(LocalDateTime.now());
@@ -209,5 +213,40 @@ public class JobDescriptionService {
         if (text.toLowerCase().contains("mid level")) return "Mid Level";
         
         return null;
+    }
+
+    /**
+     * Get jobs with pagination and filtering
+     */
+    public Page<JobDescription> getJobsPagedAndFiltered(Pageable pageable, String title, String company, 
+                                                       String location, String experienceLevel, String panelistName) {
+        Specification<JobDescription> spec = Specification.where(null);
+
+        if (title != null && !title.trim().isEmpty()) {
+            spec = spec.and((root, query, cb) -> 
+                cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+        }
+
+        if (company != null && !company.trim().isEmpty()) {
+            spec = spec.and((root, query, cb) -> 
+                cb.like(cb.lower(root.get("company")), "%" + company.toLowerCase() + "%"));
+        }
+
+        if (location != null && !location.trim().isEmpty()) {
+            spec = spec.and((root, query, cb) -> 
+                cb.like(cb.lower(root.get("location")), "%" + location.toLowerCase() + "%"));
+        }
+
+        if (experienceLevel != null && !experienceLevel.trim().isEmpty()) {
+            spec = spec.and((root, query, cb) -> 
+                cb.like(cb.lower(root.get("experienceLevel")), "%" + experienceLevel.toLowerCase() + "%"));
+        }
+
+        if (panelistName != null && !panelistName.trim().isEmpty()) {
+            spec = spec.and((root, query, cb) -> 
+                cb.like(cb.lower(root.get("panelistName")), "%" + panelistName.toLowerCase() + "%"));
+        }
+
+        return jobDescriptionRepository.findAll(spec, pageable);
     }
 } 

@@ -122,6 +122,24 @@ mat-toolbar {
       width: 260px;
       background: linear-gradient(180deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
       border: none;
+      overflow-y: auto;
+      
+      // Hide scrollbar - multiple approaches for maximum compatibility
+      scrollbar-width: none !important; // Firefox
+      -ms-overflow-style: none !important; // Internet Explorer 10+
+      
+      &::-webkit-scrollbar {
+        display: none !important; // WebKit
+        width: 0 !important; // Additional WebKit
+      }
+      
+      &::-webkit-scrollbar-track {
+        display: none !important;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        display: none !important;
+      }
       
       &::before {
         content: '';
@@ -178,6 +196,16 @@ mat-toolbar {
 
       mat-nav-list {
         padding-top: 16px;
+        overflow-y: auto;
+        
+        // Hide scrollbar for nav list
+        scrollbar-width: none !important; // Firefox
+        -ms-overflow-style: none !important; // Internet Explorer 10+
+        
+        &::-webkit-scrollbar {
+          display: none !important; // WebKit
+          width: 0 !important;
+        }
 
         .menu-item {
           margin: 8px 16px;

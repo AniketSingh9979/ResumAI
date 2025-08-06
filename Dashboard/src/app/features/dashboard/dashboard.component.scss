@@ -1,565 +1,326 @@
+// Dashboard Container
 .dashboard-container {
-  padding: 2rem;
-  background-color: #f5f5f5;
+  padding: 24px;
   min-height: 100%;
-  
-  h1 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0.25rem 0 1rem;
-    padding-bottom: 0.5rem;
-    position: relative;
-    letter-spacing: 0.5px;
-    
-    &:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 3px;
-      background: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end));
-      border-radius: 2px;
-    }
-
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-
-    @media (max-width: 768px) {
-      font-size: 2rem;
-      margin: 0.25rem 0 1.25rem;
-    }
-
-    @media (max-width: 480px) {
-      font-size: 1.75rem;
-      margin: 0.25rem 0 1rem;
-    }
-  }
-
-  .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-top: 24px;
-
-    @media (max-width: 1200px) {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    @media (max-width: 768px) {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-.stats-cards {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-
-  @media (max-width: 1400px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-  margin-top: 1.5rem;
-
-  .stat-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-    &:nth-child(1) {
-      background: linear-gradient(135deg, #6B8DD6 0%, #8E37D7 100%);
-    }
-
-    &:nth-child(2) {
-      background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-    }
-
-    &:nth-child(3) {
-      background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%);
-    }
-
-    &:nth-child(4) {
-      background: linear-gradient(135deg, #26C6DA 0%, #00838F 100%);
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-      pointer-events: none;
-    }
-
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-
-      &::before {
-        background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
-      }
-    }
-
-    &[routerLink] {
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      position: relative;
-      overflow: hidden;
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-
-        &::before {
-          opacity: 1;
-        }
-      }
-
-      &:active {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
-    }
-
-    .mat-card-header {
-      padding: 1.25rem 1.25rem 0;
-      position: relative;
-      z-index: 1;
-
-      .mat-card-title {
-        font-size: 1.1rem;
-        font-weight: 500;
-        color: white;
-        margin: 0;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-      }
-    }
-
-    .mat-card-content {
-      padding: 1.25rem;
-      position: relative;
-      z-index: 1;
-
-      .stat-number {
-        font-size: 2.5rem;
-        font-weight: 600;
-        color: white;
-        margin: 0.75rem 0;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .panel-stats {
-        display: flex;
-        justify-content: space-around;
-        text-align: center;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        padding: 1rem;
-        margin-top: 0.5rem;
-
-        .stat-item {
-          .stat-number {
-            font-size: 1.75rem;
-            margin-bottom: 0.25rem;
-          }
-
-          .stat-label {
-            font-size: 0.875rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-          }
-        }
-      }
-    }
-
-    // Decorative elements
-    &::after {
-      content: '';
-      position: absolute;
-      right: -15%;
-      bottom: -15%;
-      width: 100px;
-      height: 100px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-  }
-}
-
-.recent-activities {
-  mat-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    min-height: 300px;
-    
-    mat-card-header {
-      mat-card-title {
-        font-size: 1.25rem;
-        font-weight: 500;
-        color: #333;
-      }
-    }
-    
-    mat-card-content {
-      p {
-        color: #666;
-        font-size: 1rem;
-        text-align: center;
-        margin-top: 2rem;
-        font-style: italic;
-      }
-    }
-  }
 }
 
 .dashboard-header {
-  padding: 1rem 0;
-  margin-bottom: 2rem;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.95),
-    rgba(255, 255, 255, 0.85)
-  );
-  backdrop-filter: blur(8px);
-  border-radius: var(--border-radius);
+  margin-bottom: 32px;
+  
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
 }
 
-.dashboard-card {
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+// Stats Cards with Gradient Styling
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+.stat-card {
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  
+  // Gradient backgrounds for each card
+  &:nth-child(1) {
+    background: linear-gradient(135deg, #7367f0 0%, #8e7cf3 100%);
+    color: white;
+  }
+  
+  &:nth-child(2) {
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    color: white;
+  }
+  
+  &:nth-child(3) {
+    background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%);
+    color: white;
+  }
+  
+  &:nth-child(4) {
+    background: linear-gradient(135deg, #26C6DA 0%, #00838F 100%);
+    color: white;
   }
 
-  &.panel-members-card {
-    .mat-card-avatar {
-      background: linear-gradient(135deg, #2196F3, #1976D2);
+  // Glass effect overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  mat-card-header {
+    padding: 20px 20px 0;
+    position: relative;
+    z-index: 2;
+    
+    mat-card-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: inherit;
+      margin: 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  mat-card-content {
+    padding: 8px 20px 20px;
+    position: relative;
+    z-index: 2;
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: inherit;
+      margin: 0;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Dashboard Cards Section
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+// Individual Dashboard Cards
+.upcoming-interviews-card,
+.recent-activity-card {
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  background: white;
+  border: none;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  mat-card-header {
+    padding: 20px 20px 0;
+    
+    .card-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      
+      mat-card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin: 0;
+      }
+      
+      button {
+        background: linear-gradient(135deg, #7367f0, #8e7cf3);
+        color: white;
+        border-radius: 20px;
+        padding: 0 16px;
+        height: 36px;
+        font-size: 0.875rem;
+        border: none;
+      }
+    }
+  }
+  
+  mat-card-content {
+    padding: 16px 20px 20px;
+  }
+}
+
+// Interview List Styling (Upcoming Interviews)
+.interview-list {
+  .interview-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 16px;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .time-slot {
+      text-align: center;
+      min-width: 60px;
+      
+      .date {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
+      
+      .time {
+        font-size: 0.75rem;
+        color: #666;
+      }
+    }
+    
+    .interview-details {
+      flex: 1;
+      
+      .candidate-name {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 4px;
+        font-size: 1rem;
+      }
+      
+      .position {
+        font-size: 0.875rem;
+        color: #666;
+        margin-bottom: 6px;
+      }
+      
+      .panel-info {
+        display: flex;
+        align-items: center;
+        font-size: 0.75rem;
+        color: #7367f0;
+        
+        mat-icon {
+          font-size: 14px;
+          width: 14px;
+          height: 14px;
+          margin-right: 4px;
+        }
+      }
+    }
+    
+    .status {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      min-width: 80px;
+      text-align: center;
+      
+      // Default styling
+      background: #e3f2fd;
+      color: #1976d2;
+      
+      // You can add specific status colors if needed
+      &.scheduled, &.confirmed {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+      
+      &.pending {
+        background: #fff3e0;
+        color: #f57c00;
+      }
+      
+      &.completed {
+        background: #e8f5e8;
+        color: #388e3c;
+      }
+    }
+  }
+}
+
+// Activities List Styling (Recent Activities)
+.activities-list {
+  .activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+    gap: 12px;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .activity-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
       
       mat-icon {
-        color: white;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
       }
     }
-
-    .panel-preview {
-      margin-top: 16px;
-
-      .panel-stats {
-        display: flex;
-        justify-content: space-around;
-        padding: 0.5rem;
-        
-        .stat-item {
-          text-align: center;
-          
-          .stat-number {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-          }
-          
-          .stat-label {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-          }
-        }
-      }
-    }
-  }
-}
-
-.dashboard-cards {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  margin-top: 24px;
-
-  @media (max-width: 1200px) {
-    grid-template-columns: 1fr;
-  }
-
-  .upcoming-interviews-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(115, 103, 240, 0.1);
     
-    .card-header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 24px;
-      border-bottom: 1px solid rgba(115, 103, 240, 0.1);
-
-      mat-card-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin: 0;
-      }
-
-      button {
-        display: flex;
-        align-items: center;
-        gap: 4px;
+    .activity-details {
+      flex: 1;
+      
+      .activity-description {
         font-weight: 500;
-        
-        mat-icon {
-          font-size: 18px;
-          width: 18px;
-          height: 18px;
-          transition: transform 0.3s ease;
-        }
-
-        &:hover {
-          mat-icon {
-            transform: translateX(4px);
-          }
-        }
-      }
-    }
-
-    .interview-list {
-      padding: 16px 8px;
-
-      .interview-item {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        padding: 16px;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-
-        &:hover {
-          background: rgba(115, 103, 240, 0.05);
-          transform: translateX(4px);
-        }
-
-        .time-slot {
-          min-width: 80px;
-          text-align: center;
-          
-          .date {
-            font-weight: 600;
-            color: var(--primary-gradient-start);
-            font-size: 0.9rem;
-          }
-          
-          .time {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-          }
-        }
-
-        .interview-details {
-          flex: 1;
-          
-          .candidate-name {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-          }
-          
-          .position {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-bottom: 4px;
-          }
-          
-          .panel-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            color: var(--text-tertiary);
-            
-            mat-icon {
-              font-size: 16px;
-              width: 16px;
-              height: 16px;
-            }
-          }
-        }
-
-        .status {
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-size: 0.8rem;
-          font-weight: 500;
-
-          &:contains("Scheduled") {
-            background: rgba(115, 103, 240, 0.1);
-            color: var(--primary-gradient-start);
-          }
-
-          &:contains("Confirmed") {
-            background: rgba(40, 199, 111, 0.1);
-            color: #28c76f;
-          }
-
-          &:contains("Pending") {
-            background: rgba(255, 159, 67, 0.1);
-            color: #ff9f43;
-          }
-        }
-      }
-    }
-  }
-
-  .recent-activities-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(115, 103, 240, 0.1);
-
-    mat-card-header {
-      padding: 16px 24px;
-      border-bottom: 1px solid rgba(115, 103, 240, 0.1);
-
-      mat-card-title {
-        font-size: 1.25rem;
-        font-weight: 600;
         color: var(--text-primary);
-        margin: 0;
+        margin-bottom: 4px;
+        font-size: 0.875rem;
+        line-height: 1.4;
       }
-    }
-
-    mat-card-content {
-      padding: 24px;
-      text-align: center;
-      color: var(--text-secondary);
-    }
-
-    flex: 1;
-    min-width: 300px;
-    margin: 16px;
-    border-radius: 12px;
-    overflow: hidden;
-
-    .card-header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      background-color: #f8f9fa;
-    }
-
-    .activities-list {
-      padding: 16px;
-      max-height: 400px;
-      overflow-y: auto;
-
-      .activity-item {
-        display: flex;
-        align-items: flex-start;
-        padding: 12px 0;
-        border-bottom: 1px solid #e0e0e0;
-
-        &:last-child {
-          border-bottom: none;
-        }
-
-        .activity-icon {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          margin-right: 16px;
-          flex-shrink: 0;
-
-          mat-icon {
-            font-size: 20px;
-            width: 20px;
-            height: 20px;
-          }
-        }      .activity-details {
-        flex: 1;
-        text-align: left;
-
-        .activity-description {
-          font-size: 14px;
-          color: #333;
-          margin-bottom: 4px;
-          line-height: 1.4;
-          text-align: left;
-        }
-
-        .activity-timestamp {
-          font-size: 12px;
-          color: #666;
-          text-align: left;
-        }
-        }
+      
+      .activity-timestamp {
+        font-size: 0.75rem;
+        color: #666;
       }
     }
   }
 }
 
-// Responsive design
+// Responsive Design
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 1rem;
-    
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-    }
+    padding: 16px;
   }
   
   .stats-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  
+  .dashboard-cards {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    
-    .stat-card {
-      mat-card-content .stat-number {
-        font-size: 2.5rem;
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard-container {
-    padding: 0.75rem;
+    gap: 16px;
   }
   
-  .stats-cards {
-    .stat-card {
-      mat-card-content .stat-number {
-        font-size: 2rem;
-      }
+  .stat-card {
+    mat-card-content .stat-number {
+      font-size: 2rem;
+    }
+  }
+  
+  .upcoming-interviews-card,
+  .recent-activity-card {
+    mat-card-header .card-header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
     }
   }
 }

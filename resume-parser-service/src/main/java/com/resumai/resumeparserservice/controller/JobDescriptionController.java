@@ -10,6 +10,10 @@ import org.apache.tika.exception.TikaException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,7 +44,8 @@ public class JobDescriptionController {
             @RequestParam(value = "requirements", required = false) String requirements,
             @RequestParam(value = "responsibilities", required = false) String responsibilities,
             @RequestParam(value = "location", required = false) String location,
-            @RequestParam(value = "experienceLevel", required = false) String experienceLevel) {
+            @RequestParam(value = "experienceLevel", required = false) String experienceLevel,
+            @RequestParam(value = "panelistName", required = true) String panelistName) {
         
         Map<String, Object> response = new HashMap<>();
         
@@ -67,7 +72,7 @@ public class JobDescriptionController {
             
             // Process and save job description using service
             JobDescription savedJob = jobDescriptionService.processAndSaveJobDescription(
-                extractedText, title, company, description, requirements, responsibilities, location, experienceLevel);
+                extractedText, title, company, description, requirements, responsibilities, location, experienceLevel, panelistName);
             
             // Prepare response
             response.put("success", true);
@@ -126,6 +131,55 @@ public class JobDescriptionController {
             
         } catch (Exception e) {
             log.error("Error retrieving job descriptions: {}", e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Failed to retrieve job descriptions: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * Get paginated job descriptions with sorting and filtering
+     */
+    @GetMapping("/jobs/paginated")
+    public ResponseEntity<Map<String, Object>> getJobsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String company,
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String experienceLevel,
+            @RequestParam(required = false) String panelistName) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Create Sort object
+            Sort sort = sortDir.equalsIgnoreCase("desc") ? 
+                Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+            
+            // Create Pageable
+            Pageable pageable = PageRequest.of(page, size, sort);
+            
+            // Get jobs with filtering
+            Page<JobDescription> jobsPage = jobDescriptionService.getJobsPagedAndFiltered(
+                pageable, title, company, location, experienceLevel, panelistName);
+            
+            response.put("success", true);
+            response.put("message", "Job descriptions retrieved successfully");
+            response.put("jobs", jobsPage.getContent());
+            response.put("currentPage", jobsPage.getNumber());
+            response.put("totalPages", jobsPage.getTotalPages());
+            response.put("totalElements", jobsPage.getTotalElements());
+            response.put("pageSize", jobsPage.getSize());
+            response.put("hasNext", jobsPage.hasNext());
+            response.put("hasPrevious", jobsPage.hasPrevious());
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("Error retrieving paginated job descriptions: {}", e.getMessage(), e);
             response.put("success", false);
             response.put("message", "Failed to retrieve job descriptions: " + e.getMessage());
             return ResponseEntity.internalServerError().body(response);

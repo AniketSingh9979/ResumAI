@@ -1,7 +1,32 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { JobDescriptionResponse } from './job-profile.component';
+
+export interface JobDescription {
+  id: number;
+  fileName: string;
+  fileSize: number;
+  uploadDate: string;
+  panelMember: {
+    id: number;
+    name: string;
+    email: string;
+    expertise: string;
+    avatar: string;
+  };
+}
+
+export interface JobDescriptionResponse {
+  success: boolean;
+  message: string;
+  jobs: JobDescription[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  pageSize: number;
+  hasNext: boolean;
+  hasPrevious: boolean;
+}
 
 export interface JobPaginationParams {
   page: number;
@@ -19,7 +44,7 @@ export interface UploadResponse {
   success: boolean;
   message: string;
   jobId?: number;
-  job?: any;
+  job?: JobDescription;
 }
 
 @Injectable({
@@ -71,21 +96,21 @@ export class JobProfileService {
   /**
    * Get all job descriptions (non-paginated)
    */
-  getAllJobs(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/jobs`);
+  getAllJobs(): Observable<JobDescription[]> {
+    return this.http.get<JobDescription[]>(`${this.baseUrl}/jobs`);
   }
 
   /**
    * Get a specific job description by ID
    */
-  getJobById(jobId: number): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/jobs/${jobId}`);
+  getJobById(jobId: number): Observable<JobDescription> {
+    return this.http.get<JobDescription>(`${this.baseUrl}/jobs/${jobId}`);
   }
 
   /**
    * Delete a job description
    */
-  deleteJob(jobId: number): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/jobs/${jobId}`);
+  deleteJob(jobId: number): Observable<UploadResponse> {
+    return this.http.delete<UploadResponse>(`${this.baseUrl}/jobs/${jobId}`);
   }
 } 

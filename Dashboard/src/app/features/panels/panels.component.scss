@@ -1,217 +1,579 @@
+// Panels Container
 .panels-container {
   padding: 24px;
+}
+
+.panels-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
   
-  .panels-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 32px;
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  button {
+    background: linear-gradient(135deg, #7367f0, #8e7cf3);
+    color: white;
+    padding: 0 24px;
+    height: 44px;
+    border-radius: 22px;
+  }
+}
+
+.panels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.panelist-card {
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  background: white;
+  
+  &:nth-child(4n+1) {
+    background: linear-gradient(135deg, #7367f0 0%, #8e7cf3 100%);
+    color: white;
+  }
+  
+  &:nth-child(4n+2) {
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    color: white;
+  }
+  
+  &:nth-child(4n+3) {
+    background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%);
+    color: white;
+  }
+  
+  &:nth-child(4n+4) {
+    background: linear-gradient(135deg, #26C6DA 0%, #00838F 100%);
+    color: white;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    pointer-events: none;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  mat-card-header {
+    margin-bottom: 20px;
+    padding: 20px 20px 0;
+    position: relative;
+    z-index: 1;
     
-    h1 {
-      margin: 0;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      position: relative;
-      
-      &:after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(to right, #7367f0, #8e7cf3);
-        border-radius: 2px;
-      }
+    img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     
-    button {
-      background: linear-gradient(135deg, #7367f0, #8e7cf3);
-      color: white;
-      padding: 0 24px;
-      height: 44px;
-      border-radius: 22px;
-      box-shadow: 0 4px 15px rgba(115, 103, 240, 0.3);
-      transition: all 0.3s ease;
-      
-      &:hover {
-        box-shadow: 0 6px 20px rgba(115, 103, 240, 0.4);
-        transform: translateY(-2px);
-      }
-      
-      mat-icon {
-        margin-right: 8px;
-      }
+    mat-card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: inherit;
+      margin: 0 0 4px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    mat-card-subtitle {
+      color: inherit;
+      opacity: 0.9;
+      font-weight: 500;
     }
   }
   
-  .panels-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
+  mat-card-content {
+    padding: 0 20px 20px;
+    position: relative;
+    z-index: 1;
     
-    .panelist-card {
-      border-radius: 16px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      background: white;
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 16px;
+      border-radius: 12px;
       
-      &:nth-child(4n+1) {
-        background: linear-gradient(135deg, #7367f0 0%, #8e7cf3 100%);
-        color: white;
-      }
-      
-      &:nth-child(4n+2) {
-        background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-        color: white;
-      }
-      
-      &:nth-child(4n+3) {
-        background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%);
-        color: white;
-      }
-      
-      &:nth-child(4n+4) {
-        background: linear-gradient(135deg, #26C6DA 0%, #00838F 100%);
-        color: white;
-      }
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-        pointer-events: none;
-      }
-      
-      &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-      }
-      
-      mat-card-header {
-        margin-bottom: 20px;
-        padding: 20px 20px 0;
-        position: relative;
-        z-index: 1;
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         
-        img {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 3px solid rgba(255, 255, 255, 0.8);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-        
-        mat-card-title {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: inherit;
-          margin: 0 0 4px;
-          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-        
-        mat-card-subtitle {
+        mat-icon {
           color: inherit;
           opacity: 0.9;
+        }
+        
+        span {
+          font-size: 0.95rem;
           font-weight: 500;
         }
       }
+    }
+  }
+  
+  mat-card-actions {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    
+    button {
+      color: inherit;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
       
-      mat-card-content {
-        padding: 0 20px 20px;
-        position: relative;
-        z-index: 1;
-        
-        .info-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-          background: rgba(255, 255, 255, 0.1);
-          padding: 16px;
-          border-radius: 12px;
-          
-          .info-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            
-            mat-icon {
-              color: inherit;
-              opacity: 0.9;
-            }
-            
-            span {
-              font-size: 0.95rem;
-              font-weight: 500;
-            }
-          }
-        }
+      &:hover {
+        opacity: 1;
       }
       
-      mat-card-actions {
-        padding: 12px 20px;
-        background: rgba(255, 255, 255, 0.1);
-        position: relative;
-        z-index: 1;
-        
-        button {
-          color: inherit;
-          opacity: 0.9;
-          transition: opacity 0.2s ease;
-          
-          &:hover {
-            opacity: 1;
-          }
-          
-          mat-icon {
-            margin-right: 4px;
-            font-size: 18px;
-            width: 18px;
-            height: 18px;
-          }
-        }
-      }
-
-      // Decorative elements
-      &::after {
-        content: '';
-        position: absolute;
-        right: -20%;
-        bottom: -20%;
-        width: 200px;
-        height: 200px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 50%;
-        pointer-events: none;
+      mat-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
       }
     }
   }
 }
 
-// Responsive adjustments
+// Add Panel Form - Compact Version
+.add-panel-form {
+  margin-bottom: 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 2px solid #7367f0;
+  
+  mat-card-header {
+    background: linear-gradient(135deg, #7367f0, #8e7cf3);
+    color: white;
+    padding: 20px 24px;
+    margin: 0;
+    
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+  }
+  
+  mat-card-content {
+    padding: 32px;
+  }
+}
+
+.form-grid .form-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 32px;
+  
+  .form-field, .form-field-full {
+    flex: 1;
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+  
+  button {
+    min-width: 120px;
+    height: 44px;
+    border-radius: 12px;
+    
+    &[mat-raised-button] {
+      background: linear-gradient(135deg, #7367f0, #8e7cf3);
+    }
+  }
+}
+
+// Message Container
+.message-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 1000;
+  max-width: 400px;
+  
+  .message-card {
+    border-radius: 12px;
+    
+    &.success {
+      border-left: 4px solid #10b981;
+    }
+    
+    &.error {
+      border-left: 4px solid #ef4444;
+    }
+    
+    .message-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+}
+
+// CUSTOM FORM FIELD STYLING - Compact with external labels
+.custom-outline {
+  position: relative;
+  margin-bottom: 16px;
+  width: 100%; // Ensure consistent width
+  
+  // Custom label positioned outside and above the field
+  .field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+    
+    .required {
+      color: #ef4444;
+      margin-left: 2px;
+    }
+  }
+  
+  // Hide Material Design outline completely
+  .mdc-notched-outline {
+    display: none !important;
+  }
+  
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,  
+  .mdc-notched-outline__trailing {
+    display: none !important;
+  }
+  
+  // Hide Material Design floating label
+  .mat-mdc-floating-label,
+  .mdc-floating-label {
+    display: none !important;
+  }
+  
+  // Custom border using wrapper
+  .mat-mdc-text-field-wrapper {
+    background: white !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    position: relative;
+    min-height: 44px !important; // Consistent height for all fields
+    height: 44px !important; // Fixed height for uniformity
+    width: 100% !important; // Ensure full width
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: #9ca3af !important;
+    }
+  }
+  
+  // Focus state
+  &.mat-focused .mat-mdc-text-field-wrapper {
+    border-color: #7367f0 !important;
+    box-shadow: 0 0 0 2px rgba(115, 103, 240, 0.1) !important;
+  }
+  
+  // Error state
+  &.mat-form-field-invalid {
+    .field-label { color: #ef4444 !important; }
+    .mat-mdc-text-field-wrapper {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
+    }
+  }
+  
+  // Input styling - consistent height
+  .mat-mdc-input-element {
+    padding: 10px 12px !important; // Increased padding for consistent height
+    font-size: 14px !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    height: 24px !important; // Fixed height
+    line-height: 1.5 !important;
+    
+    &::placeholder {
+      color: #9ca3af !important;
+      font-size: 14px !important;
+    }
+  }
+  
+  // Select styling - same height as inputs
+  .mat-mdc-select {
+    width: 100% !important;
+    height: 44px !important; // Same as wrapper height
+    
+    .mat-mdc-select-trigger {
+      padding: 10px 12px !important; // Same padding as input fields
+      border: none !important;
+      background: transparent !important;
+      min-height: 24px !important; // Same as input height
+      height: 24px !important; // Fixed height to match inputs
+      display: flex !important;
+      align-items: center !important;
+    }
+    
+    .mat-mdc-select-value {
+      font-size: 14px !important;
+      color: #374151 !important;
+      line-height: 1.5 !important;
+    }
+    
+    .mat-mdc-select-placeholder {
+      color: #9ca3af !important; // Grey placeholder text
+      font-size: 14px !important;
+      opacity: 1 !important;
+    }
+    
+    .mat-mdc-select-arrow {
+      color: #6b7280 !important;
+    }
+    
+    // Ensure placeholder shows when no value selected
+    &.mat-mdc-select-empty .mat-mdc-select-trigger {
+      color: #9ca3af !important; // Grey when empty/placeholder
+    }
+    
+    // Ensure select value text alignment matches input text
+    .mat-mdc-select-value-text {
+      color: #374151 !important;
+      font-size: 14px !important;
+    }
+  }
+  
+  // Textarea styling - consistent height
+  textarea.mat-mdc-input-element {
+    padding: 10px 12px !important;
+    min-height: 80px !important; // Larger for textarea but consistent padding
+    height: auto !important;
+    resize: vertical;
+  }
+  
+  // Ensure mat-form-field takes full width and height
+  .mat-mdc-form-field {
+    width: 100% !important;
+    
+    .mat-mdc-form-field-flex {
+      height: 44px !important; // Consistent with wrapper
+      align-items: center !important;
+    }
+  }
+}
+
+// Error messages
+mat-error {
+  color: #ef4444 !important;
+  font-size: 12px;
+  margin-left: -8px;
+}
+
+// Loading State
+.loading-container {
+  text-align: center;
+  padding: 80px 20px;
+  
+  mat-progress-spinner {
+    margin: 0 auto 20px;
+  }
+  
+  p {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+// Empty State
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  grid-column: 1 / -1; // Span full width of grid
+  
+  .empty-icon {
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+    color: #cbd5e1;
+    margin-bottom: 24px;
+  }
+  
+  h3 {
+    margin: 0 0 12px 0;
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+  
+  p {
+    margin: 0;
+    color: #64748b;
+    font-size: 1.1rem;
+  }
+}
+
+// Responsive
 @media (max-width: 768px) {
   .panels-container {
     padding: 16px;
+  }
+  
+  .panels-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+}
+
+// Global dropdown panel styling (affects all dropdowns in this component)
+::ng-deep .mat-mdc-select-panel {
+  background: white !important;
+  border: 1px solid #d1d5db !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  max-height: 280px !important;
+  min-width: 100% !important;
+  
+  .mat-mdc-option {
+    background: white !important;
+    color: #374151 !important;
+    font-size: 14px !important;
+    padding: 8px 16px !important;
+    min-height: auto !important;
+    line-height: 1.5 !important;
     
-    .panels-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 16px;
-      
-      button {
-        width: 100%;
-      }
+    &:hover {
+      background: #f3f4f6 !important;
     }
     
-    .panels-grid {
-      gap: 16px;
+    &.mdc-list-item--selected {
+      background: #eff6ff !important;
+      color: #1d4ed8 !important;
+    }
+    
+    &.mat-mdc-option-disabled {
+      color: #9ca3af !important;
+      background: white !important;
+      display: none !important; // Hide disabled options completely
     }
   }
 }
+
+// Force all dropdowns to open downward only
+::ng-deep .cdk-overlay-pane {
+  .mat-mdc-select-panel {
+    transform-origin: top center !important;
+    margin-top: 8px !important; // Gap between trigger and panel
+  }
+}
+
+// Force dropdown positioning to always be below trigger
+::ng-deep .cdk-overlay-connected-position-bounding-box {
+  .cdk-overlay-pane {
+    top: auto !important;
+    bottom: auto !important;
+  }
+}
+
+// Additional override for dropdown direction
+::ng-deep .mat-mdc-select-panel {
+  transform-origin: 50% 0% !important;
+}
+
+// Ensure dropdown backdrop is solid
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
+// Additional styling for select trigger when showing placeholder
+::ng-deep .mat-mdc-select-trigger {
+  .mat-mdc-select-placeholder {
+    color: #9ca3af !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    opacity: 1 !important;
+  }
+}
+
+// Fix placeholder styling for all selects
+::ng-deep .mat-mdc-select-placeholder,
+::ng-deep .mat-mdc-select-min-line {
+  color: #9ca3af !important;
+  font-size: 14px !important;
+  opacity: 1 !important;
+}
+
+// Additional styling for select trigger when empty (placeholder state)
+::ng-deep .mat-mdc-select-value-text {
+  &:empty::before {
+    content: attr(data-placeholder);
+    color: #9ca3af !important;
+  }
+}
+
+// Additional styling for select placeholder to match input placeholders exactly
+::ng-deep .custom-outline .mat-mdc-select {
+  // Override Material Design placeholder styling
+  .mat-mdc-select-trigger {
+    .mat-mdc-select-placeholder {
+      color: #9ca3af !important;
+      font-size: 14px !important;
+      font-weight: 400 !important;
+      opacity: 1 !important;
+      position: relative !important;
+      left: 0 !important;
+      top: 0 !important;
+    }
+    
+    .mat-mdc-select-value-text {
+      // When placeholder is shown
+      &:empty + .mat-mdc-select-placeholder {
+        display: block !important;
+        color: #9ca3af !important;
+      }
+    }
+  }
+  
+  // Ensure empty state shows grey text
+  &.mat-mdc-select-empty .mat-mdc-select-trigger {
+    .mat-mdc-select-value {
+      color: #9ca3af !important;
+    }
+  }
+}
+

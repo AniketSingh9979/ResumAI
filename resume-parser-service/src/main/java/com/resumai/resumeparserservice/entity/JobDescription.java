@@ -42,6 +42,9 @@ public class JobDescription {
     private String location;
 
     private String experienceLevel;
+    
+    @Column(nullable = false)
+    private String panelistName;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
