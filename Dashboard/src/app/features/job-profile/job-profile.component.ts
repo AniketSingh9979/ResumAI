@@ -93,6 +93,17 @@ interface UploadResponse {
   job?: JobDescription;
 }
 
+interface JobProfile {
+  id: number;
+  title: string;
+  status: string;
+  description: string;
+  datePosted: string;
+  department?: string;
+  location?: string;
+  panelMemberId?: number;
+}
+
 @Component({
   selector: 'app-job-profile',
   standalone: true,
@@ -133,6 +144,8 @@ export class JobProfileComponent implements OnInit {
   
   // Upload section visibility
   showUploadSection = false;
+
+  jobProfiles: JobProfile[] = [];
 
   constructor(
     private jobProfileService: JobProfileService,
@@ -681,5 +694,10 @@ export class JobProfileComponent implements OnInit {
     }
 
     return foundSkills;
+  }
+
+  getActiveProfiles(): number {
+    if (!this.jobProfiles) return 0;
+    return this.jobProfiles.filter(profile => profile.status === 'active' || profile.status === 'open').length;
   }
 }

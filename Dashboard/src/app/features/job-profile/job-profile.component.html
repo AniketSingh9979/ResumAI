@@ -1,19 +1,42 @@
 <div class="job-profile-container">
-  <!-- Header Section -->
+  <!-- Header Section with Quick Stats -->
   <div class="header-section">
     <div class="job-profile-header">
       <div class="header-content">
         <h1 class="page-title">Job Profile Management</h1>
         <p class="page-subtitle">Upload and manage job descriptions with panel member assignments</p>
       </div>
-      <button mat-raised-button color="primary" (click)="toggleUploadSection()" class="add-job-profile-btn">
+      <button mat-raised-button (click)="toggleUploadSection()" class="add-job-profile-btn">
         <mat-icon>{{ showUploadSection ? 'visibility_off' : 'add' }}</mat-icon>
-        {{ showUploadSection ? 'Hide Upload Form' : 'Add New Job Profile' }}
+        <span>{{ showUploadSection ? 'Hide Upload Form' : 'Add New Job Profile' }}</span>
       </button>
     </div>
+    
+    <!-- Quick Stats Row -->
+    <div class="stats-row">
+      <mat-card class="stat-card">
+        <mat-icon>work</mat-icon>
+        <div class="stat-content">
+          <span class="stat-value">{{jobProfiles.length}}</span>
+          <span class="stat-label">Total Profiles</span>
+        </div>
+      </mat-card>
+      <mat-card class="stat-card">
+        <mat-icon>people</mat-icon>
+        <div class="stat-content">
+          <span class="stat-value">{{panelMembers.length}}</span>
+          <span class="stat-label">Panel Members</span>
+        </div>
+      </mat-card>
+      <mat-card class="stat-card">
+        <mat-icon>assignment_turned_in</mat-icon>
+        <div class="stat-content">
+          <span class="stat-value">{{getActiveProfiles()}}</span>
+          <span class="stat-label">Active Positions</span>
+        </div>
+      </mat-card>
+    </div>
   </div>
-
-
 
   <!-- Upload Section -->
   <div class="upload-section" *ngIf="showUploadSection">
@@ -50,7 +73,7 @@
                 </mat-option>
                 <ng-container *ngFor="let member of panelMembers; trackBy: trackByMemberId">
                   <mat-option [value]="member" *ngIf="!loading && member && member.name">
-                    <span class="member-name-only">{{member?.name || 'Unknown'}}</span>
+                    <span class="member-name-only">{{member.name || 'Unknown'}}</span>
                   </mat-option>
                 </ng-container>
                 <mat-option value="" disabled *ngIf="!loading && (!panelMembers || panelMembers.length === 0)">
@@ -67,7 +90,7 @@
             <mat-form-field appearance="outline" class="email-field custom-dropdown">
               <mat-label>Panel Member Email</mat-label>
               <input matInput 
-                     [value]="selectedPanelMember?.email || ''" 
+                     [value]="selectedPanelMember ? selectedPanelMember.email : ''" 
                      readonly 
                      disabled
                      [placeholder]="selectedPanelMember ? '' : ''">
@@ -84,7 +107,7 @@
               accept=".pdf,.doc,.docx,.txt"
               hidden>
             
-            <div class="upload-area" 
+            <div class="upload-area compact" 
                  [class.has-file]="selectedFile"
                  [class.drag-over]="isDragOver"
                  (click)="fileInput.click()"
@@ -92,10 +115,13 @@
                  (dragleave)="onDragLeave($event)"
                  (drop)="onDrop($event)">
               <div class="upload-content">
-                <mat-icon>upload_file</mat-icon>
-                <h3>Upload Job Description</h3>
-                <p *ngIf="!selectedFile">Drag & drop your file or click to browse</p>
+                <div class="upload-header">
+                  <mat-icon>upload_file</mat-icon>
+                  <h3>Upload Job Description</h3>
+                </div>
+                <p *ngIf="!selectedFile" class="upload-hint">Drag & drop your file or click to browse</p>
                 <p *ngIf="selectedFile" class="file-name">
+                  <mat-icon>description</mat-icon>
                   {{selectedFile.name}}
                   <button mat-icon-button color="warn" (click)="removeFile($event)">
                     <mat-icon>close</mat-icon>
@@ -170,7 +196,7 @@
           
           <div class="uploaded-by">
             <mat-icon>person</mat-icon>
-            <span>Uploaded by {{job.panelMember?.name || 'Unknown'}}</span>
+            <span>Uploaded by {{job.panelMember ? job.panelMember.name : 'Unknown'}}</span>
           </div>
         </mat-card-content>
 

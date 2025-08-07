@@ -237,6 +237,73 @@
       }
     }
   }
+
+  // Dropdown panel styles
+  .mdc-menu-surface.mat-mdc-select-panel,
+  .mat-mdc-select-panel {
+    background-color: white !important;
+    border-radius: 4px !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+    max-height: 275px !important;
+    position: relative !important;
+    transform-origin: top center !important;
+    overflow-y: auto !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+
+    .mat-mdc-option {
+      min-height: 36px !important;
+      line-height: 36px !important;
+      font-size: 14px !important;
+      padding: 0 16px !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      background-color: white !important;
+
+      &:hover:not(.mdc-list-item--disabled) {
+        background-color: rgba(15, 164, 175, 0.08) !important;
+      }
+
+      &.mat-mdc-option-active,
+      &.mdc-list-item--selected {
+        background-color: rgba(15, 164, 175, 0.12) !important;
+      }
+
+      .mdc-list-item__primary-text {
+        color: rgba(0, 0, 0, 0.87) !important;
+      }
+    }
+  }
+
+  // Override Material's overlay positioning to always show below
+  .cdk-overlay-pane {
+    transform-origin: top center !important;
+  }
+
+  .mat-mdc-select-panel-above {
+    border-radius: 4px !important;
+    margin-bottom: 4px !important;
+  }
+
+  // Additional select field styles
+  .mat-mdc-select {
+    .mat-mdc-select-trigger {
+      height: 36px !important;
+    }
+
+    .mat-mdc-select-value {
+      padding-top: 2px !important;
+    }
+  }
+
+  // Form field appearance for select
+  .mat-mdc-form-field.mat-mdc-form-field-type-mat-select {
+    .mat-mdc-form-field-infix {
+      padding-top: 8px !important;
+      padding-bottom: 6px !important;
+    }
+  }
 }
 
 // Global dialog styling - AGGRESSIVE OVERRIDES
@@ -300,6 +367,100 @@
       
       mat-form-field {
         width: 100%;
+      }
+    }
+  }
+}
+
+// Variables
+$teal-primary: #0FA4AF;
+$teal-light: rgba(15, 164, 175, 0.08);
+$teal-hover: rgba(15, 164, 175, 0.12);
+
+// Custom dropdown styling
+::ng-deep {
+  // Override panel position to always show below
+  .mat-mdc-select-panel {
+    margin-top: 36px !important;
+    min-width: calc(100% + 12px) !important;
+    transform-origin: top center !important;
+    position: relative !important;
+  }
+
+  // Style for the dropdown panel
+  .mat-mdc-select-panel {
+    background: white !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    padding: 8px 0 !important;
+
+    .mat-mdc-option {
+      min-height: 36px !important;
+      line-height: 36px !important;
+      padding: 0 16px !important;
+      margin: 0 4px !important;
+      border-radius: 4px !important;
+
+      &:hover:not(.mat-mdc-option-disabled) {
+        background: $teal-light !important;
+      }
+
+      &.mat-mdc-option-active {
+        background: $teal-hover !important;
+      }
+
+      .mdc-list-item__primary-text {
+        color: rgba(0, 0, 0, 0.87) !important;
+      }
+
+      &.mat-mdc-selected:not(.mat-mdc-option-multiple):not(.mat-mdc-option-disabled) {
+        background: $teal-hover !important;
+
+        .mdc-list-item__primary-text {
+          color: $teal-primary !important;
+        }
+      }
+    }
+  }
+
+  // Style for the select field
+  .mat-mdc-form-field {
+    &.mat-mdc-form-field-type-mat-select {
+      .mat-mdc-form-field-flex {
+        background-color: white !important;
+      }
+
+      .mat-mdc-select-value {
+        padding: 0 !important;
+      }
+
+      .mat-mdc-select-arrow-wrapper {
+        transform: translateY(0) !important;
+      }
+    }
+  }
+
+  // Specific styles for Department, Expertise, and Availability dropdowns
+  mat-form-field[formcontrolname="department"],
+  mat-form-field[formcontrolname="expertise"],
+  mat-form-field[formcontrolname="availabilityStatus"] {
+    .mat-mdc-form-field-infix {
+      min-height: 36px !important;
+      padding: 8px 0 !important;
+    }
+
+    .mat-mdc-select-trigger {
+      height: 36px !important;
+    }
+
+    .mat-mdc-select-value {
+      padding-top: 0 !important;
+      line-height: 36px !important;
+    }
+
+    &.mat-focused {
+      .mat-mdc-form-field-outline {
+        color: $teal-primary !important;
       }
     }
   }
