@@ -47,7 +47,7 @@ import { CandidateService, Candidate } from '../../../shared/services/candidate.
             <input matInput [(ngModel)]="candidate.email" placeholder="Candidate Email">
           </mat-form-field>
 
-          <div class="file-info">
+          <div class="file-info" *ngIf="candidate.resumeFile">
             <mat-icon>attach_file</mat-icon>
             <span>{{candidate.resumeFile.name}}</span>
           </div>

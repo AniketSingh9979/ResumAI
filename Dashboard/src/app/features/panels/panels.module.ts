@@ -23,9 +23,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    PanelsComponent
-  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -40,10 +37,8 @@ const routes: Routes = [
     MatSnackBarModule,
     MatDialogModule,
     RouterModule.forChild(routes),
-    AddPanelDialogComponent // Add the standalone component here
-  ],
-  exports: [
-    PanelsComponent
+    PanelsComponent,  // Import the standalone component
+    AddPanelDialogComponent
   ]
 })
 export class PanelsModule { }

@@ -1,0 +1,122 @@
+<div class="edit-panel-dialog">
+  <div class="dialog-header">
+    <mat-icon>edit</mat-icon>
+    <div class="header-text">
+      <h2 mat-dialog-title>Edit Panel Member</h2>
+      <p class="subtitle">Update member information</p>
+    </div>
+  </div>
+
+  <mat-dialog-content>
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+      <div class="form-grid">
+        <!-- Row 1: Name and Email -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Full Name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter full name">
+            <mat-error *ngIf="editForm.get('name')?.hasError('required')">Name is required</mat-error>
+            <mat-error *ngIf="editForm.get('name')?.hasError('minlength')">Name must be at least 2 characters</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Enter email address">
+            <mat-error *ngIf="editForm.get('email')?.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="editForm.get('email')?.hasError('email')">Please enter a valid email address</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Employee ID and Mobile -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Employee ID</mat-label>
+            <input matInput formControlName="employeeId" placeholder="Enter employee ID">
+            <mat-error *ngIf="editForm.get('employeeId')?.hasError('required')">Employee ID is required</mat-error>
+            <mat-error *ngIf="editForm.get('employeeId')?.hasError('minlength')">Employee ID must be at least 3 characters</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Mobile Number</mat-label>
+            <input matInput formControlName="mobileNumber" placeholder="Enter mobile number">
+            <mat-error *ngIf="editForm.get('mobileNumber')?.hasError('required')">Mobile number is required</mat-error>
+            <mat-error *ngIf="editForm.get('mobileNumber')?.hasError('pattern')">Please enter a valid mobile number</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: Designation and Department -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Designation</mat-label>
+            <input matInput formControlName="designation" placeholder="Enter designation">
+            <mat-error *ngIf="editForm.get('designation')?.hasError('required')">Designation is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="department">
+              <mat-option value="IT">IT</mat-option>
+              <mat-option value="Engineering">Engineering</mat-option>
+              <mat-option value="Product">Product</mat-option>
+              <mat-option value="Design">Design</mat-option>
+              <mat-option value="Marketing">Marketing</mat-option>
+              <mat-option value="Sales">Sales</mat-option>
+              <mat-option value="HR">Human Resources</mat-option>
+              <mat-option value="Finance">Finance</mat-option>
+              <mat-option value="Operations">Operations</mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('department')?.hasError('required')">Department is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 4: Location and Status -->
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="location">
+              <mat-option value="India">India</mat-option>
+              <mat-option value="New York">New York</mat-option>
+              <mat-option value="San Francisco">San Francisco</mat-option>
+              <mat-option value="London">London</mat-option>
+              <mat-option value="Toronto">Toronto</mat-option>
+              <mat-option value="Sydney">Sydney</mat-option>
+              <mat-option value="Remote">Remote</mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('location')?.hasError('required')">Location is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Availability Status</mat-label>
+            <mat-select formControlName="availabilityStatus">
+              <mat-option value="AVAILABLE">Available</mat-option>
+              <mat-option value="BUSY">Busy</mat-option>
+              <mat-option value="ON_LEAVE">On Leave</mat-option>
+              <mat-option value="UNAVAILABLE">Unavailable</mat-option>
+            </mat-select>
+            <mat-error *ngIf="editForm.get('availabilityStatus')?.hasError('required')">Status is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 5: Expertise -->
+        <div class="form-row full-width">
+          <mat-form-field appearance="outline">
+            <mat-label>Expertise</mat-label>
+            <textarea matInput formControlName="expertise" 
+                      placeholder="Enter areas of expertise"
+                      rows="3"></textarea>
+            <mat-error *ngIf="editForm.get('expertise')?.hasError('required')">Expertise is required</mat-error>
+            <mat-error *ngIf="editForm.get('expertise')?.hasError('maxlength')">Expertise cannot exceed 200 characters</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="editForm.invalid || isSubmitting">
+      <mat-icon>save</mat-icon>
+      {{isSubmitting ? 'Saving...' : 'Save Changes'}}
+    </button>
+  </mat-dialog-actions>
+</div>

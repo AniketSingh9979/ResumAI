@@ -1,255 +1,106 @@
 <div class="panels-container">
   <div class="panels-header">
-    <h1>Panel Members</h1>
+    <div class="header-content">
+      <h1>Panel Members</h1>
+      <p class="subtitle">Manage interview panel members and their assignments</p>
+    </div>
     <button mat-raised-button color="primary" (click)="openAddPanelDialog()">
       <mat-icon>add</mat-icon>
-      Add New Panelist
+      Add Panel Member
     </button>
   </div>
 
-  <!-- Add Panel Member Form -->
-  <mat-card class="add-panel-form" *ngIf="showAddForm">
-    <mat-card-header>
-      <div class="form-header">
-        <mat-card-title>Add New Panel Member</mat-card-title>
-        <button mat-icon-button (click)="closeAddForm()">
-          <mat-icon>close</mat-icon>
-        </button>
+  <!-- Quick Stats Row -->
+  <div class="stats-row">
+    <mat-card class="stat-card">
+      <mat-icon>people</mat-icon>
+      <div class="stat-content">
+        <span class="stat-value">{{panelists.length}}</span>
+        <span class="stat-label">Total Panelists</span>
       </div>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form [formGroup]="addPanelForm" (ngSubmit)="onSubmit()">
-        <div class="form-grid">
-          <!-- Row 1: Name and Email -->
-          <div class="form-row">
-            <div class="custom-outline">
-              <label class="field-label">Full Name<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <input matInput formControlName="name" placeholder="Enter full name">
-                <mat-error *ngIf="addPanelForm.get('name')?.hasError('required')">
-                  Name is required
-                </mat-error>
-                <mat-error *ngIf="addPanelForm.get('name')?.hasError('minlength')">
-                  Name must be at least 2 characters
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="custom-outline">
-              <label class="field-label">Email Address<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <input matInput type="email" formControlName="email" placeholder="Enter email address">
-                <mat-error *ngIf="addPanelForm.get('email')?.hasError('required')">
-                  Email is required
-                </mat-error>
-                <mat-error *ngIf="addPanelForm.get('email')?.hasError('email')">
-                  Please enter a valid email address
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Row 2: Employee ID and Mobile Number -->
-          <div class="form-row">
-            <div class="custom-outline">
-              <label class="field-label">Employee ID<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <input matInput formControlName="employeeId" placeholder="Enter employee ID">
-                <mat-error *ngIf="addPanelForm.get('employeeId')?.hasError('required')">
-                  Employee ID is required
-                </mat-error>
-                <mat-error *ngIf="addPanelForm.get('employeeId')?.hasError('minlength')">
-                  Employee ID must be at least 3 characters
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="custom-outline">
-              <label class="field-label">Mobile Number<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <input matInput formControlName="mobileNumber" placeholder="Enter mobile number">
-                <mat-error *ngIf="addPanelForm.get('mobileNumber')?.hasError('required')">
-                  Mobile number is required
-                </mat-error>
-                <mat-error *ngIf="addPanelForm.get('mobileNumber')?.hasError('pattern')">
-                  Please enter a valid mobile number
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Row 3: Designation and Department -->
-          <div class="form-row">
-            <div class="custom-outline">
-              <label class="field-label">Designation<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <input matInput formControlName="designation" placeholder="Enter designation">
-                <mat-error *ngIf="addPanelForm.get('designation')?.hasError('required')">
-                  Designation is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="custom-outline">
-              <label class="field-label">Department<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-select formControlName="department" placeholder="Select Department">
-                  <mat-option value="IT">IT</mat-option>
-                  <mat-option value="Engineering">Engineering</mat-option>
-                  <mat-option value="Product">Product</mat-option>
-                  <mat-option value="Design">Design</mat-option>
-                  <mat-option value="Marketing">Marketing</mat-option>
-                  <mat-option value="Sales">Sales</mat-option>
-                  <mat-option value="HR">Human Resources</mat-option>
-                  <mat-option value="Finance">Finance</mat-option>
-                  <mat-option value="Operations">Operations</mat-option>
-                </mat-select>
-                <mat-error *ngIf="addPanelForm.get('department')?.hasError('required')">
-                  Department is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Row 4: Location and Availability Status -->
-          <div class="form-row">
-            <div class="custom-outline">
-              <label class="field-label">Location<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-select formControlName="location" placeholder="Select Location">
-                  <mat-option value="India">India</mat-option>
-                  <mat-option value="New York">New York</mat-option>
-                  <mat-option value="San Francisco">San Francisco</mat-option>
-                  <mat-option value="London">London</mat-option>
-                  <mat-option value="Toronto">Toronto</mat-option>
-                  <mat-option value="Sydney">Sydney</mat-option>
-                  <mat-option value="Remote">Remote</mat-option>
-                </mat-select>
-                <mat-error *ngIf="addPanelForm.get('location')?.hasError('required')">
-                  Location is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-
-            <div class="custom-outline">
-              <label class="field-label">Availability Status<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field">
-                <mat-select formControlName="availabilityStatus" placeholder="Select Availability">
-                  <mat-option value="AVAILABLE">Available</mat-option>
-                  <mat-option value="BUSY">Busy</mat-option>
-                  <mat-option value="ON_LEAVE">On Leave</mat-option>
-                  <mat-option value="UNAVAILABLE">Unavailable</mat-option>
-                </mat-select>
-                <mat-error *ngIf="addPanelForm.get('availabilityStatus')?.hasError('required')">
-                  Availability status is required
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-
-          <!-- Row 5: Expertise (Full Width) -->
-          <div class="form-row full-width">
-            <div class="custom-outline">
-              <label class="field-label">Expertise<span class="required">*</span></label>
-              <mat-form-field appearance="outline" class="form-field-full">
-                <textarea matInput formControlName="expertise" 
-                         placeholder="Enter areas of expertise (e.g., Java, Spring Boot, Microservices)"
-                         rows="3"></textarea>
-                <mat-error *ngIf="addPanelForm.get('expertise')?.hasError('required')">
-                  Expertise is required
-                </mat-error>
-                <mat-error *ngIf="addPanelForm.get('expertise')?.hasError('maxlength')">
-                  Expertise cannot exceed 200 characters
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-        </div>
-
-        <!-- Form Actions -->
-        <div class="form-actions">
-          <button mat-button type="button" (click)="closeAddForm()" [disabled]="isSubmitting">
-            Cancel
-          </button>
-          <button mat-raised-button color="primary" type="submit" 
-                  [disabled]="addPanelForm.invalid || isSubmitting">
-            <mat-icon *ngIf="isSubmitting">hourglass_empty</mat-icon>
-            <mat-icon *ngIf="!isSubmitting">save</mat-icon>
-            {{isSubmitting ? 'Saving...' : 'Save Panel Member'}}
-          </button>
-        </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Success/Error Messages -->
-  <div class="message-container" *ngIf="showMessage">
-    <mat-card class="message-card" [ngClass]="{'success': messageType === 'success', 'error': messageType === 'error'}">
-      <mat-card-content>
-        <div class="message-content">
-          <mat-icon>{{messageType === 'success' ? 'check_circle' : 'error'}}</mat-icon>
-          <span>{{message}}</span>
-          <button mat-icon-button (click)="hideMessage()">
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
-      </mat-card-content>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-icon>event_available</mat-icon>
+      <div class="stat-content">
+        <span class="stat-value">{{getAvailablePanelists()}}</span>
+        <span class="stat-label">Available Now</span>
+      </div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-icon>assignment_turned_in</mat-icon>
+      <div class="stat-content">
+        <span class="stat-value">{{getTotalInterviews()}}</span>
+        <span class="stat-label">Interviews Conducted</span>
+      </div>
     </mat-card>
   </div>
 
   <!-- Loading State -->
   <div class="loading-container" *ngIf="loading">
-    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
     <p>Loading panel members...</p>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div class="message-container" *ngIf="showMessage">
+    <div class="message-content" [class]="messageType">
+      <mat-icon>{{messageType === 'success' ? 'check_circle' : 'error'}}</mat-icon>
+      <span>{{message}}</span>
+    </div>
   </div>
 
   <!-- Panel Members Grid -->
   <div class="panels-grid" *ngIf="!loading">
     <!-- Empty State -->
     <div class="empty-state" *ngIf="panelists.length === 0">
-      <mat-icon class="empty-icon">people_outline</mat-icon>
-      <h3>No Panel Members Found</h3>
-      <p>Start by adding your first panel member above.</p>
+      <mat-icon>people_outline</mat-icon>
+      <h3>No Panel Members</h3>
+      <p>Click the "Add Panel Member" button to get started.</p>
     </div>
     
     <!-- Panel Member Cards -->
     <mat-card *ngFor="let panelist of panelists" class="panelist-card">
-      <mat-card-header>
-        <img mat-card-avatar [src]="panelist.image" [alt]="panelist.name">
-        <mat-card-title>{{panelist.name}}</mat-card-title>
-        <mat-card-subtitle>{{panelist.expertise}}</mat-card-subtitle>
-      </mat-card-header>
+      <div class="card-header">
+        <img [src]="panelist.image" [alt]="panelist.name">
+        <div class="header-info">
+          <h3>{{panelist.name}}</h3>
+          <p>{{panelist.designation}}</p>
+          <span class="expertise">{{panelist.expertise}}</span>
+        </div>
+        <div class="availability-badge" [class.available]="panelist.availability === 'Available'">
+          {{panelist.availability}}
+        </div>
+      </div>
       
       <mat-card-content>
         <div class="info-grid">
           <div class="info-item">
-            <mat-icon>work</mat-icon>
-            <span>{{panelist.experience}}</span>
+            <mat-icon>business</mat-icon>
+            <span>{{panelist.department}}</span>
           </div>
           <div class="info-item">
-            <mat-icon>schedule</mat-icon>
-            <span>{{panelist.availability}}</span>
+            <mat-icon>location_on</mat-icon>
+            <span>{{panelist.location}}</span>
           </div>
           <div class="info-item">
             <mat-icon>star</mat-icon>
             <span>{{panelist.rating}} / 5.0</span>
           </div>
           <div class="info-item">
-            <mat-icon>people</mat-icon>
+            <mat-icon>assessment</mat-icon>
             <span>{{panelist.interviewsDone}} interviews</span>
           </div>
         </div>
       </mat-card-content>
-
+      
       <mat-card-actions>
-        <button mat-button color="primary">
-          <mat-icon>visibility</mat-icon>
-          View Profile
-        </button>
-        <button mat-button color="accent">
+        <button mat-button (click)="editPanel(panelist)">
           <mat-icon>edit</mat-icon>
           Edit
+        </button>
+        <button mat-button color="warn" (click)="deletePanel(panelist)">
+          <mat-icon>delete</mat-icon>
+          Delete
         </button>
       </mat-card-actions>
     </mat-card>

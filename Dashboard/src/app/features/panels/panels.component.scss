@@ -1,160 +1,233 @@
-// Panels Container
+// Variables
+$primary-color: #0FA4AF;
+$primary-dark: #024950;
+$text-primary: #2d3748;
+$text-secondary: #718096;
+$gradient-primary: linear-gradient(135deg, $primary-color, $primary-dark);
+
+// Container
 .panels-container {
-  padding: 24px;
+  padding: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+// Header
 .panels-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   
-  h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 600;
-    color: var(--text-primary);
+  .header-content {
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: $text-primary;
+    }
+    
+    .subtitle {
+      color: $text-secondary;
+      font-size: 0.875rem;
+      margin: 4px 0 0;
+    }
   }
   
   button {
-    background: linear-gradient(135deg, #0FA4AF, #024950);
+    background: $gradient-primary;
     color: white;
-    padding: 0 24px;
-    height: 44px;
-    border-radius: 22px;
+    padding: 0 16px;
+    height: 36px;
+    border-radius: 18px;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    
+    mat-icon {
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+      margin-right: 4px;
+    }
+    
+    &:hover {
+      box-shadow: 0 4px 12px rgba(2, 73, 80, 0.2);
+    }
   }
 }
 
+// Stats Row
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+  
+  .stat-card {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-radius: 12px;
+    background: white;
+    border: 1px solid rgba(15, 164, 175, 0.1);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: $primary-color;
+      transform: translateY(-2px);
+    }
+    
+    mat-icon {
+      color: $primary-color;
+      margin-right: 12px;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .stat-content {
+      .stat-value {
+        display: block;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: $text-primary;
+        line-height: 1.2;
+      }
+      
+      .stat-label {
+        font-size: 0.75rem;
+        color: $text-secondary;
+      }
+    }
+  }
+}
+
+// Panel Members Grid
 .panels-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  gap: 16px;
+  margin-top: 16px;
 }
 
+// Panel Card
 .panelist-card {
-  border-radius: 16px;
-  transition: all 0.3s ease;
-  position: relative;
+  border-radius: 12px;
+  padding: 0;
   overflow: hidden;
   background: white;
-  
-  &:nth-child(4n+1) {
-    background: linear-gradient(135deg, #0FA4AF 0%, #024950 100%);
-    color: white;
-  }
-  
-  &:nth-child(4n+2) {
-    background: linear-gradient(135deg, #15B8C4 0%, #0FA4AF 100%);
-    color: white;
-  }
-  
-  &:nth-child(4n+3) {
-    background: linear-gradient(135deg, #024950 0%, #013940 100%);
-    color: white;
-  }
-  
-  &:nth-child(4n+4) {
-    background: linear-gradient(135deg, #068591 0%, #024950 100%);
-    color: white;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-    pointer-events: none;
-  }
+  transition: all 0.2s ease;
+  border: 1px solid rgba(15, 164, 175, 0.1);
   
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(15, 164, 175, 0.1);
   }
   
-  mat-card-header {
-    margin-bottom: 20px;
-    padding: 20px 20px 0;
+  .card-header {
+    background: $gradient-primary;
+    color: white;
+    padding: 16px;
+    display: flex;
+    align-items: flex-start;
     position: relative;
-    z-index: 1;
     
     img {
-      width: 60px;
-      height: 60px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      margin-right: 12px;
       object-fit: cover;
-      border: 3px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     
-    mat-card-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: inherit;
-      margin: 0 0 4px;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    .header-info {
+      flex: 1;
+      
+      h3 {
+        margin: 0 0 2px;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      
+      p {
+        margin: 0;
+        font-size: 0.813rem;
+        opacity: 0.9;
+      }
+      
+      .expertise {
+        display: inline-block;
+        font-size: 0.75rem;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-top: 6px;
+      }
     }
     
-    mat-card-subtitle {
-      color: inherit;
-      opacity: 0.9;
-      font-weight: 500;
+    .availability-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.75rem;
+      padding: 4px 8px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      
+      &.available {
+        background: #10b981;
+        color: white;
+      }
     }
   }
   
-  mat-card-content {
-    padding: 0 20px 20px;
-    position: relative;
-    z-index: 1;
+  .card-content {
+    padding: 12px 16px;
     
     .info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 16px;
-      border-radius: 12px;
+      gap: 12px;
       
       .info-item {
         display: flex;
         align-items: center;
-        gap: 8px;
+        font-size: 0.813rem;
+        color: $text-secondary;
         
         mat-icon {
-          color: inherit;
-          opacity: 0.9;
-        }
-        
-        span {
-          font-size: 0.95rem;
-          font-weight: 500;
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+          margin-right: 6px;
+          color: $primary-color;
         }
       }
     }
   }
   
-  mat-card-actions {
-    padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.1);
-    position: relative;
-    z-index: 1;
+  .card-actions {
+    padding: 8px;
+    border-top: 1px solid rgba(15, 164, 175, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
     
     button {
-      color: inherit;
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
-      
-      &:hover {
-        opacity: 1;
-      }
+      min-width: auto;
+      padding: 4px 8px;
+      font-size: 0.813rem;
       
       mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
         margin-right: 4px;
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
+      }
+      
+      &[color="warn"] {
+        color: #ef4444;
       }
     }
   }
@@ -223,26 +296,33 @@
 // Message Container
 .message-container {
   position: fixed;
-  top: 24px;
-  right: 24px;
+  top: 16px;
+  right: 16px;
   z-index: 1000;
-  max-width: 400px;
   
-  .message-card {
-    border-radius: 12px;
+  .message-content {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 0.875rem;
     
     &.success {
-      border-left: 4px solid #10b981;
+      background: #10b981;
+      color: white;
     }
     
     &.error {
-      border-left: 4px solid #ef4444;
+      background: #ef4444;
+      color: white;
     }
     
-    .message-content {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
     }
   }
 }
@@ -403,15 +483,15 @@ mat-error {
 // Loading State
 .loading-container {
   text-align: center;
-  padding: 80px 20px;
+  padding: 48px 0;
   
   mat-progress-spinner {
-    margin: 0 auto 20px;
+    margin: 0 auto 16px;
   }
   
   p {
-    color: #64748b;
-    font-size: 1.1rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
     margin: 0;
   }
 }
@@ -419,161 +499,61 @@ mat-error {
 // Empty State
 .empty-state {
   text-align: center;
-  padding: 80px 20px;
-  grid-column: 1 / -1; // Span full width of grid
+  padding: 48px 20px;
+  grid-column: 1 / -1;
   
-  .empty-icon {
-    font-size: 80px;
-    width: 80px;
-    height: 80px;
-    color: #cbd5e1;
-    margin-bottom: 24px;
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: $text-secondary;
+    margin-bottom: 16px;
   }
   
   h3 {
-    margin: 0 0 12px 0;
-    color: #1e293b;
+    margin: 0 0 8px;
+    color: $text-primary;
     font-weight: 600;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
   }
   
   p {
     margin: 0;
-    color: #64748b;
-    font-size: 1.1rem;
+    color: $text-secondary;
+    font-size: 0.875rem;
   }
 }
 
-// Responsive
+// Responsive Design
 @media (max-width: 768px) {
-  .panels-container {
-    padding: 16px;
-  }
-  
   .panels-header {
     flex-direction: column;
+    align-items: flex-start;
     gap: 16px;
-  }
-  
-  .form-actions {
-    flex-direction: column;
-  }
-}
-
-// Global dropdown panel styling (affects all dropdowns in this component)
-::ng-deep .mat-mdc-select-panel {
-  background: white !important;
-  border: 1px solid #d1d5db !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  max-height: 280px !important;
-  min-width: 100% !important;
-  
-  .mat-mdc-option {
-    background: white !important;
-    color: #374151 !important;
-    font-size: 14px !important;
-    padding: 8px 16px !important;
-    min-height: auto !important;
-    line-height: 1.5 !important;
     
-    &:hover {
-      background: #f3f4f6 !important;
-    }
-    
-    &.mdc-list-item--selected {
-      background: #eff6ff !important;
-      color: #1d4ed8 !important;
-    }
-    
-    &.mat-mdc-option-disabled {
-      color: #9ca3af !important;
-      background: white !important;
-      display: none !important; // Hide disabled options completely
-    }
-  }
-}
-
-// Force all dropdowns to open downward only
-::ng-deep .cdk-overlay-pane {
-  .mat-mdc-select-panel {
-    transform-origin: top center !important;
-    margin-top: 8px !important; // Gap between trigger and panel
-  }
-}
-
-// Force dropdown positioning to always be below trigger
-::ng-deep .cdk-overlay-connected-position-bounding-box {
-  .cdk-overlay-pane {
-    top: auto !important;
-    bottom: auto !important;
-  }
-}
-
-// Additional override for dropdown direction
-::ng-deep .mat-mdc-select-panel {
-  transform-origin: 50% 0% !important;
-}
-
-// Ensure dropdown backdrop is solid
-::ng-deep .cdk-overlay-backdrop {
-  background: rgba(0, 0, 0, 0.1) !important;
-}
-
-// Additional styling for select trigger when showing placeholder
-::ng-deep .mat-mdc-select-trigger {
-  .mat-mdc-select-placeholder {
-    color: #9ca3af !important;
-    font-size: 14px !important;
-    font-weight: 400 !important;
-    opacity: 1 !important;
-  }
-}
-
-// Fix placeholder styling for all selects
-::ng-deep .mat-mdc-select-placeholder,
-::ng-deep .mat-mdc-select-min-line {
-  color: #9ca3af !important;
-  font-size: 14px !important;
-  opacity: 1 !important;
-}
-
-// Additional styling for select trigger when empty (placeholder state)
-::ng-deep .mat-mdc-select-value-text {
-  &:empty::before {
-    content: attr(data-placeholder);
-    color: #9ca3af !important;
-  }
-}
-
-// Additional styling for select placeholder to match input placeholders exactly
-::ng-deep .custom-outline .mat-mdc-select {
-  // Override Material Design placeholder styling
-  .mat-mdc-select-trigger {
-    .mat-mdc-select-placeholder {
-      color: #9ca3af !important;
-      font-size: 14px !important;
-      font-weight: 400 !important;
-      opacity: 1 !important;
-      position: relative !important;
-      left: 0 !important;
-      top: 0 !important;
-    }
-    
-    .mat-mdc-select-value-text {
-      // When placeholder is shown
-      &:empty + .mat-mdc-select-placeholder {
-        display: block !important;
-        color: #9ca3af !important;
-      }
+    button {
+      width: 100%;
     }
   }
   
-  // Ensure empty state shows grey text
-  &.mat-mdc-select-empty .mat-mdc-select-trigger {
-    .mat-mdc-select-value {
-      color: #9ca3af !important;
-    }
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .panels-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Material Design Overrides
+::ng-deep {
+  .mat-mdc-card {
+    --mdc-elevated-card-container-color: transparent;
+  }
+  
+  .mat-mdc-button {
+    --mat-mdc-button-persistent-ripple-color: #{$primary-color};
+    --mat-mdc-button-ripple-color: #{$primary-color};
   }
 }
 
