@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // Interface for API request
 interface PanelMemberRequest {
@@ -132,96 +132,32 @@ export class PanelService {
    * Get all panel members
    */
   getPanelMembers(): Observable<ApiResponse<PanelMemberResponse[]>> {
-    // In a real application, this would call the actual API
-    // For now, return mock data in the API response format
-    return of({
-      success: true,
-      message: 'Panel members retrieved successfully',
-      data: this.panels,
-      timestamp: new Date().toISOString()
-    });
+    console.log('🔄 Fetching panel members from API...');
+    return this.http.get<ApiResponse<PanelMemberResponse[]>>(this.API_BASE_URL);
   }
 
   /**
    * Add a new panel member
    */
   addPanel(panelData: PanelMemberRequest): Observable<ApiResponse<PanelMemberResponse>> {
-    // In a real application, this would call the actual API
-    const formattedStatus = this.formatAvailabilityStatus(panelData.availabilityStatus);
-    const newPanel: PanelMember = {
-      ...panelData,
-      id: this.panels.length + 1,
-      experience: '0 years',
-      availability: formattedStatus,
-      availabilityStatusDisplay: formattedStatus,
-      rating: 4.0,
-      interviewsDone: 0,
-      image: this.generateAvatarUrl(panelData.name),
-      createdDate: new Date().toISOString(),
-      updatedDate: new Date().toISOString(),
-      isActive: true
-    };
-    
-    this.panels.push(newPanel);
-    
-    return of({
-      success: true,
-      message: 'Panel member added successfully',
-      data: newPanel,
-      timestamp: new Date().toISOString()
-    });
+    console.log('➕ Adding new panel member to API:', panelData);
+    return this.http.post<ApiResponse<PanelMemberResponse>>(this.API_BASE_URL, panelData);
   }
 
   /**
    * Update an existing panel member
    */
   updatePanel(id: number, updatedData: PanelMemberRequest): Observable<ApiResponse<PanelMemberResponse>> {
-    const index = this.panels.findIndex(p => p.id === id);
-    if (index === -1) {
-      return of({
-        success: false,
-        message: 'Panel member not found',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    const formattedStatus = this.formatAvailabilityStatus(updatedData.availabilityStatus);
-    this.panels[index] = {
-      ...this.panels[index],
-      ...updatedData,
-      availability: formattedStatus,
-      availabilityStatusDisplay: formattedStatus,
-      updatedDate: new Date().toISOString()
-    };
-
-    return of({
-      success: true,
-      message: 'Panel member updated successfully',
-      data: this.panels[index],
-      timestamp: new Date().toISOString()
-    });
+    console.log('✏️ Updating panel member via API:', id, updatedData);
+    return this.http.put<ApiResponse<PanelMemberResponse>>(`${this.API_BASE_URL}/${id}`, updatedData);
   }
 
   /**
    * Delete a panel member
    */
   deletePanel(id: number): Observable<ApiResponse<void>> {
-    const index = this.panels.findIndex(p => p.id === id);
-    if (index === -1) {
-      return of({
-        success: false,
-        message: 'Panel member not found',
-        timestamp: new Date().toISOString()
-      });
-    }
-
-    this.panels.splice(index, 1);
-
-    return of({
-      success: true,
-      message: 'Panel member deleted successfully',
-      timestamp: new Date().toISOString()
-    });
+    console.log('🗑️ Deleting panel member via API:', id);
+    return this.http.delete<ApiResponse<void>>(`${this.API_BASE_URL}/${id}`);
   }
 
   /**

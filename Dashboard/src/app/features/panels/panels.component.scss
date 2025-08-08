@@ -106,128 +106,217 @@ $gradient-primary: linear-gradient(135deg, $primary-color, $primary-dark);
 .panels-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  gap: 24px;
   margin-top: 16px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
-// Panel Card
+// Panel Card - Similar to Job Profile Cards
 .panelist-card {
-  border-radius: 12px;
-  padding: 0;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  position: relative;
   overflow: hidden;
   background: white;
-  transition: all 0.2s ease;
-  border: 1px solid rgba(15, 164, 175, 0.1);
+  
+  &:nth-child(4n+1) {
+    background: linear-gradient(135deg, #0FA4AF 0%, #024950 100%);
+    color: white;
+  }
+  
+  &:nth-child(4n+2) {
+    background: linear-gradient(135deg, #15B8C4 0%, #0FA4AF 100%);
+    color: white;
+  }
+  
+  &:nth-child(4n+3) {
+    background: linear-gradient(135deg, #024950 0%, #013940 100%);
+    color: white;
+  }
+  
+  &:nth-child(4n+4) {
+    background: linear-gradient(135deg, #068591 0%, #024950 100%);
+    color: white;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    pointer-events: none;
+  }
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(15, 164, 175, 0.1);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
   }
   
-  .card-header {
-    background: $gradient-primary;
-    color: white;
-    padding: 16px;
-    display: flex;
-    align-items: flex-start;
+  mat-card-header {
+    margin-bottom: 20px;
+    padding: 20px 20px 0;
     position: relative;
+    z-index: 1;
     
     img {
-      width: 48px;
-      height: 48px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      margin-right: 12px;
       object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     
-    .header-info {
-      flex: 1;
-      
-      h3 {
-        margin: 0 0 2px;
-        font-size: 1rem;
-        font-weight: 600;
-      }
-      
-      p {
-        margin: 0;
-        font-size: 0.813rem;
-        opacity: 0.9;
-      }
-      
-      .expertise {
-        display: inline-block;
-        font-size: 0.75rem;
-        background: rgba(255, 255, 255, 0.2);
-        padding: 2px 8px;
-        border-radius: 12px;
-        margin-top: 6px;
-      }
+    mat-card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: inherit;
+      margin: 0 0 4px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     }
     
-    .availability-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 0.75rem;
-      padding: 4px 8px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.2);
-      
-      &.available {
-        background: #10b981;
-        color: white;
-      }
+    mat-card-subtitle {
+      color: inherit;
+      opacity: 0.9;
+      font-weight: 500;
     }
   }
   
-  .card-content {
-    padding: 12px 16px;
+  mat-card-content {
+    padding: 0 20px 20px;
+    position: relative;
+    z-index: 1;
     
     .info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 16px;
+      margin-bottom: 16px;
       
       .info-item {
         display: flex;
         align-items: center;
-        font-size: 0.813rem;
-        color: $text-secondary;
+        font-size: 0.875rem;
+        color: inherit;
+        opacity: 0.9;
         
         mat-icon {
           font-size: 16px;
           width: 16px;
           height: 16px;
-          margin-right: 6px;
-          color: $primary-color;
+          margin-right: 8px;
+          color: inherit;
+          opacity: 0.8;
         }
       }
     }
-  }
-  
-  .card-actions {
-    padding: 8px;
-    border-top: 1px solid rgba(15, 164, 175, 0.1);
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
     
-    button {
-      min-width: auto;
-      padding: 4px 8px;
-      font-size: 0.813rem;
+    .expertise-section {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: inherit;
+      opacity: 0.9;
       
       mat-icon {
         font-size: 16px;
         width: 16px;
         height: 16px;
-        margin-right: 4px;
+        margin-right: 8px;
+        color: inherit;
       }
       
-      &[color="warn"] {
-        color: #ef4444;
+      span {
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+    }
+    
+    .availability-section {
+      display: flex;
+      align-items: center;
+      color: inherit;
+      opacity: 0.9;
+      
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+        color: inherit;
+      }
+      
+      .availability-status {
+        font-size: 0.875rem;
+        padding: 4px 12px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.2);
+        font-weight: 500;
+        
+        &.available {
+          background: rgba(16, 185, 129, 0.9);
+          color: white;
+        }
+      }
+    }
+  }
+  
+  mat-card-actions {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .action-buttons-left {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .action-buttons-right {
+      display: flex;
+    }
+    
+    button {
+      color: inherit;
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+      
+      &:hover {
+        opacity: 1;
+      }
+      
+      mat-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+    }
+    
+    .delete-action {
+      color: inherit !important;
+      opacity: 0.7;
+      
+      &:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      mat-icon {
+        margin-right: 0;
       }
     }
   }

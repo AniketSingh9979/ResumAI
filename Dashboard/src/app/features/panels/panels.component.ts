@@ -121,14 +121,16 @@ export class PanelsComponent implements OnInit {
   openAddPanelDialog(): void {
     this.showAddForm = false;
     const dialogRef = this.dialog.open(AddPanelDialogComponent, {
-      width: '600px',
-      minWidth: '600px',
+      width: '700px',
+      minWidth: '700px',
       maxWidth: '90vw',
-      disableClose: true,
-      panelClass: ['custom-dialog-container', 'compact-dialog'],
+      maxHeight: '85vh',
+      disableClose: false,
+      panelClass: ['custom-dialog-container'],
       autoFocus: false,
       hasBackdrop: true,
-      position: { top: '5vh' }
+      backdropClass: 'custom-backdrop',
+      position: undefined
     });
 
     dialogRef.afterClosed().pipe(take(1)).subscribe((result: PanelMemberRequest | undefined) => {

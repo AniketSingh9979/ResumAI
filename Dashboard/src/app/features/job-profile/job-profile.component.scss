@@ -122,12 +122,16 @@ $text-secondary: #718096;
 // Upload Section
 .upload-section {
   margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
   
   .upload-card {
     background: white;
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba($primary-dark, 0.1);
     border: 1px solid rgba($primary, 0.1);
+    width: 100%;
+    max-width: 1000px;
     
     mat-card-header {
       background: linear-gradient(135deg, $primary, $primary-dark);
@@ -193,10 +197,6 @@ $text-secondary: #718096;
           
           mat-form-field {
             flex: 1;
-            
-            &.panel-select-field {
-              flex: 2;
-            }
           }
         }
         
@@ -211,10 +211,12 @@ $text-secondary: #718096;
             &.compact {
               .upload-content {
                 padding: 12px;
+                text-align: center;
                 
                 .upload-header {
                   display: flex;
                   align-items: center;
+                  justify-content: center;
                   gap: 8px;
                   margin-bottom: 8px;
                   
@@ -241,6 +243,7 @@ $text-secondary: #718096;
                 .file-name {
                   display: flex;
                   align-items: center;
+                  justify-content: center;
                   gap: 8px;
                   margin: 0;
                   font-size: 0.875rem;
@@ -279,20 +282,6 @@ $text-secondary: #718096;
 // Upload Form
 .upload-form {
   padding: 16px;
-
-  .form-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-
-    .panel-member-field {
-      flex: 1;
-    }
-
-    .email-field {
-      flex: 1;
-    }
-  }
 
   .member-option {
     display: flex;
@@ -575,7 +564,7 @@ $text-secondary: #718096;
     }
   }
   
-  mat-card_actions {
+  mat-card-actions {
     padding: 12px 20px;
     background: rgba(255, 255, 255, 0.1);
     position: relative;

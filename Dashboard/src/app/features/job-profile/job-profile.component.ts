@@ -11,8 +11,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { JobProfileService } from './job-profile.service';
 import { PanelService } from '../../shared/services/panel.service';
+import { JobDetailsDialogComponent } from './job-details-dialog.component';
 
 interface Panel {
   id: number;
@@ -72,18 +74,23 @@ interface ApiResponse<T> {
 
 interface JobDescription {
   id: number;
-  title: string;
-  department: string;
-  description: string;
+  title?: string;
+  department?: string;
+  description?: string;
   fileName: string;
-  fileSize: number;
-  uploadDate: string;
+  originalFileName?: string;
+  fileSize?: number;
+  uploadDate?: string;
+  createdDate?: string;
   company?: string;
   location?: string;
   experienceLevel?: string;
   requirements?: string;
   responsibilities?: string;
-  panelMember?: PanelMember; // Make optional to handle cases where it might not be set
+  panelMember?: PanelMember;
+  panelMemberName?: string;
+  contentType?: string;
+  filePath?: string;
 }
 
 interface UploadResponse {
@@ -118,7 +125,8 @@ interface JobProfile {
     MatSelectModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   templateUrl: './job-profile.component.html',
   styleUrls: ['./job-profile.component.scss']
@@ -151,7 +159,8 @@ export class JobProfileComponent implements OnInit {
     private jobProfileService: JobProfileService,
     private panelService: PanelService,
     private snackBar: MatSnackBar,
-    private http: HttpClient
+    private http: HttpClient,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -179,22 +188,22 @@ export class JobProfileComponent implements OnInit {
   loadPanelMembers() {
     this.loading = true;
     
-    // API endpoint for panel members
-    const apiUrl = 'http://localhost:8081/api/panel-members';
+    // API endpoint for panel members - use the JobDescriptionController endpoint for consistency
+    const apiUrl = 'http://localhost:8081/api/matching/panel-members';
     
-    this.http.get<ApiResponse<PanelMemberApiResponse[]>>(apiUrl).subscribe({
-      next: (response: ApiResponse<PanelMemberApiResponse[]>) => {
-        if (response.success && response.data && Array.isArray(response.data)) {
-          this.panelMembers = response.data
-            .filter(panel => panel && panel.name && panel.email) // Filter out invalid entries
-            .map(panel => ({
+    this.http.get<any>(apiUrl).subscribe({
+      next: (response: any) => {
+        if (response.success && response.panelMembers && Array.isArray(response.panelMembers)) {
+          this.panelMembers = response.panelMembers
+            .filter((panel: any) => panel && panel.name && panel.email) // Filter out invalid entries
+            .map((panel: any) => ({
               id: panel.id,
               name: panel.name,
               email: panel.email,
               expertise: panel.expertise || 'No expertise specified',
               avatar: this.generateAvatarUrl(panel.name),
               experience: this.calculateExperience(panel.createdDate),
-              availability: panel.availabilityStatusDisplay || 'Unknown',
+              availability: panel.availabilityStatusDisplay || 'Available',
               rating: this.generateRandomRating(),
               interviewsDone: this.generateRandomInterviews(),
               designation: panel.designation || 'No designation',
@@ -202,10 +211,12 @@ export class JobProfileComponent implements OnInit {
               location: panel.location || 'No location',
               mobileNumber: panel.mobileNumber || 'No phone',
               employeeId: panel.employeeId || 'No ID',
-              availabilityStatus: panel.availabilityStatus || 'UNKNOWN',
+              availabilityStatus: panel.availabilityStatus || 'AVAILABLE',
             }));
+          
+          console.log('✅ Panel members loaded successfully:', this.panelMembers.length);
         } else {
-          console.warn('Invalid API response or no data:', response);
+          console.warn('Invalid API response or no panel members found:', response);
           this.snackBar.open('Failed to load panel members.', 'Close', { duration: 3000 });
           this.loadFallbackPanelMembers();
         }
@@ -411,6 +422,10 @@ export class JobProfileComponent implements OnInit {
   // Function removed to resolve duplicate - using the API version instead
 
   uploadProfile(): void {
+    console.log('🚀 Upload Profile clicked');
+    console.log('📁 Selected file:', this.selectedFile);
+    console.log('👤 Selected panel member:', this.selectedPanelMember);
+    
     if (!this.selectedFile || !this.selectedPanelMember) {
       this.snackBar.open('Please select a file and panel member', 'Close', {
         duration: 3000
@@ -518,8 +533,18 @@ export class JobProfileComponent implements OnInit {
   /**
    * Convert timestamp to relative time (e.g., "2 hours ago")
    */
-  getTimeAgo(timestamp: string): string {
+  getTimeAgo(timestamp: string | undefined): string {
+    if (!timestamp) {
+      return 'Unknown';
+    }
+    
     const date = new Date(timestamp);
+    
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return 'Unknown';
+    }
+    
     const now = new Date();
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
     
@@ -546,10 +571,50 @@ export class JobProfileComponent implements OnInit {
    * View detailed information about a job
    */
   viewJobDetails(job: JobDescription): void {
-    // TODO: Implement job details dialog
-    console.log('Viewing job details:', job);
-    this.snackBar.open('Job details view coming soon', 'Close', {
-      duration: 3000
+    // Fetch detailed job information from backend
+    const detailsUrl = `http://localhost:8081/api/matching/jobs/${job.id}`;
+    
+    this.http.get(detailsUrl).subscribe({
+      next: (response: any) => {
+        if (response.success && response.job) {
+          this.openJobDetailsDialog(response.job);
+        } else {
+          this.snackBar.open('Failed to load job details', 'Close', {
+            duration: 3000
+          });
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error fetching job details:', error);
+        this.snackBar.open('Error loading job details', 'Close', {
+          duration: 3000
+        });
+      }
+    });
+  }
+
+  /**
+   * Open job details in a dialog/modal
+   */
+  private openJobDetailsDialog(job: any): void {
+    const dialogRef = this.dialog.open(JobDetailsDialogComponent, {
+      width: '90%',
+      maxWidth: '800px',
+      maxHeight: '90vh',
+      data: {
+        job: job,
+        onDownload: (jobToDownload: any) => {
+          this.downloadFile(jobToDownload);
+          dialogRef.close();
+        }
+      },
+      disableClose: false,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // Handle any cleanup if needed
+      console.log('Job details dialog closed');
     });
   }
 
@@ -564,19 +629,59 @@ export class JobProfileComponent implements OnInit {
       return;
     }
 
-    // API endpoint for file download
-    const downloadUrl = `http://localhost:8081/api/matching/download/${job.id}`;
+    // API endpoint for job description file download
+    const downloadUrl = `http://localhost:8081/api/matching/jobs/${job.id}/download`;
     
-    // Create a link element and trigger download
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = job.fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
     this.snackBar.open('Downloading file...', 'Close', {
       duration: 2000
+    });
+
+    // Use HTTP client to handle the download properly
+    this.http.get(downloadUrl, { 
+      responseType: 'blob',
+      observe: 'response'
+    }).subscribe({
+      next: (response) => {
+        // Get filename from content-disposition header or use original filename
+        const contentDisposition = response.headers.get('content-disposition');
+        let filename = job.originalFileName || job.fileName;
+        
+        if (contentDisposition) {
+          const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+          if (matches != null && matches[1]) {
+            filename = matches[1].replace(/['"]/g, '');
+          }
+        }
+
+        // Create blob and download
+        const blob = response.body;
+        if (blob) {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          
+          this.snackBar.open('File downloaded successfully', 'Close', {
+            duration: 3000
+          });
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error('Error downloading file:', error);
+        let errorMessage = 'Error downloading file';
+        if (error.status === 404) {
+          errorMessage = 'File not found';
+        } else if (error.error && error.error.message) {
+          errorMessage = error.error.message;
+        }
+        this.snackBar.open(errorMessage, 'Close', {
+          duration: 3000
+        });
+      }
     });
   }
 
@@ -589,7 +694,7 @@ export class JobProfileComponent implements OnInit {
       const deleteUrl = `http://localhost:8081/api/matching/jobs/${job.id}`;
       
       this.http.delete(deleteUrl).subscribe({
-        next: () => {
+        next: (response: any) => {
           this.jobs = this.jobs.filter(j => j.id !== job.id);
           this.filteredJobs = this.filteredJobs.filter(j => j.id !== job.id);
           this.totalJobs = this.jobs.length;
@@ -600,7 +705,11 @@ export class JobProfileComponent implements OnInit {
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error deleting job:', error);
-          this.snackBar.open('Error deleting job description', 'Close', {
+          let errorMessage = 'Error deleting job description';
+          if (error.error && error.error.message) {
+            errorMessage = error.error.message;
+          }
+          this.snackBar.open(errorMessage, 'Close', {
             duration: 3000
           });
         }

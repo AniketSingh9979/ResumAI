@@ -16,8 +16,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -265,9 +274,42 @@ public class JobDescriptionController {
             Optional<JobDescription> jobOpt = jobDescriptionRepository.findById(jobId);
             
             if (jobOpt.isPresent()) {
+                JobDescription job = jobOpt.get();
+                
+                // Create a safe representation to avoid lazy loading issues
+                Map<String, Object> jobMap = new HashMap<>();
+                jobMap.put("id", job.getId());
+                jobMap.put("fileName", job.getFileName());
+                jobMap.put("originalFileName", job.getOriginalFileName());
+                jobMap.put("fileSize", job.getFileSize());
+                jobMap.put("contentType", job.getContentType());
+                jobMap.put("description", job.getDescription());
+                jobMap.put("title", job.getTitle());
+                jobMap.put("company", job.getCompany());
+                jobMap.put("location", job.getLocation());
+                jobMap.put("experienceLevel", job.getExperienceLevel());
+                jobMap.put("requirements", job.getRequirements());
+                jobMap.put("responsibilities", job.getResponsibilities());
+                jobMap.put("createdDate", job.getCreatedDate());
+                jobMap.put("updatedDate", job.getUpdatedDate());
+                jobMap.put("isActive", job.getIsActive());
+                
+                // Handle panel member safely to avoid lazy loading issues
+                if (job.getPanelMember() != null) {
+                    Map<String, Object> panelMemberMap = new HashMap<>();
+                    panelMemberMap.put("id", job.getPanelMember().getId());
+                    panelMemberMap.put("name", job.getPanelMember().getName());
+                    panelMemberMap.put("email", job.getPanelMember().getEmail());
+                    jobMap.put("panelMember", panelMemberMap);
+                }
+                
+                // Also include the legacy fields for backward compatibility
+                jobMap.put("panelMemberName", job.getPanelMemberName());
+                jobMap.put("panelMemberEmail", job.getPanelMemberEmail());
+                
                 response.put("success", true);
                 response.put("message", "Job description retrieved successfully");
-                response.put("job", jobOpt.get());
+                response.put("job", jobMap);
             } else {
                 response.put("success", false);
                 response.put("message", "Job description not found with ID: " + jobId);
@@ -305,6 +347,209 @@ public class JobDescriptionController {
             log.error("Error retrieving panel members: {}", e.getMessage(), e);
             response.put("success", false);
             response.put("message", "Failed to retrieve panel members: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    /**
+     * Download original job description file
+     */
+    @GetMapping("/jobs/{jobId}/download")
+    public ResponseEntity<Resource> downloadJobDescription(@PathVariable Long jobId) {
+        try {
+            Optional<JobDescription> jobOpt = jobDescriptionRepository.findById(jobId);
+            
+            if (jobOpt.isEmpty()) {
+                log.error("Job description not found with ID: {}", jobId);
+                return ResponseEntity.notFound().build();
+            }
+            
+            JobDescription job = jobOpt.get();
+            String filePath = job.getFilePath();
+            
+            if (filePath == null || filePath.trim().isEmpty()) {
+                log.error("File path is null or empty for job ID: {}", jobId);
+                return ResponseEntity.notFound().build();
+            }
+            
+            // Check if this is a virtual file path (text-only job description)
+            if (filePath.startsWith("/virtual/")) {
+                log.info("Creating downloadable file for virtual job description: {}", job.getTitle());
+                
+                // Create a temporary file with the job description content
+                String content = createDownloadableContent(job);
+                byte[] contentBytes = content.getBytes(StandardCharsets.UTF_8);
+                
+                ByteArrayResource resource = new ByteArrayResource(contentBytes);
+                
+                String filename = job.getOriginalFileName();
+                if (filename == null || filename.trim().isEmpty()) {
+                    filename = (job.getTitle() != null ? job.getTitle().replaceAll("[^a-zA-Z0-9]", "_") : "job_description") + ".txt";
+                }
+                
+                return ResponseEntity.ok()
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, 
+                               "attachment; filename=\"" + filename + "\"")
+                        .body(resource);
+            }
+            
+            // Handle real file download
+            Path file = Paths.get(filePath);
+            
+            if (!Files.exists(file)) {
+                log.error("File not found on disk: {}", filePath);
+                
+                // Fallback: create downloadable content even for missing files
+                log.info("File not found, creating downloadable content for job: {}", job.getTitle());
+                String content = createDownloadableContent(job);
+                byte[] contentBytes = content.getBytes(StandardCharsets.UTF_8);
+                ByteArrayResource resource = new ByteArrayResource(contentBytes);
+                
+                String filename = job.getOriginalFileName();
+                if (filename == null) {
+                    filename = "job_description_" + job.getId() + ".txt";
+                }
+                
+                return ResponseEntity.ok()
+                        .contentType(MediaType.TEXT_PLAIN)
+                        .header(HttpHeaders.CONTENT_DISPOSITION, 
+                               "attachment; filename=\"" + filename + "\"")
+                        .body(resource);
+            }
+            
+            Resource resource = new UrlResource(file.toUri());
+            
+            if (!resource.exists() || !resource.isReadable()) {
+                log.error("File is not readable: {}", filePath);
+                return ResponseEntity.notFound().build();
+            }
+            
+            // Determine content type
+            String contentType = job.getContentType();
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+            
+            log.info("Downloading job description file: {} ({})", job.getOriginalFileName(), filePath);
+            
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, 
+                           "attachment; filename=\"" + job.getOriginalFileName() + "\"")
+                    .body(resource);
+                    
+        } catch (Exception e) {
+            log.error("Error downloading job description with ID {}: {}", jobId, e.getMessage(), e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    
+    /**
+     * Create downloadable content for job descriptions
+     */
+    private String createDownloadableContent(JobDescription job) {
+        StringBuilder content = new StringBuilder();
+        
+        content.append("JOB DESCRIPTION\n");
+        content.append("===============\n\n");
+        
+        if (job.getTitle() != null) {
+            content.append("TITLE: ").append(job.getTitle()).append("\n");
+        }
+        if (job.getCompany() != null) {
+            content.append("COMPANY: ").append(job.getCompany()).append("\n");
+        }
+        if (job.getLocation() != null) {
+            content.append("LOCATION: ").append(job.getLocation()).append("\n");
+        }
+        if (job.getExperienceLevel() != null) {
+            content.append("EXPERIENCE LEVEL: ").append(job.getExperienceLevel()).append("\n");
+        }
+        
+        content.append("\n");
+        
+        if (job.getDescription() != null && !job.getDescription().trim().isEmpty()) {
+            content.append("DESCRIPTION:\n");
+            content.append("------------\n");
+            content.append(job.getDescription()).append("\n\n");
+        }
+        
+        if (job.getRequirements() != null && !job.getRequirements().trim().isEmpty()) {
+            content.append("REQUIREMENTS:\n");
+            content.append("-------------\n");
+            content.append(job.getRequirements()).append("\n\n");
+        }
+        
+        if (job.getResponsibilities() != null && !job.getResponsibilities().trim().isEmpty()) {
+            content.append("RESPONSIBILITIES:\n");
+            content.append("-----------------\n");
+            content.append(job.getResponsibilities()).append("\n\n");
+        }
+        
+        if (job.getPanelMemberName() != null) {
+            content.append("POSTED BY: ").append(job.getPanelMemberName());
+            if (job.getPanelMemberEmail() != null) {
+                content.append(" (").append(job.getPanelMemberEmail()).append(")");
+            }
+            content.append("\n");
+        }
+        
+        if (job.getCreatedDate() != null) {
+            content.append("CREATED: ").append(job.getCreatedDate().toString()).append("\n");
+        }
+        
+        return content.toString();
+    }
+
+    /**
+     * Delete a job description by ID
+     */
+    @DeleteMapping("/jobs/{jobId}")
+    public ResponseEntity<Map<String, Object>> deleteJobDescription(@PathVariable Long jobId) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Optional<JobDescription> jobOpt = jobDescriptionRepository.findById(jobId);
+            
+            if (jobOpt.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Job description not found with ID: " + jobId);
+                return ResponseEntity.notFound().build();
+            }
+            
+            JobDescription job = jobOpt.get();
+            
+            // Delete the file from disk if it exists
+            String filePath = job.getFilePath();
+            if (filePath != null && !filePath.trim().isEmpty()) {
+                try {
+                    Path file = Paths.get(filePath);
+                    if (Files.exists(file)) {
+                        Files.delete(file);
+                        log.info("Deleted file from disk: {}", filePath);
+                    }
+                } catch (Exception e) {
+                    log.warn("Failed to delete file from disk: {}", e.getMessage());
+                    // Continue with database deletion even if file deletion fails
+                }
+            }
+            
+            // Delete from database
+            jobDescriptionRepository.delete(job);
+            
+            response.put("success", true);
+            response.put("message", "Job description deleted successfully");
+            response.put("deletedJobId", jobId);
+            
+            log.info("Job description deleted successfully: ID {}, Title: {}", jobId, job.getTitle());
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            log.error("Error deleting job description with ID {}: {}", jobId, e.getMessage(), e);
+            response.put("success", false);
+            response.put("message", "Failed to delete job description: " + e.getMessage());
             return ResponseEntity.internalServerError().body(response);
         }
     }

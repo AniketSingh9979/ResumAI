@@ -190,7 +190,7 @@
             </div>
             <div class="info-item">
               <mat-icon>schedule</mat-icon>
-              <span>{{getTimeAgo(job.uploadDate)}}</span>
+              <span>{{getTimeAgo(job.createdDate || job.uploadDate)}}</span>
             </div>
           </div>
           

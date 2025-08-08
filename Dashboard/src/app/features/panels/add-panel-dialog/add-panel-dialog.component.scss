@@ -1,30 +1,34 @@
 .add-panel-dialog {
-  width: 600px !important;
-  min-width: 600px !important;
+  width: 700px !important;
+  min-width: 700px !important;
   max-width: 90vw !important;
   padding: 0 !important;
   overflow: visible !important;
   max-height: 85vh !important;
   box-sizing: border-box !important;
+  position: relative !important;
+  background: white !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
   
-  .dialog-header {
-    background: linear-gradient(135deg, #0FA4AF, #024950);
-    margin: 0;
-    padding: 20px 24px;
-    color: white;
-
-    h2 {
-      color: white;
-      border-bottom: none;
+      .dialog-header {
+      background: linear-gradient(135deg, #0FA4AF, #024950);
       margin: 0;
-      padding: 0;
-      font-size: 1.3rem;
+      padding: 16px 24px;
+      color: white;
+
+      h2 {
+        color: white;
+        border-bottom: none;
+        margin: 0;
+        padding: 0;
+        font-size: 1.2rem;
+      }
     }
-  }
 
   .dialog-content-wrapper {
     margin: 0;
-    padding: 24px;
+    padding: 16px 24px;
   }
 
   h2 {
@@ -40,24 +44,28 @@
   .panel-form {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
 
-  .form-row {
-    display: flex;
-    gap: 16px;
-    width: 100%;
-    margin-bottom: 0;
+    .form-row {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 4px;
 
-    mat-form-field {
-      flex: 1;
-      margin: 0;
-      min-width: 0; // This helps prevent horizontal overflow
-    }
+      mat-form-field {
+        flex: 1;
+        margin: 0;
+        min-width: 0;
+      }
 
-    &.availability-row {
-      max-width: 220px;
-      margin-top: 4px;
-    }
+      &.availability-row {
+        max-width: 300px;
+        margin-top: 0;
+        
+        mat-form-field {
+          min-width: 250px;
+        }
+      }
     }
   }
 
@@ -85,12 +93,12 @@
   ::ng-deep {
     .mat-mdc-form-field {
       .mat-mdc-form-field-wrapper {
-        padding-bottom: 8px;
+        padding-bottom: 4px;
       }
       
       .mat-mdc-form-field-infix {
         padding-top: 8px;
-        padding-bottom: 6px;
+        padding-bottom: 4px;
         min-height: 36px;
       }
 
@@ -177,9 +185,9 @@
   }
 
   // Dialog actions styling
-  mat-dialog-actions {
-    margin: 24px -16px -16px -16px;
-    padding: 16px;
+  .dialog-actions {
+    margin: 16px -24px -16px -24px;
+    padding: 16px 24px;
     background-color: #f8f9fa;
     border-top: 1px solid rgba(2, 73, 80, 0.1);
     display: flex;
@@ -188,22 +196,26 @@
 
     .cancel-button {
       color: #666;
+      min-width: 100px;
+      height: 36px;
     }
 
     .submit-button {
-      min-width: 130px;
+      min-width: 150px;
       height: 36px;
       border-radius: 6px;
+      background: linear-gradient(135deg, #0FA4AF, #024950);
+      color: white;
     }
   }
 
-  // Override Material styles for more compact look
+  // Override Material styles for proper dialog behavior
   ::ng-deep {
     .mat-mdc-dialog-content {
       padding: 0 !important;
       margin: 0 !important;
-      max-height: none !important;
-      overflow: hidden !important;
+      max-height: calc(90vh - 140px) !important;
+      overflow-y: auto !important;
     }
 
     .mdc-dialog__content {
@@ -211,12 +223,64 @@
     }
 
     .mat-mdc-dialog-container {
-      --mdc-dialog-container-elevation: 0;
-      overflow: hidden;
+      --mdc-dialog-container-elevation: 8;
+      overflow: visible !important;
+      position: relative !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
     }
 
     .mat-mdc-dialog-surface {
-      overflow: hidden !important;
+      overflow: visible !important;
+      position: relative !important;
+      border-radius: 8px !important;
+      background: white !important;
+    }
+
+    .cdk-overlay-backdrop {
+      background: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .cdk-overlay-container {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 1000 !important;
+    }
+
+    .cdk-overlay-pane {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      max-width: 90vw !important;
+      max-height: 90vh !important;
+      z-index: 1001 !important;
+    }
+
+    .custom-backdrop {
+      background: rgba(0, 0, 0, 0.6) !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 1000 !important;
+    }
+
+    .custom-dialog-container {
+      .mat-mdc-dialog-container {
+        background: transparent !important;
+        box-shadow: none !important;
+        
+        .mat-mdc-dialog-surface {
+          background: white !important;
+          border-radius: 8px !important;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+          overflow: visible !important;
+        }
+      }
     }
   }
 
@@ -238,36 +302,40 @@
     }
   }
 
-  // Dropdown panel styles
+  // Dropdown panel styles - force downward opening with solid background
   .mdc-menu-surface.mat-mdc-select-panel,
   .mat-mdc-select-panel {
     background-color: white !important;
-    border-radius: 4px !important;
+    border-radius: 6px !important;
     margin-top: 4px !important;
     margin-bottom: 4px !important;
-    max-height: 275px !important;
+    max-height: 200px !important;
     position: relative !important;
     transform-origin: top center !important;
     overflow-y: auto !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid rgba(2, 73, 80, 0.1) !important;
+    backdrop-filter: none !important;
 
     .mat-mdc-option {
-      min-height: 36px !important;
-      line-height: 36px !important;
+      min-height: 32px !important;
+      line-height: 32px !important;
       font-size: 14px !important;
-      padding: 0 16px !important;
+      padding: 0 12px !important;
       white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       background-color: white !important;
+      margin: 0 2px !important;
+      border-radius: 4px !important;
 
       &:hover:not(.mdc-list-item--disabled) {
-        background-color: rgba(15, 164, 175, 0.08) !important;
+        background-color: rgba(15, 164, 175, 0.1) !important;
       }
 
       &.mat-mdc-option-active,
       &.mdc-list-item--selected {
-        background-color: rgba(15, 164, 175, 0.12) !important;
+        background-color: rgba(15, 164, 175, 0.15) !important;
       }
 
       .mdc-list-item__primary-text {
@@ -276,14 +344,24 @@
     }
   }
 
-  // Override Material's overlay positioning to always show below
+  // Force all dropdowns to open downward only
   .cdk-overlay-pane {
     transform-origin: top center !important;
+    
+    .mat-mdc-select-panel {
+      transform-origin: top center !important;
+    }
   }
 
+  // Prevent upward opening
   .mat-mdc-select-panel-above {
-    border-radius: 4px !important;
-    margin-bottom: 4px !important;
+    display: none !important;
+  }
+
+  // Ensure downward opening styling
+  .mat-mdc-select-panel-below {
+    border-radius: 6px !important;
+    margin-top: 4px !important;
   }
 
   // Additional select field styles
